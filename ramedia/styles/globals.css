@@ -18,3 +18,14 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@layer components {
+
+  .card-Container {
+    @apply grid gap-4 grid-cols-6 mx-4
+  }
+
+  .card {
+      @apply items-center h-64 px-4 rounded-md bg-red-400;
+  }
+}
