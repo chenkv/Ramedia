@@ -22,10 +22,10 @@ a {
 @layer components {
 
   .card-Container {
-    @apply grid gap-4 grid-cols-6 mx-4
+    @apply grid gap-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 mx-4
   }
 
   .card {
-      @apply items-center h-64 px-4 rounded-md bg-red-400;
+      @apply items-center h-auto rounded-xl bg-red-400 text-center;
   }
 }

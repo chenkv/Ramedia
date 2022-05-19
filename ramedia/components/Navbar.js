@@ -15,8 +15,8 @@ export default function Navbar() {
     ];
 
     return (
-        <div className="flex bg-zinc-200">
-            <div className="h-14 flex items-center justify-center w-[100px] h-16">
+        <div className="fixed w-screen top-0 flex bg-zinc-200">
+            <div className="flex items-center justify-center w-[100px] h-14">
                 <Link href="/">
                     <a><Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /></a>
                 </Link>
