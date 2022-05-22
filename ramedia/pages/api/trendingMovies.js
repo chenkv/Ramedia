@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     try {
         const url = 'https://api.trakt.tv/movies/trending?limit=20';
 
-        var popularRes = await fetch(url, {
+        var trendingRes = await fetch(url, {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',
@@ -19,8 +19,7 @@ export default async function handler(req, res) {
             }
         })
         
-        var data = await popularRes.json();
-        console.log(data)
+        var data = await trendingRes.json();
 
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
@@ -33,8 +32,33 @@ export default async function handler(req, res) {
             element.movie.imageurl = "https://image.tmdb.org/t/p/original" + data2.poster_path;
         }
 
-        res.status(200).json({ data })
+        const url2 = 'https://api.trakt.tv/movies/popular?limit=10';
+
+        var popularRes = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'trakt-api-version': '2',
+                'trakt-api-key': id
+            }
+        })
+
+        var data2 = await popularRes.json();
+
+        for (let i = 0; i < data2.length; i++) {
+            const element = data2[i];
+
+            var currId = element.ids.tmdb;
+            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
+            var imageResponse = await fetch(currURL, { method: 'GET' })
+            var data3 = await imageResponse.json();
+
+            element.imageurl = "https://image.tmdb.org/t/p/original" + data3.backdrop_path;
+        }
+
+        res.status(200).json({ data, data2 })
     } catch (err) {
+        console.log("ERROR!: " + err);
         res.status(500).json({ error: 'failed to load data' })
     }
 }

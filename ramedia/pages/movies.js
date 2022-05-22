@@ -22,9 +22,15 @@ export default function MoviesHome() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main>
-          <div className='h-[50vh] bg-neutral-500 text-center'>
-            Trending Movie Carousel
+        <main className='overflow-x-hidden'>
+          <div className='h-auto w-[70vw] left-[15vw] bg-neutral-500 relative flex gap-2 snap-x snap-mandatory overflow-x-auto z-0'>
+            {
+              data.data2.map((element) => (
+                <div className='snap-center shrink-0 w-[70vw]'>
+                  <img src={element.imageurl} className="w-[70vw]" />
+                </div>
+              ))
+            }
           </div>
 
           <div className='flex justify-center mt-4'>

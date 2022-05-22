@@ -26,6 +26,6 @@ a {
   }
 
   .card {
-      @apply items-center h-auto rounded-xl text-center;
+      @apply items-center rounded-xl text-center transition hover:scale-105 hover:cursor-pointer;
   }
 }
