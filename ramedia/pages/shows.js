@@ -45,13 +45,13 @@ export default function ShowsHome() {
             Search Bar
           </div>
           <div className='card-Container pt-10'>
-            {
+            {/* {
               data.map((element) => (
                 <div className='card'>
                   {element.movie.title}
                 </div>
               ))
-            }
+            } */}
           </div>
         </main>
       </div>
