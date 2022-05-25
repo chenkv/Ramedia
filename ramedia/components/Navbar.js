@@ -21,6 +21,7 @@ export default function Navbar() {
         ['Movies', '/movies', 2],
         ['Shows', '/shows', 3],
         ['Games', '/games', 4],
+        ['Search', '/search', 5]
     ];
 
     return (

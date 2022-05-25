@@ -19,17 +19,17 @@ export default async function handler(req, res) {
             }
         })
         
-        var data = await trendingRes.json();
+        var trending = await trendingRes.json();
 
-        for (let i = 0; i < data.length; i++) {
-            const element = data[i];
+        for (let i = 0; i < trending.length; i++) {
+            const element = trending[i];
 
             var currId = element.movie.ids.tmdb;
             var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
             var imageResponse = await fetch(currURL, { method: 'GET' })
-            var data2 = await imageResponse.json();
+            var temp = await imageResponse.json();
 
-            element.movie.imageurl = "https://image.tmdb.org/t/p/original" + data2.poster_path;
+            element.movie.imageurl = "https://image.tmdb.org/t/p/original" + temp.poster_path;
         }
 
         const url2 = 'https://api.trakt.tv/movies/popular?limit=10';
@@ -43,20 +43,20 @@ export default async function handler(req, res) {
             }
         })
 
-        var data2 = await popularRes.json();
+        var popular = await popularRes.json();
 
-        for (let i = 0; i < data2.length; i++) {
-            const element = data2[i];
+        for (let i = 0; i < popular.length; i++) {
+            const element = popular[i];
 
             var currId = element.ids.tmdb;
             var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
             var imageResponse = await fetch(currURL, { method: 'GET' })
-            var data3 = await imageResponse.json();
+            var temp = await imageResponse.json();
 
-            element.imageurl = "https://image.tmdb.org/t/p/original" + data3.backdrop_path;
+            element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
         }
 
-        res.status(200).json({ data, data2 })
+        res.status(200).json({ trending, popular })
     } catch (err) {
         console.log("ERROR!: " + err);
         res.status(500).json({ error: 'failed to load data' })
