@@ -29,7 +29,7 @@ export default async function handler(req, res) {
             var imageResponse = await fetch(currURL, { method: 'GET' })
             var temp = await imageResponse.json();
 
-            element.movie.imageurl = "https://image.tmdb.org/t/p/original" + temp.poster_path;
+            element.movie.imageurl = "https://image.tmdb.org/t/p/w300" + temp.poster_path;
         }
 
         const url2 = 'https://api.trakt.tv/movies/popular?limit=10';

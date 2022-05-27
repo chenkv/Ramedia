@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import useSWR from 'swr'
+import Link from 'next/link'
 
 const fetcher = url => fetch(url).then(res => res.json())
 
@@ -55,8 +56,12 @@ export default function MoviesHome() {
               {
                 data.trending.map((element) => (
                   <div key={element.movie.title} className='card'>
-                    <img src={element.movie.imageurl} className='w-full rounded-xl mb-1' />
-                    <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.movie.title}</h1>
+                    <Link href={`/movie/${element.movie.ids.imdb}`}>
+                      <a>
+                        <img src={element.movie.imageurl} className='w-full rounded-xl mb-1' />
+                        <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.movie.title}</h1>
+                      </a>
+                    </Link>
                   </div>
                 ))
               }
