@@ -40,6 +40,8 @@ export default function Search() {
             return;
         }
 
+        console.log(response);
+
         var movieHTML = (
             <div className="card-Container">
                 {

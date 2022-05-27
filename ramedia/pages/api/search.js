@@ -23,6 +23,23 @@ export default async function handler(req, res) {
             }
         }
 
+        if (req.body.show || allFalse) {
+            const url = `https://api.themoviedb.org/3/search/tv?api_key=${tmdbKey}&language=en-US&page=1&query=${title}`;
+
+            showRes = await fetch(url, { method: 'GET' });
+            showRes = await showRes.json();
+
+            for (let index = 0; index < showRes.results.length; index++) {
+                const element = showRes.results[index];
+                const toimdburl = `https://api.themoviedb.org/3/tv/${element.id}?api_key=${tmdbKey}&language=en-US`;
+
+                var temp = await fetch(toimdburl, { method: 'GET' });
+                temp = await temp.json();
+                console.log(temp);
+                element.imdb_id = temp.imdb_id;
+            }
+        }
+
         res.status(200).send({ movieRes, showRes, gameRes });
     } catch (err) {
         res.status(500).send({ error: err.message });

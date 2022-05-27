@@ -13,6 +13,8 @@ export default function moviePage() {
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
 
+  console.log(data);
+
   return (
     <Layout>
       <div>
@@ -27,14 +29,49 @@ export default function moviePage() {
             <div className='absolute bottom-0 left-0 w-screen h-32 bg-gradient-to-t from-[#F9F6F7] z-50' />
           </div>
 
-          <div className='flex z-10 mt-4'>
-            <div className=' w-3/12 flex justify-center'>
+          <div className='flex space-x-2 z-10 mt-4 px-4'>
+            <div className='w-4/12 flex justify-center'>
               <img src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} className='rounded-lg' />
             </div>
-            <div className='bg-green-300 grow'>
-                  <h1>{data.result.title}</h1>
+
+            <div className='flex flex-col'>
+              <div className='grow'>
+                <div className='text-center mb-8'>
+                  <h1 className='text-5xl py-2'>{data.result.title}</h1>
+                </div>
+
+                <div className='flex flex-row'>
+                  <div className='w-8/12'>
+                    <p className='px-4 text-xl'>
+                      {data.result.overview}
+                    </p>
+                  </div>
+                  <div className='w-4/12 text-center flex flex-col'>
+                    <h2 className='text-3xl'>Average User Rating:</h2>
+                    <p className='text-2xl'>{data.result.vote_average}/10</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className='grow flex flex-row justify-center items-center'>
+                <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
+                  <h3>Seen this movie?</h3>
+                  <button className='w-16 h-12 bg-green-400 rounded-full'>
+                    Yes
+                  </button>
+                </div>
+
+                <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
+                  <h3>Add to Favorites</h3>
+                  <button className='w-16 h-12 bg-orange-400 rounded-full'>
+                    Yes
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
+
         </main>
       </div>
     </Layout>
