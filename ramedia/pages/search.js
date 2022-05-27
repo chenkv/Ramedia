@@ -4,18 +4,9 @@ import { useEffect, useState } from "react";
 import { createRoot } from 'react-dom/client';
 import Layout from "../components/Layout";
 
-var resultDiv, root;
-
 export default function Search() {
     const [ pageNum, setPageNum ] = useState(0);
     const router = useRouter();
-
-    useEffect(() => {
-        if (!resultDiv) {
-            resultDiv = document.getElementById("results");
-            root = createRoot(resultDiv);
-        }
-    }, [])
 
     const handleSubmit = async (event) => {
 
@@ -44,8 +35,6 @@ export default function Search() {
         var response = await fetch(endpoint, options);
         var response = await response.json();
 
-        console.log(response);
-
         if (response.status == 500) {
             alert("ERROR!");
             return;
@@ -56,13 +45,18 @@ export default function Search() {
                 {
                     response.movieRes.results.map((element) => (
                         <div key={element.id} className='card'>
-                            <img src={"https://image.tmdb.org/t/p/original" + element.poster_path} className='w-full rounded-xl mb-1' />
-                            <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
+                            <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
+                                <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' />
+                                <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
+                            </button>
                         </div>
                     ))
                 }
             </div>
         )
+
+        var resultDiv = document.getElementById("results");
+        var root = createRoot(resultDiv);
 
         root.render(movieHTML);
     }

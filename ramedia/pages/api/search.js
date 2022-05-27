@@ -12,7 +12,15 @@ export default async function handler(req, res) {
 
             movieRes = await fetch(url, { method: 'GET' });
             movieRes = await movieRes.json();
-            console.log(movieRes);
+
+            for (let index = 0; index < movieRes.results.length; index++) {
+                const element = movieRes.results[index];
+                const toimdburl = `https://api.themoviedb.org/3/movie/${element.id}?api_key=${tmdbKey}&language=en-US`;
+
+                var temp = await fetch(toimdburl, { method: 'GET' });
+                temp = await temp.json();
+                element.imdb_id = temp.imdb_id;
+            }
         }
 
         res.status(200).send({ movieRes, showRes, gameRes });
