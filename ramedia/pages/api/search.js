@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
             for (let index = 0; index < showRes.results.length; index++) {
                 const element = showRes.results[index];
-                const toimdburl = `https://api.themoviedb.org/3/tv/${element.id}?api_key=${tmdbKey}&language=en-US`;
+                const toimdburl = `https://api.themoviedb.org/3/tv/${element.id}/external_ids?api_key=${tmdbKey}&language=en-US`;
 
                 var temp = await fetch(toimdburl, { method: 'GET' });
                 temp = await temp.json();

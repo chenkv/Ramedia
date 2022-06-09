@@ -43,24 +43,56 @@ export default function Search() {
         console.log(response);
 
         var movieHTML = (
-            <div className="card-Container">
-                {
-                    response.movieRes.results.map((element) => (
-                        <div key={element.id} className='card'>
-                            <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
-                                <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' />
-                                <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
-                            </button>
-                        </div>
-                    ))
-                }
+            <div>
+                <div className="text-center mt-6">
+                    <h1 className="text-4xl font-bold">Movies</h1>
+                </div>
+                <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
+                <div className="card-Container">
+                    {
+                        response.movieRes.results.map((element) => (
+                            <div key={element.id} className='card'>
+                                <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
+                                    <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' />
+                                    <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
+                                </button>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         )
 
-        var resultDiv = document.getElementById("results");
+        var resultDiv = document.getElementById("resMovie");
         var root = createRoot(resultDiv);
-
         root.render(movieHTML);
+
+
+        var showHTML = (
+            <div>
+                <div className="text-center mt-6">
+                    <h1 className="text-4xl font-bold">Shows</h1>
+                </div>
+                <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
+                <div className="card-Container">
+                    {
+                        response.showRes.results.map((element) => (
+                            <div key={element.id} className='card'>
+                                <button type="button" onClick={() => router.push(`/series/${element.imdb_id}`)}>
+                                    <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' />
+                                    <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.name}</h1>
+                                </button>
+                            </div>
+                        ))
+                    }
+                </div>
+                
+            </div>
+        )
+
+        resultDiv = document.getElementById("resShow");
+        root = createRoot(resultDiv);
+        root.render(showHTML);
     }
 
     return (
@@ -127,7 +159,9 @@ export default function Search() {
                     </div>
 
                     <div className='' id="results">
-                        
+                        <div id="resMovie"></div>
+                        <div id="resShow"></div>
+                        <div id="resGame"></div>
                     </div>
                 </main>
             </div>
