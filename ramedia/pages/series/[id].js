@@ -30,14 +30,14 @@ export default function moviePage() {
           </div>
 
           <div className='flex space-x-2 z-10 mt-4 px-4'>
-            <div className='w-4/12 flex justify-center'>
+            <div className='flex-none w-4/12 flex justify-center'>
               <img src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} className='rounded-lg' />
             </div>
 
             <div className='flex flex-col'>
               <div className='grow'>
                 <div className='text-center mb-8'>
-                  <h1 className='text-5xl py-2'>{data.result.title}</h1>
+                  <h1 className='text-5xl py-2'>{data.result.name}</h1>
                 </div>
 
                 <div className='flex flex-row'>
