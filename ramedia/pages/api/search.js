@@ -35,10 +35,25 @@ export default async function handler(req, res) {
 
                 var temp = await fetch(toimdburl, { method: 'GET' });
                 temp = await temp.json();
-                console.log(temp);
                 element.imdb_id = temp.imdb_id;
             }
         }
+
+        // if (req.body.game || allFalse) {
+        //     const url = `https://api.rawg.io/api/games?search=${title}`;
+
+        //     movieRes = await fetch(url, { method: 'GET' });
+        //     movieRes = await movieRes.json();
+
+        //     for (let index = 0; index < movieRes.results.length; index++) {
+        //         const element = movieRes.results[index];
+        //         const toimdburl = `https://api.themoviedb.org/3/movie/${element.id}?api_key=${tmdbKey}&language=en-US`;
+
+        //         var temp = await fetch(toimdburl, { method: 'GET' });
+        //         temp = await temp.json();
+        //         element.imdb_id = temp.imdb_id;
+        //     }
+        // }
 
         res.status(200).send({ movieRes, showRes, gameRes });
     } catch (err) {

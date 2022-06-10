@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Layout from '../components/Layout'
 import useSWR from 'swr'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const fetcher = url => fetch(url).then(res => res.json())
 
@@ -22,11 +23,11 @@ export default function MoviesHome() {
         </Head>
 
         <main className='overflow-x-hidden'>
-          <div className='h-auto w-[70vw] left-[15vw] bg-neutral-500 relative flex gap-2 snap-x snap-mandatory overflow-x-auto z-0'>
+          <div className='w-[70vw] left-[15vw] bg-neutral-500 relative flex gap-2 snap-x snap-mandatory overflow-x-auto z-0'>
             {
               data.popular.map((element) => (
                 <div key={element.title} className='snap-center shrink-0 w-[70vw]'>
-                  <img src={element.imageurl} className="w-[70vw]" />
+                  <Image src={element.imageurl} alt={element.title} width={1493} height={839} className='' />
                 </div>
               ))
             }
@@ -56,7 +57,7 @@ export default function MoviesHome() {
                   <div key={element.movie.title} className='card'>
                     <Link href={`/movie/${element.movie.ids.imdb}`}>
                       <a>
-                        <img src={element.movie.imageurl} className='w-full rounded-xl mb-1' />
+                        <Image src={element.movie.imageurl} alt={element.movie.title} width={300} height={450} className='w-16 rounded-xl' />
                         <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.movie.title}</h1>
                       </a>
                     </Link>

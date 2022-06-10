@@ -2,18 +2,44 @@ import Layout from '../../components/Layout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
+import Image from 'next/image';
 
 const fetcher = url => fetch(url).then(res => res.json())
 
-export default function moviePage() {
+export default function MoviePage() {
   const router = useRouter();
 
   const { data, error } = useSWR(`/api/getMovieData?imdb_id=${router.query.id}`, fetcher)
 
-  if (error) return <div>Failed to load</div>
+  if (error) {
+    console.log(error)
+    return <div>Failed to load</div>
+  }
   if (!data) return <div>Loading...</div>
 
   console.log(data);
+
+  var background;
+  if (data.artRes.status != "error") {
+    var backgroundURL;
+    if (data.artRes.moviebackground) {
+      backgroundURL = data.artRes.moviebackground[0].url;
+    } else {
+      backgroundURL = data.artRes.hdmovielogo[0].url;
+    }
+    background = (
+      <div className='w-[1493px] h-[839px] flex justify-center items-center'>
+        {/* <img src={backgroundURL} className='z-0' /> */}
+        <Image src={backgroundURL} alt={data.result.title} width={1493} height={839} className="z-0" />
+      </div>
+    );
+  } else {
+    background = (
+      <div className='w-[1493px] h-[839px] flex justify-center items-center'>
+        <h1 className='text-4xl'>Image not available!</h1>
+      </div>
+    );
+  }
 
   return (
     <Layout>
@@ -24,14 +50,15 @@ export default function moviePage() {
               <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
-          <div className='bg-yellow-300 z-0 relative'>
-            <img src={data.artRes.moviebackground[0].url} className='z-0' />
+          <div className='bg-yellow-300 z-0 relative w-[1493px] h-[839px]'>
+            { background }
             <div className='absolute bottom-0 left-0 w-screen h-32 bg-gradient-to-t from-[#F9F6F7] z-50' />
           </div>
 
           <div className='flex space-x-2 z-10 mt-4 px-4'>
             <div className='flex-none w-4/12 flex justify-center'>
-              <img src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} className='rounded-lg' />
+              {/* <img src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} className='rounded-lg' /> */}
+              <Image src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} alt={data.result.title} width={300} height={450} className="rounded-lg" />
             </div>
 
             <div className='flex flex-col'>

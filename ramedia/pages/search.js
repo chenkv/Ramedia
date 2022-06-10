@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { createRoot } from 'react-dom/client';
 import Layout from "../components/Layout";
+import Image from "next/image";
 
 export default function Search() {
     const [ pageNum, setPageNum ] = useState(0);
@@ -53,7 +54,8 @@ export default function Search() {
                         response.movieRes.results.map((element) => (
                             <div key={element.id} className='card'>
                                 <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
-                                    <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' />
+                                    {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
+                                    <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.title} width={300} height={450} className="w-full rounded-xl mb-1" />
                                     <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
                                 </button>
                             </div>
@@ -79,7 +81,8 @@ export default function Search() {
                         response.showRes.results.map((element) => (
                             <div key={element.id} className='card'>
                                 <button type="button" onClick={() => router.push(`/series/${element.imdb_id}`)}>
-                                    <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' />
+                                    {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
+                                    <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.name} width={300} height={450} className="w-full rounded-xl mb-1" />
                                     <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.name}</h1>
                                 </button>
                             </div>
