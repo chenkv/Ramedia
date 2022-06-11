@@ -26,10 +26,14 @@ export default function SeriesPage() {
       backgroundURL = data.artRes.hdshowlogo[0].url;
     }
     background = (
-      <div className='w-[1493px] h-[839px] flex justify-center items-center'>
-        {/* <img src={backgroundURL} className='z-0' /> */}
-        <Image src={backgroundURL} alt={data.result.name} width={1493} height={839} className="z-0" />
-      </div>
+      <Image
+        src={backgroundURL}
+        alt={data.result.name}
+        layout='fill'
+        objectFit='cover'
+        quality={100}
+        priority
+      />
     );
   } else {
     background = (
@@ -48,18 +52,18 @@ export default function SeriesPage() {
               <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
-          <div className='bg-yellow-300 z-0 relative'>
+          <div className='bg-yellow-300 z-0 relative w-screen h-[80vh]'>
             { background }
             <div className='absolute bottom-0 left-0 w-screen h-32 bg-gradient-to-t from-[#F9F6F7] z-50' />
           </div>
 
-          <div className='flex space-x-2 z-10 mt-4 px-4'>
-            <div className='flex-none w-4/12 flex justify-center'>
+          <div className='flex space-x-4 z-10 mt-8 px-10'>
+            <div className='flex-none flex justify-center'>
               {/* <img src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} className='rounded-lg' /> */}
               <Image src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} alt={data.result.name} width={300} height={450} className='rounded-lg' />
             </div>
 
-            <div className='flex flex-col'>
+            <div className='grow flex flex-col'>
               <div className='grow'>
                 <div className='text-center mb-8'>
                   <h1 className='text-5xl py-2'>{data.result.name}</h1>

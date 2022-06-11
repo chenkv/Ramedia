@@ -69,7 +69,7 @@ export default function Search() {
         var root = createRoot(resultDiv);
         root.render(movieHTML);
 
-
+        // Add if to see if there even is any response data for movie or show
         var showHTML = (
             <div>
                 <div className="text-center mt-6">
