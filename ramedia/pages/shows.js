@@ -46,7 +46,7 @@ export default function MoviesHome() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
-              <input type="text" id='search-text' name='keyword' placeholder="Search Movies"
+              <input type="text" id='search-text' name='keyword' placeholder="Search TV Shows"
                 className='grow px-4 text-lg text-[#131313] font-sans font-medium placeholder:italic placeholder:text-[#131313] bg-[#FF971D] focus:outline-0'/>
             </form>
           </div>

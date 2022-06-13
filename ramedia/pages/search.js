@@ -9,20 +9,31 @@ export default function Search() {
     const [ pageNum, setPageNum ] = useState(0);
     const router = useRouter();
 
-    const handleSubmit = async (event) => {
+    const keyword = router.query.keyword;
 
+    var data;
+    
+    if (keyword) {
+        console.log("Keyword is " + keyword);
+        data = {
+            title: keyword,
+            movie: document.getElementById("m").checked,
+            show: document.getElementById("s").checked,
+            game: document.getElementById("g").checked,
+            page_number: pageNum
+        }
+        updateData();
+    } else {
+        console.log("NO KEYWORD!");
+    }
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         router.push('?keyword=' + event.target.keyword.value);
+    }
 
-        const data = {
-            title: event.target.keyword.value,
-            movie: event.target.m.checked,
-            show: event.target.s.checked,
-            game: event.target.g.checked,
-            page_number: pageNum
-        }
-
+    async function updateData() {
         const JSONdata = JSON.stringify(data);
         const endpoint = '/api/search';
         const options = {
@@ -43,59 +54,62 @@ export default function Search() {
 
         console.log(response);
 
-        var movieHTML = (
-            <div>
-                <div className="text-center mt-6">
-                    <h1 className="text-4xl font-bold">Movies</h1>
+        if (response.movieRes) {
+            var movieHTML = (
+                <div>
+                    <div className="text-center mt-6">
+                        <h1 className="text-4xl font-bold">Movies</h1>
+                    </div>
+                    <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
+                    <div className="card-Container">
+                        {
+                            response.movieRes.results.map((element) => (
+                                <div key={element.id} className='card'>
+                                    <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
+                                        {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
+                                        <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.title} width={300} height={450} className="w-full rounded-xl mb-1" />
+                                        <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
+                                    </button>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
-                <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
-                <div className="card-Container">
-                    {
-                        response.movieRes.results.map((element) => (
-                            <div key={element.id} className='card'>
-                                <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
-                                    {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
-                                    <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.title} width={300} height={450} className="w-full rounded-xl mb-1" />
-                                    <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
-                                </button>
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-        )
+            )
+    
+            var resultDiv = document.getElementById("resMovie");
+            var root = createRoot(resultDiv);
+            root.render(movieHTML);
+        }
 
-        var resultDiv = document.getElementById("resMovie");
-        var root = createRoot(resultDiv);
-        root.render(movieHTML);
-
-        // Add if to see if there even is any response data for movie or show
-        var showHTML = (
-            <div>
-                <div className="text-center mt-6">
-                    <h1 className="text-4xl font-bold">Shows</h1>
+        if (response.showRes) {
+            var showHTML = (
+                <div>
+                    <div className="text-center mt-6">
+                        <h1 className="text-4xl font-bold">Shows</h1>
+                    </div>
+                    <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
+                    <div className="card-Container">
+                        {
+                            response.showRes.results.map((element) => (
+                                <div key={element.id} className='card'>
+                                    <button type="button" onClick={() => router.push(`/series/${element.imdb_id}`)}>
+                                        {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
+                                        <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.name} width={300} height={450} className="w-full rounded-xl mb-1" />
+                                        <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.name}</h1>
+                                    </button>
+                                </div>
+                            ))
+                        }
+                    </div>
+                    
                 </div>
-                <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
-                <div className="card-Container">
-                    {
-                        response.showRes.results.map((element) => (
-                            <div key={element.id} className='card'>
-                                <button type="button" onClick={() => router.push(`/series/${element.imdb_id}`)}>
-                                    {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
-                                    <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.name} width={300} height={450} className="w-full rounded-xl mb-1" />
-                                    <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.name}</h1>
-                                </button>
-                            </div>
-                        ))
-                    }
-                </div>
-                
-            </div>
-        )
-
-        resultDiv = document.getElementById("resShow");
-        root = createRoot(resultDiv);
-        root.render(showHTML);
+            )
+    
+            resultDiv = document.getElementById("resShow");
+            root = createRoot(resultDiv);
+            root.render(showHTML);
+        }
     }
 
     return (
