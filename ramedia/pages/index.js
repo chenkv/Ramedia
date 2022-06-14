@@ -3,6 +3,16 @@ import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
 
 export default function Home() {
+  async function onSubmit1 () {
+    var response = await fetch('/api/addWatched', { method: 'POST' });
+  }
+
+  async function onSubmit2 () {
+    var response = await fetch('/api/getWatched', { method: 'GET' });
+    response = await response.json();
+    console.log(response);
+  }
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -16,6 +26,9 @@ export default function Home() {
           <h1 className={styles.title}>
             Ramedia
           </h1>
+
+          <button onClick={e => onSubmit1()} className='w-40 h-10 bg-green-400 rounded-xl'>TEST INSERT!</button>
+          <button onClick={e => onSubmit2()} className='w-40 h-10 bg-red-400 rounded-xl'>TEST GET!</button>
 
           <p className={styles.description}>
             Get started by editing{' '}

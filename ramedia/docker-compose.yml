@@ -4,8 +4,28 @@ services:
   web:
     build:
       context: .
+    depends_on:
+      - postgres
     ports:
       - "3000:3000"
     volumes:
       - .:/ramedia
       - /ramedia/node_modules
+
+  postgres:
+    image: 'postgres:latest'
+
+    ports:
+    - 5432:5432
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: zaq1xsw2
+      POSTGRES_DB: ramedia
+    
+    volumes:
+      - ./db/init_data:/docker-entrypoint-initdb.d
+      - ramedia-db-volume:/var/lib/postgresql/data
+
+volumes:
+  ramedia-db-volume: {}
