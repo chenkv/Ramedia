@@ -1,4 +1,4 @@
-const tmdbKey = 'd3f71a44bd873185b851afe9c5d14849';
+const tmdbKey = process.env.TMDB_KEY;
 
 export default async function handler(req, res) {
     try {

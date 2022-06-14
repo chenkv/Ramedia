@@ -1,5 +1,5 @@
-const tmdbKey = 'd3f71a44bd873185b851afe9c5d14849';
-const fanartKey = 'd99e88cae3036d575de12899bccc9436';
+const tmdbKey = process.env.TMDB_KEY;
+const fanartKey = process.env.FANARTTV_KEY;
 
 export default async function handler(req, res) {
     try {

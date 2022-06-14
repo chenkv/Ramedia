@@ -7,16 +7,9 @@ export default function Navbar() {
 
     var buttontext = { text: "Login", link: "/api/auth/login" };
 
-    if (user) {
-        buttontext.text = "Logout";
-        buttontext.link = "/api/auth/logout";
-    }
+    var profile;
 
-    if (error) {
-        return <div>{error.message}</div>
-    }
-
-    const links = [
+    var links = [
         ['Home', '/', 1],
         ['Movies', '/movies', 2],
         ['Shows', '/shows', 3],
@@ -24,9 +17,33 @@ export default function Navbar() {
         ['Search', '/search', 5]
     ];
 
+    if (user) {
+        buttontext.text = "Logout";
+        buttontext.link = "/api/auth/logout";
+
+        profile = (
+            <Link href='/profile' className='hover:'>
+                <a className='w-10 h-10 relative'>
+                    <Image
+                        src={user.picture}
+                        alt={user.name}
+                        layout='fill'
+                        quality={100}
+                        priority
+                        className='rounded-full'
+                    />
+                </a>
+            </Link>
+        );
+    }
+
+    if (error) {
+        return <div>{error.message}</div>
+    }
+
     return (
         <div className="fixed w-screen top-0 flex bg-[#FFFFFF] z-50">
-            <div className="flex items-center justify-center w-[100px] h-14">
+            <div className="flex items-center justify-center px-4 h-14">
                 <Link href="/">
                     <a><Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /></a>
                 </Link>
@@ -47,10 +64,11 @@ export default function Navbar() {
                     ))
                 }
             </div>
-            <div className="w-32 flex justify-center items-center">
+            <div className="flex justify-center items-center space-x-2 px-8">
                 <Link href={buttontext.link}>
                     <a className="rounded-md px-3 py-2 hover:bg-[#FFE8D6] flex items-center">{buttontext.text}</a>
                 </Link>
+                { profile }
             </div>
         </div>
     )

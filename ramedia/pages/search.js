@@ -54,8 +54,9 @@ export default function Search() {
 
         console.log(response);
 
+        var movieHTML;
         if (response.movieRes) {
-            var movieHTML = (
+            movieHTML = (
                 <div>
                     <div className="text-center mt-6">
                         <h1 className="text-4xl font-bold">Movies</h1>
@@ -66,7 +67,6 @@ export default function Search() {
                             response.movieRes.results.map((element) => (
                                 <div key={element.id} className='card'>
                                     <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
-                                        {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
                                         <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.title} width={300} height={450} className="w-full rounded-xl mb-1" />
                                         <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
                                     </button>
@@ -76,14 +76,18 @@ export default function Search() {
                     </div>
                 </div>
             )
-    
-            var resultDiv = document.getElementById("resMovie");
-            var root = createRoot(resultDiv);
-            root.render(movieHTML);
+        } else {
+            movieHTML = (
+                <div></div>
+            )
         }
+        var resultDiv = document.getElementById("resMovie");
+        var root = createRoot(resultDiv);
+        root.render(movieHTML);
 
+        var showHTML;
         if (response.showRes) {
-            var showHTML = (
+            showHTML = (
                 <div>
                     <div className="text-center mt-6">
                         <h1 className="text-4xl font-bold">Shows</h1>
@@ -94,7 +98,6 @@ export default function Search() {
                             response.showRes.results.map((element) => (
                                 <div key={element.id} className='card'>
                                     <button type="button" onClick={() => router.push(`/series/${element.imdb_id}`)}>
-                                        {/* <img src={"https://image.tmdb.org/t/p/w300" + element.poster_path} className='w-full rounded-xl mb-1' /> */}
                                         <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.name} width={300} height={450} className="w-full rounded-xl mb-1" />
                                         <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.name}</h1>
                                     </button>
@@ -105,11 +108,14 @@ export default function Search() {
                     
                 </div>
             )
-    
-            resultDiv = document.getElementById("resShow");
-            root = createRoot(resultDiv);
-            root.render(showHTML);
+        } else {
+            showHTML = (
+                <div></div>
+            )
         }
+        resultDiv = document.getElementById("resShow");
+        root = createRoot(resultDiv);
+        root.render(showHTML);
     }
 
     return (

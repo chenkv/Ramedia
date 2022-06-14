@@ -1,5 +1,5 @@
-const id = 'a06f9c2d9393e89eb2c7a4c7dc3a581d30fd78ce9f73904c232e5bf6b114feac';
-const tmdbKey = 'd3f71a44bd873185b851afe9c5d14849';
+const traktID = process.env.TRAKT_KEY;
+const tmdbKey = process.env.TMDB_KEY;
 
 export default async function handler(req, res) {
     res.setHeader(
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             headers: {
             'Content-Type': 'application/json',
             'trakt-api-version': '2',
-            'trakt-api-key': id
+            'trakt-api-key': traktID
             }
         })
         
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
             headers: {
                 'Content-Type': 'application/json',
                 'trakt-api-version': '2',
-                'trakt-api-key': id
+                'trakt-api-key': traktID
             }
         })
 
