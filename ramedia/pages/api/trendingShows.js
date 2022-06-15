@@ -1,4 +1,4 @@
-const traktID = process.env.TRAKT_KEY;
+const traktID = process.env.TRAKT_ID;
 const tmdbKey = process.env.TMDB_KEY;
 
 export default async function handler(req, res) {

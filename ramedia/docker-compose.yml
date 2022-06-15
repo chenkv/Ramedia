@@ -14,18 +14,17 @@ services:
 
   postgres:
     image: 'postgres:latest'
-
     ports:
     - 5432:5432
-
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: zaq1xsw2
       POSTGRES_DB: ramedia
-    
     volumes:
       - ./db/init_data:/docker-entrypoint-initdb.d
       - ramedia-db-volume:/var/lib/postgresql/data
+    expose:
+      - "5432"
 
 volumes:
   ramedia-db-volume: {}

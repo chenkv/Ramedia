@@ -45,7 +45,7 @@ export default function Search() {
         }
 
         var response = await fetch(endpoint, options);
-        var response = await response.json();
+        response = await response.json();
 
         if (response.status == 500) {
             alert("ERROR!");
