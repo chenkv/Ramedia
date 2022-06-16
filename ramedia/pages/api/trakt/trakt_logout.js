@@ -1,17 +1,20 @@
+import conn from "../../../lib/db";
+
 const traktID = process.env.TRAKT_ID;
 const traktSecret = process.env.TRAKT_SECRET;
 
 export default async function handler(req, res) {
   try {
+    let data = req.body;
+    const query1 = `SELECT trakt_token FROM users WHERE email = '${data.email}';`;
+    let tokenResponse = await conn.query(query1);
+
     const url = `https://api.trakt.tv/oauth/revoke`;
-    console.log(req.body.user_code);
 
     let send_data = {
-      "code": req.body.user_code,
+      "token": tokenResponse.rows[0].trakt_token,
       "client_id": traktID,
       "client_secret": traktSecret,
-      "redirect_uri": 'http://localhost:3000/profile',
-      "grant_type": "authorization_code"
     }
 
     let response = await fetch(url, {
@@ -23,7 +26,10 @@ export default async function handler(req, res) {
     });
     response = await response.json();
 
-    res.status(200).json({ response });
+    const query2 = `UPDATE users SET trakt_token = NULL, trakt_refresh = NULL WHERE email = '${data.email}';`;
+    let deleteResponse = await conn.query(query2);
+
+    res.status(200).json({ message: "SUCCESS!" });
   } catch (error) {
     console.log(error);
     res.status(400);

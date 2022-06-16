@@ -6,7 +6,6 @@ const traktSecret = process.env.TRAKT_SECRET;
 export default async function handler(req, res) {
   try {
     const url = `https://api.trakt.tv/oauth/token`;
-    console.log(req.body.user_code);
 
     let send_data = {
       "code": req.body.user_code,
@@ -24,8 +23,6 @@ export default async function handler(req, res) {
       body: JSON.stringify(send_data)
     });
     response = await response.json();
-
-
 
     res.status(200).json({ response });
   } catch (error) {

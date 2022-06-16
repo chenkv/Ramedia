@@ -2,14 +2,13 @@ import { useUser } from '@auth0/nextjs-auth0'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Trakt_Button from '../components/profile/Trakt_Button';
 
 function profile() {
   const user = useUser();
-  if (user.isLoading || isLoading) {
+  if (user.isLoading) {
     return (
       <h1>Loading!</h1>
     )
@@ -19,22 +18,9 @@ function profile() {
   }
 
   const router = useRouter();
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setLoading(true)
-    fetch('/api/trakt/trakt_authorize')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
 
   const code = router.query.code;
   if (code) {
-    console.log(code)
     getToken();
   }
 
@@ -48,13 +34,21 @@ function profile() {
       body: JSON.stringify(codeData)
     });
     response = await response.json();
-    console.log(response);
+
+    if (response.response.access_token) {
+      var storeData = { user: user.user, token: response }
+      let response2 = await fetch('/api/trakt/trakt_storetoken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(storeData)
+      });
+      if (response2.status == 200) {
+        console.log("success")
+      }
+    }
   }
-
-  if (isLoading) return <p>Loading...</p>
-  if (!data) return <p>No profile data</p>
-
-  console.log(data);
 
   return (
     <Layout>
@@ -82,11 +76,8 @@ function profile() {
             </div>
           </div>
 
-          <div className='w-32 h-20 flex text-center'>
-            <Link href={data.link}>
-              <a className="rounded-md px-3 py-2 hover:bg-[#FFE8D6] flex items-center">Connect to Trakt</a>
-            </Link>
-          </div>
+          <Trakt_Button />
+
         </main>
       </div>
     </Layout>
