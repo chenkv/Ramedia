@@ -1,5 +1,3 @@
-import conn from "../../../lib/db";
-
 const traktID = process.env.TRAKT_ID;
 const traktSecret = process.env.TRAKT_SECRET;
 

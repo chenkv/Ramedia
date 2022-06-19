@@ -4,6 +4,8 @@ import Layout from '../components/Layout'
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Trakt_Button from '../components/profile/Trakt_Button';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 function profile() {
   const user = useUser();
@@ -17,11 +19,17 @@ function profile() {
   }
 
   const router = useRouter();
-
   const code = router.query.code;
-  if (code) {
-    getToken();
-  }
+  const [data, setData] = useState(null)
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    if (code) {
+      getToken();
+    }
+    setLoading(false)
+  }, [])
 
   async function getToken() {
     let codeData = { user_code: code }

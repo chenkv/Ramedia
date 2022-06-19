@@ -70,7 +70,7 @@ export default function MoviePage() {
       <div className='grow flex flex-row justify-center items-center'>
         <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
           <h3>Seen this movie?</h3>
-          <button className='w-16 h-12 bg-green-400 rounded-full'>
+          <button className='w-16 h-12 bg-green-400 rounded-full' id='watched' onClick={e => addToHistory()}>
             Yes
           </button>
         </div>
@@ -83,6 +83,34 @@ export default function MoviePage() {
         </div>
       </div>
     )
+  }
+
+  async function addToHistory() {
+
+    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+    userInfo = await userInfo.json();
+
+    let currDate = new Date();
+    let cDate = currDate.getFullYear() + '-' + (String(currDate.getMonth() + 1).padStart(2, '0')) + '-' + String(currDate.getDate()).padStart(2, '0');
+    let cTime = currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() + '.000Z';
+    let dateTime = cDate + 'T' + cTime;
+
+    var body = {
+      user: userInfo.res,
+      imdb_id: router.query.id,
+      date: dateTime,
+      movie: true
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    };
+
+    var response = await fetch('/api/trakt/add-history', options);
   }
 
   return (
