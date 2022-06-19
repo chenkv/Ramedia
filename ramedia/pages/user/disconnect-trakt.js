@@ -1,5 +1,4 @@
 import { useUser } from '@auth0/nextjs-auth0'
-import { useEffect } from 'react';
 
 export default function disconnect() {
   const user = useUser();
@@ -12,7 +11,7 @@ export default function disconnect() {
     window.location.href = '/';
   }
 
-  fetch('/api/trakt/trakt_logout', {
+  fetch('/api/trakt/logout', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'

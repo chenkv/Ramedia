@@ -5,22 +5,35 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Image from 'next/image';
 
-const fetcher = url => fetch(url).then(res => res.json())
+const fetcher = async url => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const error = new Error('An error occurred while fetching the data.')
+    error.info = await res.json();
+    error.status = res.status;
+    throw error;
+  }
+
+  return res.json();
+}
 
 export default function MoviePage() {
-  const { user, error, isLoading } = useUser();
+  const user = useUser();
   const router = useRouter();
+  const data = useSWR(`/api/movie-data?imdb_id=${router.query.id}`, fetcher)
 
-  const data = useSWR(`/api/getMovieData?imdb_id=${router.query.id}`, fetcher)
-
-  if (data.error || error) {
-    console.log(data.error)
-    console.log(error)
-    return <div>Failed to load</div>
+  if (data.error) {
+    console.log(data.error.info);
+    return <div>Error status {data.error.status}</div>
   }
-  if (!data.data || isLoading) return <div>Loading...</div>
 
-  console.log(data.data);
+  if (user.error) {
+    console.log(user.error);
+    return <div>Error with the user</div>
+  }
+
+  if (!data.data || user.isLoading) return <div>Loading...</div>
 
   var background;
   if (data.data.artRes.status != "error") {
@@ -52,7 +65,7 @@ export default function MoviePage() {
   }
 
   var loggedIn;
-  if (user) {
+  if (user.user) {
     loggedIn = (
       <div className='grow flex flex-row justify-center items-center'>
         <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>

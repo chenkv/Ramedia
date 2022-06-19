@@ -1,34 +1,56 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { useEffect } from 'react';
 import Image from 'next/image';
 
-const fetcher = url => fetch(url).then(res => res.json())
+const fetcher = async url => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const error = new Error('An error occurred while fetching the data.')
+    error.info = await res.json();
+    error.status = res.status;
+    throw error;
+  }
+
+  return res.json();
+}
 
 export default function SeriesPage() {
+  const user = useUser();
   const router = useRouter();
+  const data = useSWR(`/api/series-data?imdb_id=${router.query.id}`, fetcher)
 
-  const { data, error } = useSWR(`/api/getSeriesData?imdb_id=${router.query.id}`, fetcher)
+  if (data.error) {
+    console.log(data.error.info);
+    return <div>Error status {data.error.status}</div>
+  }
 
-  if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
+  if (user.error) {
+    console.log(user.error);
+    return <div>Error with the user</div>
+  }
+
+  if (!data.data || user.isLoading) return <div>Loading...</div>
 
   console.log(data);
 
   var background;
-  if (data.artRes.status != "error") {
+  if (data.data.artRes.status != "error") {
     var backgroundURL;
-    if (data.artRes.showbackground) {
-      backgroundURL = data.artRes.showbackground[0].url;
-    } else {
-      backgroundURL = data.artRes.hdshowlogo[0].url;
+    if (data.data.artRes.showbackground) {
+      backgroundURL = data.data.artRes.showbackground[0].url;
+    } else if (data.data.artRes.hdshowlogo) {
+      backgroundURL = data.data.artRes.hdshowlogo[0].url;
+    } else if (data.data.artRes.hdtvlogo) {
+      backgroundURL = data.data.artRes.hdtvlogo[0].url;
     }
     background = (
       <Image
         src={backgroundURL}
-        alt={data.result.name}
+        alt={data.data.result.name}
         layout='fill'
         objectFit='cover'
         quality={100}
@@ -41,6 +63,27 @@ export default function SeriesPage() {
         <h1 className='text-4xl'>Image not available!</h1>
       </div>
     );
+  }
+
+  var loggedIn;
+  if (user.user) {
+    loggedIn = (
+      <div className='grow flex flex-row justify-center items-center'>
+        <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
+          <h3>Seen this movie?</h3>
+          <button className='w-16 h-12 bg-green-400 rounded-full'>
+            Yes
+          </button>
+        </div>
+
+        <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
+          <h3>Add to Favorites</h3>
+          <button className='w-16 h-12 bg-orange-400 rounded-full'>
+            Yes
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -59,44 +102,29 @@ export default function SeriesPage() {
 
           <div className='flex space-x-4 z-10 mt-8 px-10'>
             <div className='flex-none flex justify-center'>
-              {/* <img src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} className='rounded-lg' /> */}
-              <Image src={"https://image.tmdb.org/t/p/w300" + data.result.poster_path} alt={data.result.name} width={300} height={450} className='rounded-lg' />
+              <Image src={"https://image.tmdb.org/t/p/w300" + data.data.result.poster_path} alt={data.data.result.name} width={300} height={450} className='rounded-lg' />
             </div>
 
             <div className='grow flex flex-col'>
               <div className='grow'>
                 <div className='text-center mb-8'>
-                  <h1 className='text-5xl py-2'>{data.result.name}</h1>
+                  <h1 className='text-5xl py-2'>{data.data.result.name}</h1>
                 </div>
 
                 <div className='flex flex-row'>
                   <div className='w-8/12'>
                     <p className='px-4 text-xl'>
-                      {data.result.overview}
+                      {data.data.result.overview}
                     </p>
                   </div>
                   <div className='w-4/12 text-center flex flex-col'>
                     <h2 className='text-3xl'>Average User Rating:</h2>
-                    <p className='text-2xl'>{data.result.vote_average}/10</p>
+                    <p className='text-2xl'>{data.data.result.vote_average}/10</p>
                   </div>
                 </div>
               </div>
 
-              <div className='grow flex flex-row justify-center items-center'>
-                <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
-                  <h3>Seen this movie?</h3>
-                  <button className='w-16 h-12 bg-green-400 rounded-full'>
-                    Yes
-                  </button>
-                </div>
-
-                <div className='flex flex-col justify-center items-center w-3/12 space-y-4'>
-                  <h3>Add to Favorites</h3>
-                  <button className='w-16 h-12 bg-orange-400 rounded-full'>
-                    Yes
-                  </button>
-                </div>
-              </div>
+              { loggedIn }
 
             </div>
           </div>

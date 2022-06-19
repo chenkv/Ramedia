@@ -8,7 +8,7 @@ const fetcher = url => fetch(url).then(res => res.json())
 
 export default function MoviesHome() {
 
-  const { data, error } = useSWR('/api/trendingMovies', fetcher)
+  const { data, error } = useSWR('/api/trending-movies', fetcher)
 
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>

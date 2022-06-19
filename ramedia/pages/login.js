@@ -9,7 +9,7 @@ export default function MoviesHome() {
     )
   }
 
-  fetch('/api/user/addUser', {
+  fetch('/api/user/add-user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

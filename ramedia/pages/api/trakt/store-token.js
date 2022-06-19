@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const query = `UPDATE users SET trakt_token = '${data.token.response.access_token}', trakt_refresh = '${data.token.response.refresh_token}' WHERE email = '${data.user.email}';`;
     const result = await conn.query(query);
 
-    res.status(200);
+    res.status(200).json(result);
   } catch (error) {
     console.log(error);
     res.status(400);

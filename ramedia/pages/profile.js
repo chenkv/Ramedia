@@ -2,7 +2,6 @@ import { useUser } from '@auth0/nextjs-auth0'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import Image from 'next/image';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Trakt_Button from '../components/profile/Trakt_Button';
 
@@ -26,7 +25,7 @@ function profile() {
 
   async function getToken() {
     let codeData = { user_code: code }
-    let response = await fetch('/api/trakt/trakt_gettoken', {
+    let response = await fetch('/api/trakt/get-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -37,7 +36,7 @@ function profile() {
 
     if (response.response.access_token) {
       var storeData = { user: user.user, token: response }
-      let response2 = await fetch('/api/trakt/trakt_storetoken', {
+      let response2 = await fetch('/api/trakt/store-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
