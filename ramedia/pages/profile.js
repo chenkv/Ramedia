@@ -53,6 +53,7 @@ function profile() {
       });
       if (response2.status == 200) {
         console.log("success")
+        router.reload(window.location.pathname)
       }
     }
   }
