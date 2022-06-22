@@ -3,15 +3,56 @@ import Layout from '../components/Layout'
 import useSWR from 'swr'
 import Link from 'next/link'
 import Image from 'next/image'
+import styles from '../styles/Movies.module.css'
+import { useEffect, useState } from 'react'
 
 const fetcher = url => fetch(url).then(res => res.json())
 
 export default function MoviesHome() {
 
   const { data, error } = useSWR('/api/trending-movies', fetcher)
+  const [ slideIndex, setSlideIndex ] = useState(1);
+
+  useEffect(() => {
+    showSlides(slideIndex);
+  })
 
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
+
+  function handleRightClick() {
+    if (slideIndex + 1 > data.popular.length) {
+      setSlideIndex(1);
+    } else {
+      setSlideIndex(slideIndex + 1);
+    }
+  }
+
+  function handleLeftClick() {
+    if (slideIndex - 1 < 1) {
+      setSlideIndex(data.popular.length);
+    } else {
+      setSlideIndex(slideIndex - 1);
+    }
+  }
+
+  function showSlides(n) {
+    let slides = document.getElementsByClassName(`${styles.mySlides}`);
+    let dots = document.getElementsByClassName(`${styles.dot}`);
+
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(` ${styles.active}`, "");
+    }
+    if (slides[slideIndex-1]) {
+      slides[slideIndex-1].style.display = "block";
+    }
+    if (dots[slideIndex-1]) {
+      dots[slideIndex-1].className += ` ${styles.active}`;
+    }
+  }
 
   console.log(data);
 
@@ -25,14 +66,42 @@ export default function MoviesHome() {
         </Head>
 
         <main className='overflow-x-hidden'>
-          <div className='w-[70vw] left-[15vw] bg-neutral-500 relative flex gap-2 snap-x snap-mandatory overflow-x-auto z-0'>
-            {
-              data.popular.map((element) => (
-                <div key={element.title} className='snap-center shrink-0 w-[70vw]'>
-                  <Image src={element.imageurl} alt={element.title} width={1493} height={839} className='' />
+          <div className='w-screen flex justify-center py-12'>
+            <h1 className='text-5xl font-semibold tracking-wider'>Movies</h1>
+          </div>
+
+          <div className='flex flex-row'>
+            <div className='w-3/4 relative z-30'>
+              {
+                data.popular.map((element) => (
+                  <div key={element.title} id={data.popular.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
+                    <Image key={element.title} src={element.imageurl} alt={element.title} width={1493} height={839} className='w-full rounded-r-3xl' />
+                  </div>
+                ))
+              }
+
+              <a className={styles.prev} onClick={handleLeftClick}>&#10094;</a>
+              <a className={styles.next} onClick={handleRightClick}>&#10095;</a>
+
+              <div className='absolute bottom-4 left-2/4'>
+                <div className='relative -left-2/4 space-x-5'>
+                  <span className={styles.dot} onClick={() => setSlideIndex(1)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(2)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(3)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(4)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(5)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(6)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(7)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(8)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(9)}></span>
+                  <span className={styles.dot} onClick={() => setSlideIndex(10)}></span>
                 </div>
-              ))
-            }
+              </div>
+            </div>
+
+            <div className='grow bg-red-300 z-40'>
+
+            </div>
           </div>
 
           <div className='flex justify-center mt-4'>

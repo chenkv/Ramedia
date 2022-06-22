@@ -3,15 +3,6 @@ import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
 
 export default function Home() {
-  async function onSubmit1 () {
-    var response = await fetch('/api/addWatched', { method: 'POST' });
-  }
-
-  async function onSubmit2 () {
-    var response = await fetch('/api/getWatched', { method: 'GET' });
-    response = await response.json();
-    console.log(response);
-  }
 
   return (
     <Layout>
@@ -22,45 +13,21 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className={styles.main}>
+        <main className='relative -z-50'>
           <h1 className={styles.title}>
             Ramedia
           </h1>
 
-          <p className={styles.description}>
-            Get started by editing{' '}
-            <code className={styles.code}>pages/index.js</code>
-          </p>
+          <div className='w-screen h-[60vh] bg-[#FF971D] skew-y-12 translate-y-20 -z-10 relative'>
 
-          <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h2>Documentation &rarr;</h2>
-              <p>Find in-depth information about Next.js features and API.</p>
-            </a>
-
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h2>Learn &rarr;</h2>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/master/examples"
-              className={styles.card}
-            >
-              <h2>Examples &rarr;</h2>
-              <p>Discover and deploy boilerplate example Next.js projects.</p>
-            </a>
-
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-            >
-              <h2>Deploy &rarr;</h2>
-              <p>
-                Instantly deploy your Next.js site to a public URL with Vercel.
-              </p>
-            </a>
           </div>
+
+          <div className='w-screen h-[100vh] bg-[#FFFFFF] -skew-y-[8deg] -translate-y-[19vh] -z-20 relative'></div>
+
+          <div className='w-[100vw] h-[100vw] rounded-full bg-transparent outline-[4rem] outline-[#FF971D] outline absolute z-10 -right-[10vw] top-[40vh]'></div>
+          <div className='w-[100vw] h-[100vw] rounded-full bg-transparent outline-[4rem] outline-[#FFFFFF] outline absolute z-0 -right-[11vw] top-[40vh]'></div>
+
+          <div className='w-screen h-screen bg-[#FF971D] -translate-y-[30vh] -z-30 relative'></div>
         </main>
       </div>
     </Layout>
