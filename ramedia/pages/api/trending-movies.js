@@ -32,7 +32,7 @@ export default async function handler(req, res) {
             element.movie.imageurl = "https://image.tmdb.org/t/p/w300" + temp.poster_path;
         }
 
-        const url2 = 'https://api.trakt.tv/movies/popular?limit=10';
+        const url2 = 'https://api.trakt.tv/movies/watched/weekly?limit=10';
 
         var popularRes = await fetch(url2, {
             method: 'GET',
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         var popular = await popularRes.json();
 
         for (let i = 0; i < popular.length; i++) {
-            const element = popular[i];
+            const element = popular[i].movie;
 
             var currId = element.ids.tmdb;
             var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;

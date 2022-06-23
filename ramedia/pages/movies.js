@@ -21,7 +21,7 @@ export default function MoviesHome() {
   if (!data) return <div>Loading...</div>
 
   function handleRightClick() {
-    if (slideIndex + 1 > data.popular.length) {
+    if (slideIndex + 1 > 10) {
       setSlideIndex(1);
     } else {
       setSlideIndex(slideIndex + 1);
@@ -30,7 +30,7 @@ export default function MoviesHome() {
 
   function handleLeftClick() {
     if (slideIndex - 1 < 1) {
-      setSlideIndex(data.popular.length);
+      setSlideIndex(10);
     } else {
       setSlideIndex(slideIndex - 1);
     }
@@ -39,6 +39,7 @@ export default function MoviesHome() {
   function showSlides(n) {
     let slides = document.getElementsByClassName(`${styles.mySlides}`);
     let dots = document.getElementsByClassName(`${styles.dot}`);
+    let currSlide = document.getElementById(slideIndex - 1);
 
     for (let i = 0; i < slides.length; i++) {
       slides[i].style.display = "none";
@@ -52,6 +53,28 @@ export default function MoviesHome() {
     if (dots[slideIndex-1]) {
       dots[slideIndex-1].className += ` ${styles.active}`;
     }
+
+    if (data) {
+      document.getElementById('title').innerHTML = data.popular[slideIndex - 1].movie.title;
+    }
+
+    setTimeout(handleRightClick, 6000);
+  }
+
+  function handleScrollLeft() {
+    let div = document.getElementById('card-Container');
+    div.scrollBy({
+      left: -screen.width,
+      behavior: 'smooth'
+    });
+  }
+
+  function handleScrollRight() {
+    let div = document.getElementById('card-Container');
+    div.scrollBy({
+      left: screen.width,
+      behavior: 'smooth'
+    });
   }
 
   console.log(data);
@@ -65,8 +88,8 @@ export default function MoviesHome() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className='overflow-x-hidden'>
-          <div className='w-screen flex justify-center py-12'>
+        <main className='scroll-smooth'>
+          <div className='flex justify-center py-12'>
             <h1 className='text-5xl font-semibold tracking-wider'>Movies</h1>
           </div>
 
@@ -74,8 +97,8 @@ export default function MoviesHome() {
             <div className='w-3/4 relative z-30'>
               {
                 data.popular.map((element) => (
-                  <div key={element.title} id={data.popular.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
-                    <Image key={element.title} src={element.imageurl} alt={element.title} width={1493} height={839} className='w-full rounded-r-3xl' />
+                  <div key={element.movie.title} id={data.popular.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
+                    <Image src={element.movie.imageurl} alt={element.movie.title} width={1493} height={839} priority layout='raw' className='w-full rounded-r-3xl shadow-[4px_4px_10px_0px_rgba(0,0,0,0.5)]' />
                   </div>
                 ))
               }
@@ -99,12 +122,48 @@ export default function MoviesHome() {
               </div>
             </div>
 
-            <div className='grow bg-red-300 z-40'>
+            <div className='w-1/4 z-20 flex flex-col'>
+              <h1 id='title' className='px-4 text-center text-3xl font-semibold tracking-wider' />
+              <p></p>
+              <div>
 
+              </div>
             </div>
           </div>
 
-          <div className='flex justify-center mt-4'>
+          <div className='bg-[#FFE3CE] -translate-y-32 rounded-xl pt-44'>
+            <h2 className='text-4xl font-semibold ml-10'>Trending Movies</h2>
+            <div className='relative justify-center items-center'>
+
+              <div id='card-Container' className='card-Container pt-8 pb-4 mb-4'>
+                {
+                  data.trending.map((element) => (
+                    <div key={element.movie.title} className='card'>
+                      <div className='transition hover:scale-105 cursor-pointer rounded-xl shadow-[4px_4px_10px_0px_rgba(0,0,0,0.75)]'>
+                        <Link href={`/movie/${element.movie.ids.imdb}`}>
+                          <a>
+                            <Image src={element.movie.imageurl} alt={element.movie.title} width={300} height={450} priority layout='raw' className='w-full rounded-xl' />
+                          </a>
+                        </Link>
+                      </div>
+                      <div className='flex h-20 justify-center items-center'>
+                        <h1 className='text-lg font-semibold text-ellipsis'>{element.movie.title}</h1>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+
+              <div className='absolute top-[40%] left-4 w-12 h-12 cursor-pointer bg-black flex justify-center items-center rounded-full shadow-[4px_4px_10px_0px_rgba(0,0,0,1)]' onClick={handleScrollLeft}>
+                <a className='text-2xl font-semibold text-white select-none'>&#10094;</a>
+              </div>
+              <div className='absolute top-[40%] right-4 w-12 h-12 cursor-pointer bg-black flex justify-center items-center rounded-full shadow-[4px_4px_10px_0px_rgba(0,0,0,1)]' onClick={handleScrollRight}>
+                <a className='text-2xl font-semibold text-white select-none'>&#10095;</a>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className='flex justify-center mt-4'>
             <form action='/search' method='GET'
               className='h-16 w-2/4 bg-[#FF971D] opacity-80 rounded-full
                           flex items-center px-4
@@ -118,27 +177,13 @@ export default function MoviesHome() {
               <input type="text" id='search-text' name='keyword' placeholder="Search Movies"
                 className='grow px-4 text-lg text-[#131313] font-sans font-medium placeholder:italic placeholder:text-[#131313] bg-[#FF971D] focus:outline-0'/>
             </form>
-          </div>
+          </div> */}
 
           <div className='text-center mt-4'>
-            <h2 className='text-4xl font-semibold text-[#303841]'>Trending Movies</h2>
-            <div className='card-Container pt-8 mb-4'>
-              {
-                data.trending.map((element) => (
-                  <div key={element.movie.title} className='card'>
-                    <Link href={`/movie/${element.movie.ids.imdb}`}>
-                      <a>
-                        <Image src={element.movie.imageurl} alt={element.movie.title} width={300} height={450} className='w-16 rounded-xl' />
-                        <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.movie.title}</h1>
-                      </a>
-                    </Link>
-                  </div>
-                ))
-              }
-            </div>
+
           </div>
 
-          <div className='h-12 w-screen bg-teal-400 flex flex-row justify-center'>
+          <div className='h-12 bg-teal-400 flex flex-row justify-center'>
             Movie Categories
           </div>
         </main>

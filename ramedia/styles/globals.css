@@ -26,10 +26,10 @@ a {
   }
 
   .card-Container {
-    @apply grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 mx-4
+    @apply relative flex snap-x snap-mandatory overflow-hidden gap-6 px-12;
   }
 
   .card {
-      @apply items-center rounded-xl text-center transition hover:scale-105 hover:cursor-pointer;
+    @apply items-center rounded-xl text-center scroll-ml-10 snap-start shrink-0 w-[15vw];
   }
 }
