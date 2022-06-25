@@ -49,14 +49,40 @@ export default async function handler(req, res) {
             const element = popular[i].movie;
 
             var currId = element.ids.tmdb;
-            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
-            var imageResponse = await fetch(currURL, { method: 'GET' })
-            var temp = await imageResponse.json();
+            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates,keywords`;
+            var imageRes = await fetch(currURL, { method: 'GET' });
+            var temp = await imageRes.json();
 
             element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
+            element.details = temp;
         }
 
-        res.status(200).json({ trending, popular })
+        const url3 = 'https://api.trakt.tv/movies/anticipated?limit=20';
+
+        var anticipatedRes = await fetch(url3, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'trakt-api-version': '2',
+                'trakt-api-key': traktID
+            }
+        })
+
+        var anticipated = await anticipatedRes.json();
+
+        for (let i = 0; i < anticipated.length; i++) {
+            const element = anticipated[i].movie;
+
+            var currId = element.ids.tmdb;
+            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates,keywords`;
+            var imageRes = await fetch(currURL, { method: 'GET' });
+            var temp = await imageRes.json();
+
+            element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
+            element.details = temp;
+        }
+
+        res.status(200).json({ trending, popular, anticipated })
     } catch (err) {
         console.log("ERROR!: " + err);
         res.status(500).json({ error: 'failed to load data' })
