@@ -1,6 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0'
 
-export default function disconnect() {
+export default function Disconnect() {
   const user = useUser();
   if (user.isLoading) {
     return (

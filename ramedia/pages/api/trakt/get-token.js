@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       "code": req.body.user_code,
       "client_id": traktID,
       "client_secret": traktSecret,
-      "redirect_uri": 'http://localhost:3000/profile',
+      "redirect_uri": 'http://localhost:3000/user/connect-trakt',
       "grant_type": "authorization_code"
     }
 

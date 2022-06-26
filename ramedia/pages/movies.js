@@ -84,13 +84,13 @@ export default function MoviesHome() {
       document.getElementById('runtime').innerHTML = Math.floor(runtime / 60) + "h " + runtime % 60 + "m";
 
 
-      let keywords = data.popular[slideIndex - 1].movie.details.keywords;
-      let keywordContainer = document.getElementById('keywords');
-      keywordContainer.innerHTML = "";
+      let genres = data.popular[slideIndex - 1].movie.details.genres;
+      let genreContainer = document.getElementById('keywords');
+      genreContainer.innerHTML = "";
 
       for (let i = 0; i < 3; i++) {
-        if (i == keywords.keywords.length) break;
-        let element = keywords.keywords[i];
+        if (i == genres.length) break;
+        let element = genres[i];
 
         let temp = document.createElement('div');
         temp.classList.add('px-4', 'py-1', 'mr-2', 'mb-1', 'rounded-full', 'border-2', 'border-[#C3C3C3]', 'text-center',
@@ -100,7 +100,7 @@ export default function MoviesHome() {
         text.innerHTML = element.name.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
 
         temp.appendChild(text);
-        keywordContainer.appendChild(temp);
+        genreContainer.appendChild(temp);
       }      
 
       document.getElementById('vote').innerHTML = data.popular[slideIndex - 1].movie.details.vote_average.toString().slice(0, 3) + "/10";

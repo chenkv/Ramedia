@@ -7,8 +7,9 @@ import Trakt_Button from '../components/profile/Trakt_Button';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-function profile() {
+export default function Profile() {
   const user = useUser();
+
   if (user.isLoading) {
     return (
       <h1>Loading!</h1>
@@ -16,46 +17,6 @@ function profile() {
   }
   if (!user.user) {
     window.location.href = '/';
-  }
-
-  const router = useRouter();
-  const code = router.query.code;
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setLoading(true)
-    if (code) {
-      getToken();
-    }
-    setLoading(false)
-  }, [])
-
-  async function getToken() {
-    let codeData = { user_code: code }
-    let response = await fetch('/api/trakt/get-token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(codeData)
-    });
-    response = await response.json();
-
-    if (response.response.access_token) {
-      var storeData = { user: user.user, token: response }
-      let response2 = await fetch('/api/trakt/store-token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(storeData)
-      });
-      if (response2.status == 200) {
-        console.log("success")
-        router.reload(window.location.pathname)
-      }
-    }
   }
 
   return (
@@ -91,5 +52,3 @@ function profile() {
     </Layout>
   )
 }
-
-export default profile;
