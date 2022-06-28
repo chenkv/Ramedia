@@ -49,7 +49,7 @@ export default async function handler(req, res) {
             const element = popular[i].movie;
 
             var currId = element.ids.tmdb;
-            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates,keywords`;
+            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates`;
             var imageRes = await fetch(currURL, { method: 'GET' });
             var temp = await imageRes.json();
 
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
             const element = anticipated[i].movie;
 
             var currId = element.ids.tmdb;
-            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates,keywords`;
+            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
             var imageRes = await fetch(currURL, { method: 'GET' });
             var temp = await imageRes.json();
 

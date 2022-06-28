@@ -40,23 +40,42 @@ export default function SeriesPage() {
   var background;
   if (data.data.artRes.status != "error") {
     var backgroundURL;
+
     if (data.data.artRes.showbackground) {
       backgroundURL = data.data.artRes.showbackground[0].url;
+      background = (
+        <Image
+          src={backgroundURL}
+          alt={data.data.result.name}
+          layout='fill'
+          objectFit='cover'
+          quality={100}
+          priority
+        />
+      );
     } else if (data.data.artRes.hdshowlogo) {
       backgroundURL = data.data.artRes.hdshowlogo[0].url;
+      background = (
+        <Image
+          src={backgroundURL}
+          alt={data.data.result.name}
+          layout='fill'
+          quality={100}
+          priority
+        />
+      );
     } else if (data.data.artRes.hdtvlogo) {
       backgroundURL = data.data.artRes.hdtvlogo[0].url;
+      background = (
+        <Image
+          src={backgroundURL}
+          alt={data.data.result.name}
+          layout='fill'
+          quality={100}
+          priority
+        />
+      );
     }
-    background = (
-      <Image
-        src={backgroundURL}
-        alt={data.data.result.name}
-        layout='fill'
-        objectFit='cover'
-        quality={100}
-        priority
-      />
-    );
   } else {
     background = (
       <div className='w-[1493px] h-[839px] flex justify-center items-center'>
