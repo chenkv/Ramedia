@@ -26,10 +26,10 @@ a {
   }
 
   .card-Container {
-    @apply relative flex snap-x snap-mandatory overflow-hidden gap-6 px-12;
+    @apply relative flex snap-x snap-mandatory overflow-hidden;
   }
 
   .card {
-    @apply items-center rounded-xl text-center scroll-ml-10 snap-start shrink-0 w-[15vw];
+    @apply items-center rounded-xl text-center scroll-ml-10 snap-start shrink-0;
   }
 }

@@ -207,10 +207,10 @@ export default function MoviesHome() {
             <h2 className='text-4xl font-semibold ml-10'>Trending Movies</h2>
             <div className='relative justify-center items-center'>
 
-              <div id='trending' className='card-Container pt-8 pb-4 mb-4'>
+              <div id='trending' className='card-Container gap-6 px-12 pt-8 pb-4 mb-4'>
                 {
                   data.trending.map((element) => (
-                    <div key={element.movie.title} className='card'>
+                    <div key={element.movie.title} className='card w-[15vw]'>
                       <div className='transition hover:scale-105 cursor-pointer rounded-xl shadow-[4px_4px_10px_0px_rgba(0,0,0,0.75)]'>
                         <Link href={`/movie/${element.movie.ids.imdb}`}>
                           <a>
@@ -242,10 +242,10 @@ export default function MoviesHome() {
             <h2 className='text-4xl font-semibold ml-10'>Anticipated Movies</h2>
             <div className='relative justify-center items-center'>
 
-              <div id='anticipated' className='card-Container pt-8 pb-4 mb-4'>
+              <div id='anticipated' className='card-Container gap-6 px-12 pt-8 pb-4 mb-4'>
                 {
                   data.anticipated.map((element) => (
-                    <div key={element.movie.title} className='card'>
+                    <div key={element.movie.title} className='card w-[15vw]'>
                       <div className='transition hover:scale-105 cursor-pointer rounded-xl shadow-[4px_4px_10px_0px_rgba(0,0,0,0.75)]'>
                         <Link href={`/movie/${element.movie.ids.imdb}`}>
                           <a>

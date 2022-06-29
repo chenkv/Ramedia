@@ -91,7 +91,7 @@ export default function MovieOptions({ user, movieID }) {
             3.005 0 0 1 4 15c0-.076.017-.147.022-.222A2.995 2.995 0 0 1 7 12a3 3 0 0 1 3 3v.009A3.004 3.004 0 0 1 7.001
             18zm9.998 0A3.004 3.004 0 0 1 14 15.009V15a3 3 0 0 1 6-.001A3.005 3.005 0 0 1 16.999 18z"/></svg>
         </div>
-        <h3 className='text-3xl font-semibold'>Seen</h3>
+        <h3 className='text-3xl font-semibold'>Track</h3>
       </div>
 
       <div className="w-full flex flex-row justify-center">

@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Image from 'next/image';
 import SeriesOptions from '../../components/SeriesOptions';
+import { useEffect } from 'react';
+import Seasons from '../../components/Seasons';
 
 const fetcher = async url => {
   const res = await fetch(url);
@@ -88,7 +90,6 @@ export default function SeriesPage() {
   let genreHTML;
   let rating;
   let cast = [];
-  let director;
   if (data.data) {  
     const genres = data.data.genreRes.genres;
     let currGenres = data.data.result.genre_ids;
@@ -126,8 +127,6 @@ export default function SeriesPage() {
         cast.push(data.data.creditsRes.cast[i]);
       }
     }
-
-    director = data.data.creditsRes.crew.filter(({job})=> job ==='Director')[0];
   }
 
   return (
@@ -144,7 +143,7 @@ export default function SeriesPage() {
             <div className='absolute bottom-0 left-0 w-screen h-32 bg-gradient-to-t from-[#F9F6F7] z-50' />
           </div>
 
-          <div className='flex space-x-4 z-10 mt-8 px-10'>
+          <div className='flex space-x-4 z-10 mt-8 mb-6 px-10'>
             <div className='flex-none flex flex-col justify-center'>
               <div className='shadow-[4px_4px_10px_0px_rgba(0,0,0,0.75)] rounded-3xl'>
                 <Image src={"https://image.tmdb.org/t/p/w300" + data.data.result.poster_path} alt={data.data.result.name} layout='raw' width={300} height={450} className="rounded-3xl" />
@@ -198,8 +197,10 @@ export default function SeriesPage() {
             </div>
           </div>
 
+          <Seasons showData={data.data.yearRes} />
+
           <div className='mt-8'>
-            {/* <div className='flex'>
+            <div className='flex'>
               <div className='flex-none'>
                 <div className='w-48 px-6 py-2 ml-4 mt-8 border-r-2 border-black'>
                   <h2 className='text-3xl font-semibold tracking-wider'>Director</h2>
@@ -207,22 +208,27 @@ export default function SeriesPage() {
               </div>
 
               <div className='grow grid grid-cols-3 gap-y-8 px-10'>
-                <div className='flex justify-start items-center'>
-                  <div className='relative w-28 h-28 flex-none'>
-                    <Image
-                      src={"https://image.tmdb.org/t/p/w200" + director.profile_path}
-                      alt={director.name}
-                      layout='fill'
-                      objectFit='cover'
-                      quality={100}
-                      className='rounded-full' />
-                  </div>
-                  <div className='ml-4'>
-                    <h3 className='text-lg font-semibold'>{ director.name }</h3>
-                  </div>
-                </div>
+                {
+                  data.data.yearRes.created_by.map((element) => (
+                    <div key={element.name} className='flex justify-start items-center pr-4'>
+                      <div className='relative w-28 h-28 flex-none'>
+                        <Image
+                          src={"https://image.tmdb.org/t/p/w200" + element.profile_path}
+                          alt={element.name}
+                          layout='fill'
+                          objectFit='cover'
+                          quality={100}
+                          className='rounded-full' />
+                      </div>
+                      <div className='ml-4'>
+                        <h3 className='text-lg font-semibold'>{ element.name }</h3>
+                        <h3 className='font-semibold text-[#8d8d8d]'>{ element.character }</h3>
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
-            </div> */}
+            </div>
 
             <div className='flex mt-8'>
               <div className='flex-none'>

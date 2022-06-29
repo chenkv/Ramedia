@@ -62,10 +62,10 @@ export default function Search() {
                         <h1 className="text-4xl font-bold">Movies</h1>
                     </div>
                     <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
-                    <div className="card-Container">
+                    <div className="card-Container gap-6 px-12">
                         {
                             response.movieRes.results.map((element) => (
-                                <div key={element.id} className='card'>
+                                <div key={element.id} className='card w-[15vw]'>
                                     <button type="button" onClick={() => router.push(`/movie/${element.imdb_id}`)}>
                                         <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.title} width={300} height={450} className="w-full rounded-xl mb-1" />
                                         <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.title}</h1>
@@ -93,10 +93,10 @@ export default function Search() {
                         <h1 className="text-4xl font-bold">Shows</h1>
                     </div>
                     <div className="h-1 my-4 border-b-4 border-rose-300 border-double" />
-                    <div className="card-Container">
+                    <div className="card-Container gap-6 px-12">
                         {
                             response.showRes.results.map((element) => (
-                                <div key={element.id} className='card'>
+                                <div key={element.id} className='card w-[15vw]'>
                                     <button type="button" onClick={() => router.push(`/series/${element.imdb_id}`)}>
                                         <Image src={"https://image.tmdb.org/t/p/w300" + element.poster_path} alt={element.name} width={300} height={450} className="w-full rounded-xl mb-1" />
                                         <h1 className='text-lg font-semibold px-2 h-14 overflow-hidden text-ellipsis text-[#303841]'>{element.name}</h1>

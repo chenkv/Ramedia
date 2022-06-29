@@ -2,6 +2,11 @@ const tmdbKey = process.env.TMDB_KEY;
 const fanartKey = process.env.FANARTTV_KEY;
 
 export default async function handler(req, res) {
+    res.setHeader(
+        'Cache-Control',
+        'public, s-maxage=86400, stale-while-revalidate=59'
+    )
+
     try {
         const id = req.query.imdb_id;
 

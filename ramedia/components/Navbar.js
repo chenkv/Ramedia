@@ -10,7 +10,6 @@ export default function Navbar() {
     var profile;
 
     var links = [
-        ['Home', '/', 1],
         ['Movies', '/movies', 2],
         ['Shows', '/shows', 3],
         ['Games', '/games', 4],
@@ -18,6 +17,8 @@ export default function Navbar() {
     ];
 
     if (user) {
+        links.unshift(['Dashboard', '/', 1]);
+
         buttontext.text = "Logout";
         buttontext.link = "/api/auth/logout";
 
@@ -44,7 +45,7 @@ export default function Navbar() {
     return (
         <div className="fixed w-full top-0 flex bg-[#FFFFFF] rounded-b-lg shadow-lg z-50">
             <div className="flex items-center justify-center px-4 h-14">
-                <Link href="/">
+                <Link href="/landing">
                     <a><Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /></a>
                 </Link>
             </div>
