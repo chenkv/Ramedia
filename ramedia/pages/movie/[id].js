@@ -117,7 +117,9 @@ export default function MoviePage() {
     }
 
     for (let i = 0; i < 6; i++) {
-      cast.push(data.data.creditsRes.cast[i]);
+      if (data.data.creditsRes.cast[i]) {
+        cast.push(data.data.creditsRes.cast[i]);
+      }
     }
 
     director = data.data.creditsRes.crew.filter(({job})=> job ==='Director')[0];

@@ -19,6 +19,7 @@ export default async function handler(req, res) {
         showRes = await showRes.json();
 
         var result = showRes.tv_results[0];
+        let tmdbID = result.id;
 
         if (!result) {
             res.status(400).json({
@@ -37,7 +38,19 @@ export default async function handler(req, res) {
         var artRes = await fetch(arturl, { method: 'GET' });
         artRes = await artRes.json();
 
-        res.status(200).json({ result, artRes });
+        const genreurl = `https://api.themoviedb.org/3/genre/tv/list?api_key=${tmdbKey}&language=en-US`;
+        var genreRes = await fetch(genreurl, { method: 'GET' });
+        genreRes = await genreRes.json();
+
+        const yearurl = `https://api.themoviedb.org/3/tv/${tmdbID}?api_key=${tmdbKey}&language=en-US&append_to_response=content_ratings`;
+        var yearRes = await fetch(yearurl, { method: 'GET' });
+        yearRes = await yearRes.json();
+
+        const creditsurl = `https://api.themoviedb.org/3/tv/${tmdbID}/credits?api_key=${tmdbKey}&language=en-US`;
+        var creditsRes = await fetch(creditsurl, { method: 'GET' });
+        creditsRes = await creditsRes.json();
+
+        res.status(200).json({ result, artRes, genreRes, yearRes, creditsRes });
     } catch (err) {
         console.log(err)
         res.status(500).json({ error: err.message });

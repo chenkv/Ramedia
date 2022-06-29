@@ -9,6 +9,35 @@ import { useState } from 'react';
 
 export default function Profile() {
   const user = useUser();
+  const [watched, setWatched] = useState({ movies: null, shows: null });
+
+  useEffect(() => {
+    async function getWatched() {
+      if (!user.isLoading && user.user) {
+        var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+        userInfo = await userInfo.json();
+
+        var body = {
+          user: userInfo.res,
+          movie: true
+        }
+
+        const options = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        };
+
+        var response = await fetch('/api/user/get-history', options);
+        response = await response.json();
+        setWatched({ movies: response })
+      }
+    }
+
+    getWatched();
+  }, [user.isLoading])
 
   if (user.isLoading) {
     return (
@@ -18,6 +47,8 @@ export default function Profile() {
   if (!user.user) {
     window.location.href = '/';
   }
+
+  console.log(watched);
 
   return (
     <Layout>
