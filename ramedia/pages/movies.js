@@ -184,7 +184,7 @@ export default function MoviesHome() {
                                         sm:text-2xl sm:px-2 sm:truncate sm:mt-4 text-xl mt-4
                                         text-center font-semibold tracking-wider' />
               
-              <p id='description' className='2xl:text-lg 2xl:max-h-[45%] 2xl:mt-8 xl:mt-4 xl:max-h-[30%] xl:text-base xl:px-6
+              <p id='description' className='2xl:text-lg 2xl:max-h-[35%] 2xl:mt-8 xl:mt-4 xl:max-h-[30%] xl:text-base xl:px-6
                                             lg:mt-4 lg:max-h-[25%] lg:text-sm md:px-4 md:mt-4
                                             sm:px-4 sm:mt-2 px-4 mt-2
                                             flex-initial w-full font-medium tracking-wide overflow-auto'></p>
