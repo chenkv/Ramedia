@@ -45,7 +45,7 @@ export default function Profile() {
     )
   }
   if (!user.user) {
-    window.location.href = '/';
+    window.location.href = '/landing';
   }
 
   console.log(watched);

@@ -1,8 +1,15 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
+import { useUser } from '@auth0/nextjs-auth0'
 
 export default function Home() {
+  const user = useUser();
+
+  if (user.isLoading) return <div>Loading...</div>
+  if (user.error) return <div>Error!</div>
+  if (!user.user) {
+    window.location.href = '/landing';
+  }
 
   return (
     <Layout>
@@ -13,21 +20,8 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className='relative -z-50'>
-          <h1 className={styles.title}>
-            Ramedia
-          </h1>
-
-          <div className='w-screen h-[60vh] bg-[#FF971D] skew-y-12 translate-y-20 -z-10 relative'>
-
-          </div>
-
-          <div className='w-screen h-[100vh] bg-[#FFFFFF] -skew-y-[8deg] -translate-y-[19vh] -z-20 relative'></div>
-
-          <div className='w-[100vw] h-[100vw] rounded-full bg-transparent outline-[4rem] outline-[#FF971D] outline absolute z-10 -right-[10vw] top-[40vh]'></div>
-          <div className='w-[100vw] h-[100vw] rounded-full bg-transparent outline-[4rem] outline-[#FFFFFF] outline absolute z-0 -right-[11vw] top-[40vh]'></div>
-
-          <div className='w-screen h-screen bg-[#FF971D] -translate-y-[30vh] -z-30 relative'></div>
+        <main>
+          
         </main>
       </div>
     </Layout>

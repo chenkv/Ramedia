@@ -56,3 +56,7 @@
   from {opacity: 0.2}
   to {opacity: 1}
 }
+
+.test {
+  font-family: 'Splash', cursive;
+}
