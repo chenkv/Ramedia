@@ -5,7 +5,12 @@ export default async function handler(req, res) {
   try {
     const user = req.body.user;
 
-    const query = `UPDATE user_movies SET watched = array_append(watched, '${req.body.imdb_id}') WHERE id=${user.id};`;
+    const query = `UPDATE user_movies SET watched = (
+                      CASE
+                          WHEN watched IS NULL THEN '[]'::JSONB
+                          ELSE watched
+                      END
+                  ) || '[{"id": "${req.body.imdb_id}", "time": "${req.body.date}"}]'::JSONB WHERE id = ${user.id};`
     const result = await conn.query(query);
 
     var body = {

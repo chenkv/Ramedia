@@ -34,7 +34,7 @@ export default function MoviePage() {
     return <div>Error with the user</div>
   }
 
-  if (!data.data || user.isLoading) return <div>Loading...</div>
+  if (!data.data || user.isLoading || !router.query.id) return <div>Loading...</div>
 
   var background;
   if (data.data.artRes.status != "error") {
@@ -122,7 +122,7 @@ export default function MoviePage() {
       }
     }
 
-    director = data.data.creditsRes.crew.filter(({job})=> job ==='Director')[0];
+    director = data.data.creditsRes.crew.filter(({job})=> job ==='Director');
   }
 
   return (
@@ -194,20 +194,24 @@ export default function MoviePage() {
               </div>
 
               <div className='grow grid grid-cols-3 gap-y-8 px-10'>
-                <div className='flex justify-start items-center'>
-                  <div className='relative w-28 h-28 flex-none'>
-                    <Image
-                      src={"https://image.tmdb.org/t/p/w200" + director.profile_path}
-                      alt={director.name}
-                      layout='fill'
-                      objectFit='cover'
-                      quality={100}
-                      className='rounded-full' />
-                  </div>
-                  <div className='ml-4'>
-                    <h3 className='text-lg font-semibold'>{ director.name }</h3>
-                  </div>
-                </div>
+                {
+                  director.map((element) => (
+                    <div key={element.name} className='flex justify-start items-center'>
+                      <div className='relative w-28 h-28 flex-none'>
+                        <Image
+                          src={"https://image.tmdb.org/t/p/w200" + element.profile_path}
+                          alt={element.name}
+                          layout='fill'
+                          objectFit='cover'
+                          quality={100}
+                          className='rounded-full' />
+                      </div>
+                      <div className='ml-4'>
+                        <h3 className='text-lg font-semibold'>{ element.name }</h3>
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
             </div>
 

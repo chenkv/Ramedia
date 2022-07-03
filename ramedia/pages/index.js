@@ -1,15 +1,63 @@
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { useUser } from '@auth0/nextjs-auth0'
+import useSWR from 'swr';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function Home() {
   const user = useUser();
+  const [ watchlist, setWatchlist ] = useState(null);
+  
+  useEffect(() => {
+    async function getData() {
+      if (!user.isLoading) {
+        var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+        userInfo = await userInfo.json();
+
+        var body = {
+          user: userInfo.res,
+        }
+    
+        const options = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        };
+    
+        var response = await fetch('/api/user/get-watchlist', options);
+        response = await response.json();
+        setWatchlist(response);
+      }
+    }
+
+    getData();
+  }, [user.isLoading])
 
   if (user.isLoading) return <div>Loading...</div>
   if (user.error) return <div>Error!</div>
   if (!user.user) {
     window.location.href = '/landing';
   }
+
+  let watchlistHTML;
+  if (watchlist) {
+    watchlistHTML = (
+      <div>
+        {
+          watchlist.result.map((element) => (
+            <div className='relative w-[300px] h-[450px]'>
+              <Image src={"https://image.tmdb.org/t/p/original" + element.details.poster_path} layout='fill' />
+            </div>
+          ))
+        }
+      </div>
+    )
+  }
+
+  console.log(watchlist);
 
   return (
     <Layout>
@@ -21,7 +69,7 @@ export default function Home() {
         </Head>
 
         <main>
-          
+          { watchlistHTML }
         </main>
       </div>
     </Layout>

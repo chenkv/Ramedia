@@ -28,7 +28,7 @@ export default function MovieOptions({ user, movieID }) {
       body: JSON.stringify(body)
     };
 
-    var response = await fetch('/api/user/add-history', options);
+    var response = await fetch('/api/user/add-moviehistory', options);
   }
 
   async function addToFavorites() {
