@@ -4,6 +4,7 @@ import { useUser } from '@auth0/nextjs-auth0'
 import useSWR from 'swr';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   const user = useUser();
@@ -45,11 +46,16 @@ export default function Home() {
   let watchlistHTML;
   if (watchlist) {
     watchlistHTML = (
-      <div>
+      <div className='flex flex-row'>
         {
           watchlist.result.map((element) => (
-            <div className='relative w-[300px] h-[450px]'>
-              <Image src={"https://image.tmdb.org/t/p/original" + element.details.poster_path} layout='fill' />
+            <div className='relative w-[15vw]'>
+              <Link href={"/movie/" + element.id}>
+                <a>
+                  <Image src={"https://image.tmdb.org/t/p/original" + element.details.poster_path} width={300} height={450} layout='raw'
+                    className='rounded-3xl' />
+                </a>
+              </Link>
             </div>
           ))
         }
@@ -69,7 +75,10 @@ export default function Home() {
         </Head>
 
         <main>
-          { watchlistHTML }
+          <div>
+            <h1>Movies on your watchlist</h1>
+            { watchlistHTML }
+          </div>
         </main>
       </div>
     </Layout>

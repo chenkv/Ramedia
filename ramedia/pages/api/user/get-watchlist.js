@@ -11,6 +11,11 @@ export default async function handler(req, res) {
 
     let result = [];
 
+    if (!response.rows[0].bookmarks) {
+      res.status(200).json({ result: [] });
+      return;
+    }
+
     for (let i = 0; i < response.rows[0].bookmarks.length; i++) {
       let element = response.rows[0].bookmarks[i];
 
