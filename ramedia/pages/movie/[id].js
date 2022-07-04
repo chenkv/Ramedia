@@ -154,7 +154,7 @@ export default function MoviePage() {
               </div>
             </div>
 
-            <div className='grow flex flex-col'>
+            <div className='grow flex flex-col selection:bg-[#FF971D] selection:text-white'>
               <div className='grow'>
                 <div className='text-center mb-8'>
                   <h1 className='text-5xl py-2 font-semibold'>{data.data.result.title}</h1>

@@ -158,7 +158,7 @@ export default function SeriesPage() {
               </div>
             </div>
 
-            <div className='grow flex flex-col'>
+            <div className='grow flex flex-col selection:bg-[#FF971D] selection:text-white'>
               <div className='text-center mb-8'>
                 <h1 className='text-5xl py-2 font-semibold'>{data.data.result.name}</h1>
               </div>
@@ -199,7 +199,7 @@ export default function SeriesPage() {
 
           <Seasons showData={data.data.yearRes} />
 
-          <div className='mt-8'>
+          <div className='mt-8 pb-4'>
             <div className='flex'>
               <div className='flex-none'>
                 <div className='w-48 px-6 py-2 ml-4 mt-8 border-r-2 border-black'>
