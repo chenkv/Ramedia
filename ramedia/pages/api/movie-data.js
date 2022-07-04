@@ -17,6 +17,7 @@ export default async function handler(req, res) {
                     message: "movie's imdb id not provided"
                 }
             });
+            return;
         }
 
         const tmdburl = `https://api.themoviedb.org/3/find/${id}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id&append_to_response=release_dates,keywords`;
@@ -32,6 +33,7 @@ export default async function handler(req, res) {
                     message: "invalid imdb movie id"
                 }
             });
+            return;
         }
 
         const arturl = `http://webservice.fanart.tv/v3/movies/${result.id}?api_key=${fanartKey}`;
