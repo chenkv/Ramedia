@@ -9,6 +9,7 @@ import Link from 'next/link';
 export default function Home() {
   const user = useUser();
   const [ watchlist, setWatchlist ] = useState(null);
+  const [ tvlist, setTvlist ] = useState(null);
   
   useEffect(() => {
     async function getData() {
@@ -63,6 +64,15 @@ export default function Home() {
     )
   }
 
+  let tvlistHTML;
+  if (tvlist) {
+    tvlistHTML = (
+      <div>
+
+      </div>
+    )
+  }
+
   console.log(watchlist);
 
   return (
@@ -78,6 +88,11 @@ export default function Home() {
           <div>
             <h1>Movies on your watchlist</h1>
             { watchlistHTML }
+          </div>
+
+          <div>
+            <h1>TV Shows Tracked</h1>
+            { tvlistHTML }
           </div>
         </main>
       </div>

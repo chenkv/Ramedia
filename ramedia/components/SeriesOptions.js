@@ -1,4 +1,4 @@
-export default function MovieOptions({ user, movieID }) {
+export default function SeriesOptions({ user, showID, showData }) {
   if (user.user == null) {
     return (
       <div className="text-center">
@@ -7,18 +7,32 @@ export default function MovieOptions({ user, movieID }) {
     );
   }
 
-  async function addToHistory() {
+  async function trackShow() {
     var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
     userInfo = await userInfo.json();
 
-    let dateTime = new Date().toISOString();
-
+    console.log(showData)
     var body = {
       user: userInfo.res,
-      imdb_id: movieID,
-      date: dateTime,
-      movie: true
+      data: {
+        imdb_id: showID,
+        num_of_episodes: showData.number_of_episodes,
+        seasons: []
+      }
+    };
+
+    for (let i = 1; i <= showData.number_of_seasons; i++) {
+      for (let curr of showData.seasons) {
+        if (curr.season_number == i) {
+          body.data.seasons.push({
+            season: curr.season_number,
+            num_of_episodes: curr.episode_count,
+            watched: []
+          })
+        }
+      }
     }
+    console.log(body)
 
     const options = {
       method: 'POST',
@@ -28,61 +42,61 @@ export default function MovieOptions({ user, movieID }) {
       body: JSON.stringify(body)
     };
 
-    var response = await fetch('/api/user/add-history', options);
+    var response = await fetch('/api/user/add-series', options);
   }
 
-  async function addToFavorites() {
-    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-    userInfo = await userInfo.json();
+  // async function addToFavorites() {
+  //   var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+  //   userInfo = await userInfo.json();
 
-    let dateTime = new Date().toISOString();
+  //   let dateTime = new Date().toISOString();
 
-    var body = {
-      user: userInfo.res,
-      imdb_id: movieID,
-      date: dateTime,
-      movie: true
-    }
+  //   var body = {
+  //     user: userInfo.res,
+  //     imdb_id: movieID,
+  //     date: dateTime,
+  //     movie: true
+  //   }
 
-    const options = {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    };
+  //   const options = {
+  //     method: 'POST',
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(body)
+  //   };
 
-    var response = await fetch('/api/user/add-favorite', options);
-  }
+  //   var response = await fetch('/api/user/add-favorite', options);
+  // }
 
-  async function addToWatchlist() {
-    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-    userInfo = await userInfo.json();
+  // async function addToWatchlist() {
+  //   var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+  //   userInfo = await userInfo.json();
 
-    let dateTime = new Date().toISOString();
+  //   let dateTime = new Date().toISOString();
 
-    var body = {
-      user: userInfo.res,
-      imdb_id: movieID,
-      date: dateTime,
-      movie: true
-    }
+  //   var body = {
+  //     user: userInfo.res,
+  //     imdb_id: movieID,
+  //     date: dateTime,
+  //     movie: true
+  //   }
 
-    const options = {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    };
+  //   const options = {
+  //     method: 'POST',
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(body)
+  //   };
 
-    var response = await fetch('/api/user/add-watchlist', options);
-  }
+  //   var response = await fetch('/api/user/add-watchlist', options);
+  // }
 
   return (
     <div className='grow flex flex-col justify-center items-center'>
       <div className='flex flex-col justify-center items-center w-3/12'>
-        <div className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => addToHistory()}>
+        <div className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => trackShow()}>
           <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className='w-20 h-20'
             preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#ff971d" d="M19.447 5.345A3.27
             3.27 0 0 0 16.29 3a3.293 3.293 0 0 0-3.277 3h-2.025a3.297 3.297 0 0 0-3.284-3a3.268 3.268 0 0 0-3.151
@@ -94,7 +108,7 @@ export default function MovieOptions({ user, movieID }) {
         <h3 className='text-3xl font-semibold'>Track</h3>
       </div>
 
-      <div className="w-full flex flex-row justify-center">
+      {/* <div className="w-full flex flex-row justify-center">
         <div className='w-2/4 flex flex-col justify-center items-center'>
           <div className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => addToFavorites()} >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#ff971d">
@@ -112,7 +126,7 @@ export default function MovieOptions({ user, movieID }) {
           </div>
           <h3 className='text-lg font-semibold'>Watchlist</h3>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 

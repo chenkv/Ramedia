@@ -22,6 +22,9 @@ export default async function handler(req, res) {
       query = `INSERT INTO user_movies(id, watched, favorites, bookmarks) VALUES('${userID}', NULL, NULL, NULL);`
       result_insert = await conn.query(query);
 
+      query = `INSERT INTO user_shows(id, shows, favorites) VALUES ('${userID}', NULL, NULL);`
+      result_insert = await conn.query(query);
+
       res.status(200).json({ result: "Successfully added user" });
     }
 

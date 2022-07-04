@@ -31,3 +31,29 @@ Color Scheme:
 #FF971D
 
 Heroicons: https://heroicons.com/
+
+TV Show JSON:
+[
+  {
+    id: 78as9df,
+    num_of_episodes: 26
+    seasons: {
+      1: {
+        num_of_episodes: 13,
+        watched: [1, 2, 3, 4]
+      },
+      2: {
+        num_of_episodes: 13,
+        watched: [4, 7, 12]
+      }
+    }
+  },
+  {
+    id: a234as,
+    episodes: {
+      num_of_episodes: 13,
+      watched: [1, 2, 3, 4, 5, 6],
+      unwatched: [7, 8, 9, ... , 13]
+    }
+  }
+]

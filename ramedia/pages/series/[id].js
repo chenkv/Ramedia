@@ -183,7 +183,7 @@ export default function SeriesPage() {
                     </div>
                   </div>
 
-                  <SeriesOptions user={user} movieID={router.query.id} />
+                  <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} />
                 </div>
 
                 <div className='grow flex items-end justify-center mb-10'>
