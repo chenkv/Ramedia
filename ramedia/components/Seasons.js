@@ -1,16 +1,33 @@
 import Image from "next/image";
+import EpisodePopup from "./EpisodePopup";
 import { createRoot } from "react-dom/client";
+import { useEffect, useState } from "react";
 
 export default function Seasons({ showData }) {
+  const [ episodeEnabled, setEpisodeEnabled ] = useState(false);
+  const [ currEpisode, setCurrEpisode ] = useState(null);
+
+  useEffect(() => {
+    if (episodeEnabled) {
+      let popupdiv = document.getElementById("popup");
+      if (popupdiv) {
+        popupdiv.style.top = window.scrollY + 'px';
+      }
+    }
+  }, [episodeEnabled])
+
   if (!showData) return;
 
   console.log(showData);
 
+  // This creates the tabs for each season
   let result = [];
-
   for (let i = 1; i <= showData.number_of_seasons; i++) {
     let curr = (
-      <button id={i} key={i} className="px-4 py-1.5 hover:bg-[#FF971D] hover:bg-opacity-60 focus:bg-[#FF971D] cursor-pointer rounded-t-xl" onClick={() => handleClick(i)}>
+      <button id={i} key={i}
+        className="px-4 py-1.5 hover:bg-[#FF971D] hover:bg-opacity-60 focus:bg-[#FF971D] cursor-pointer rounded-t-xl"
+        onClick={() => handleClick(i)}
+      >
         <h3 className="font-semibold tracking-wider">Season {i}</h3>
       </button>
     )
@@ -18,11 +35,14 @@ export default function Seasons({ showData }) {
     result.push(curr);
   }
 
+  // This handles when the user clicks on each seasons
   async function handleClick(season_number) {
+    // If the season is already selected, then don't do anything
     if (document.getElementById(season_number).classList.contains("selected")) {
       return;
     }
 
+    // Loops through all the possible seasons, adding and removing the necessary classes
     for (let i = 1; i <= showData.number_of_seasons; i++) {
       if (i == season_number) {
         document.getElementById(season_number).classList.add("bg-[#FF971D]");
@@ -33,15 +53,18 @@ export default function Seasons({ showData }) {
       }
     }
 
+    // Creates the JSX for each episode of the selected season
     let episodes = [];
     let number_of_episodes = 0;
 
+    // Find the number of episodes in the selected season
     for (let i of showData.seasons) {
       if (i.season_number == season_number) {
         number_of_episodes = i.episode_count;
       }
     }
 
+    // Retrieve the data for each episode of the selected season
     const JSONdata = JSON.stringify({
       id: showData.id,
       season_num: season_number,
@@ -61,10 +84,11 @@ export default function Seasons({ showData }) {
 
     console.log(response);
 
+    // Loop through each episode and create the corresponding JSX for it
     for (let i of response.seasonRes.episodes) {
       let curr = (
         <div key={i.name} className="flex flex-col card w-52">
-          <div className='relative w-52 h-52 flex-none cursor-pointer'>
+          <div className='relative w-52 h-52 flex-none cursor-pointer' onClick={() => handleEpisodeClick(i)}>
             <Image
               src={"https://image.tmdb.org/t/p/w500" + i.still_path}
               alt={i.name}
@@ -93,9 +117,11 @@ export default function Seasons({ showData }) {
         </div>
       );
 
+      // Push it to the episodes array
       episodes.push(curr);
     }
 
+    // Maps each episode JSX into a resulting div
     let res = (
       <div className="py-10">
         <div className="relative justify-center items-center">
@@ -125,11 +151,13 @@ export default function Seasons({ showData }) {
       </div>
     )
 
+    // Renders the final div to the page
     var resultDiv = document.getElementById("info");
     var root = createRoot(resultDiv);
     root.render(res);
   }
 
+  // Scroll left in the episodes list
   function handleScrollLeft(id) {
     let div = document.getElementById(id);
     let distance = screen.width * 2 / 3;
@@ -139,6 +167,7 @@ export default function Seasons({ showData }) {
     });
   }
 
+  // Scroll right in the episodes list
   function handleScrollRight(id) {
     let div = document.getElementById(id);
     let distance = screen.width * 2 / 3;
@@ -147,6 +176,38 @@ export default function Seasons({ showData }) {
       behavior: 'smooth'
     });
   }
+
+  function handleEpisodeClick(episode) {
+    setEpisodeEnabled(true);
+    setCurrEpisode(episode);
+  }
+
+  let popupHTML;
+  if (episodeEnabled) {
+    popupHTML = (
+      <div id="popup"
+        className='absolute w-full h-full left-0 bg-gray-500 bg-opacity-50 z-50 flex justify-center items-center'
+        onClick={e => {
+          // Check to see if clicked element is the parent element (aka the background). If so, close the popup
+          if (e.target.id) {
+            setEpisodeEnabled(false)
+          }
+        }}>
+        <EpisodePopup episode={currEpisode} />
+      </div>
+    );
+  } else {
+    popupHTML = null;
+  }
+
+  document.addEventListener('scroll', function(e) {
+    if (episodeEnabled) {
+      let popupdiv = document.getElementById("popup");
+      if (popupdiv) {
+        popupdiv.style.top = window.scrollY + 'px';
+      }
+    }
+  });
 
   return (
     <div>
@@ -159,6 +220,8 @@ export default function Seasons({ showData }) {
       </div>
 
       <div id="info" className="bg-[rgba(255,151,29,0.2)] shadow-[4px_4px_20px_-5px_rgba(0,0,0,0.5)_inset]" />
+
+      { popupHTML }
     </div>
   )
 }
