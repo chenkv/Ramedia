@@ -25,6 +25,8 @@ export default function MoviesHome() {
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
 
+  console.log(data)
+
   function handleRightClick() {
     if (slideIndex + 1 > 10) {
       setSlideIndex(1);

@@ -1,88 +1,95 @@
+import cache from "memory-cache"
+
 const traktID = process.env.TRAKT_ID;
 const tmdbKey = process.env.TMDB_KEY;
 
 export default async function handler(req, res) {
-    res.setHeader(
-        'Cache-Control',
-        'public, s-maxage=86400, stale-while-revalidate=59'
-    )
-
     try {
-        const url = 'https://api.trakt.tv/movies/trending?limit=20';
+        const cachedResponse = cache.get('/api/trending-movies');
 
-        var trendingRes = await fetch(url, {
-            method: 'GET',
-            headers: {
-            'Content-Type': 'application/json',
-            'trakt-api-version': '2',
-            'trakt-api-key': traktID
-            }
-        })
-        
-        var trending = await trendingRes.json();
+        if (cachedResponse) {
+            console.log("Data was cached!");
+            res.status(200).json(cachedResponse)
+        } else {
+            const url = 'https://api.trakt.tv/movies/trending?limit=20';
 
-        for (let i = 0; i < trending.length; i++) {
-            const element = trending[i];
-
-            var currId = element.movie.ids.tmdb;
-            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
-            var imageResponse = await fetch(currURL, { method: 'GET' })
-            var temp = await imageResponse.json();
-
-            element.movie.imageurl = "https://image.tmdb.org/t/p/w300" + temp.poster_path;
-        }
-
-        const url2 = 'https://api.trakt.tv/movies/watched/weekly?limit=10';
-
-        var popularRes = await fetch(url2, {
-            method: 'GET',
-            headers: {
+            var trendingRes = await fetch(url, {
+                method: 'GET',
+                headers: {
                 'Content-Type': 'application/json',
                 'trakt-api-version': '2',
                 'trakt-api-key': traktID
+                }
+            })
+            
+            var trending = await trendingRes.json();
+
+            for (let i = 0; i < trending.length; i++) {
+                const element = trending[i];
+
+                var currId = element.movie.ids.tmdb;
+                var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
+                var imageResponse = await fetch(currURL, { method: 'GET' })
+                var temp = await imageResponse.json();
+
+                element.movie.imageurl = "https://image.tmdb.org/t/p/w300" + temp.poster_path;
             }
-        })
 
-        var popular = await popularRes.json();
+            const url2 = 'https://api.trakt.tv/movies/watched/weekly?limit=10';
 
-        for (let i = 0; i < popular.length; i++) {
-            const element = popular[i].movie;
+            var popularRes = await fetch(url2, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'trakt-api-version': '2',
+                    'trakt-api-key': traktID
+                }
+            })
 
-            var currId = element.ids.tmdb;
-            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates`;
-            var imageRes = await fetch(currURL, { method: 'GET' });
-            var temp = await imageRes.json();
+            var popular = await popularRes.json();
 
-            element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
-            element.details = temp;
-        }
+            for (let i = 0; i < popular.length; i++) {
+                const element = popular[i].movie;
 
-        const url3 = 'https://api.trakt.tv/movies/anticipated?limit=20';
+                var currId = element.ids.tmdb;
+                var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US&append_to_response=release_dates`;
+                var imageRes = await fetch(currURL, { method: 'GET' });
+                var temp = await imageRes.json();
 
-        var anticipatedRes = await fetch(url3, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'trakt-api-version': '2',
-                'trakt-api-key': traktID
+                element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
+                element.details = temp;
             }
-        })
 
-        var anticipated = await anticipatedRes.json();
+            const url3 = 'https://api.trakt.tv/movies/anticipated?limit=20';
 
-        for (let i = 0; i < anticipated.length; i++) {
-            const element = anticipated[i].movie;
+            var anticipatedRes = await fetch(url3, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'trakt-api-version': '2',
+                    'trakt-api-key': traktID
+                }
+            })
 
-            var currId = element.ids.tmdb;
-            var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
-            var imageRes = await fetch(currURL, { method: 'GET' });
-            var temp = await imageRes.json();
+            var anticipated = await anticipatedRes.json();
 
-            element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
-            element.details = temp;
+            for (let i = 0; i < anticipated.length; i++) {
+                const element = anticipated[i].movie;
+
+                var currId = element.ids.tmdb;
+                var currURL = `https://api.themoviedb.org/3/movie/${currId}?api_key=${tmdbKey}&language=en-US`;
+                var imageRes = await fetch(currURL, { method: 'GET' });
+                var temp = await imageRes.json();
+
+                element.imageurl = "https://image.tmdb.org/t/p/original" + temp.backdrop_path;
+                element.details = temp;
+            }
+
+            const hours = 24;
+            cache.put('/api/trending-movies', { trending, popular, anticipated }, hours * 1000 * 60 * 60);
+
+            res.status(200).json({ trending, popular, anticipated })
         }
-
-        res.status(200).json({ trending, popular, anticipated })
     } catch (err) {
         console.log("ERROR!: " + err);
         res.status(500).json({ error: 'failed to load data' })
