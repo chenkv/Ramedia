@@ -9,26 +9,42 @@ export default async function handler(req, res) {
     const query = `SELECT bookmarks FROM user_movies WHERE id=${user.id};`;
     const response = await conn.query(query);
 
-    let result = [];
+    let movieres = [];
 
-    if (!response.rows[0].bookmarks) {
-      res.status(200).json({ result: [] });
-      return;
+    if (response.rows[0].bookmarks) {
+      for (let i = 0; i < response.rows[0].bookmarks.length; i++) {
+        let element = response.rows[0].bookmarks[i];
+  
+        let curr = await fetch(`https://api.themoviedb.org/3/find/${element}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
+        curr = await curr.json();
+  
+        movieres.push({
+          id: element,
+          details: curr.movie_results[0]
+        });
+      }
     }
 
-    for (let i = 0; i < response.rows[0].bookmarks.length; i++) {
-      let element = response.rows[0].bookmarks[i];
+    const query1 = `SELECT shows FROM user_shows WHERE id=${user.id};`;
+    const response1 = await conn.query(query1);
 
-      let curr = await fetch(`https://api.themoviedb.org/3/find/${element}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
-      curr = await curr.json();
+    let showres = [];
 
-      result.push({
-        id: element,
-        details: curr.movie_results[0]
-      });
+    if (response1.rows[0].shows) {
+      for (let i = 0; i < response1.rows[0].shows.length; i++) {
+        let element = response1.rows[0].shows[i];
+  
+        let curr = await fetch(`https://api.themoviedb.org/3/find/${element.imdb_id}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
+        curr = await curr.json();
+  
+        showres.push({
+          id: element,
+          details: curr.tv_results[0]
+        });
+      }
     }
 
-    res.status(200).json({ result: result });
+    res.status(200).json({ movieres, showres });
   } catch (error) {
     console.log(error);
     res.status(400);

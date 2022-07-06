@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         let element = response.rows[0].shows[i];
 
         if (element.imdb_id == data.imdb_id) {
-          res.status(400).json({ error: "Movie already added to watchlist" });
+          res.status(400).json({ error: "Show already added to watchlist" });
           return;
         }
       }

@@ -134,7 +134,7 @@ export default function MoviesHome() {
                   if (element.background_image) {
                     return (
                       <div key={element.name} id={data.trending.results.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
-                        <Link href={`/movie/${element.id}`}>
+                        <Link href={`/game/${element.id}`}>
                           <a>
                             <Image src={element.background_image} alt={element.name} width={1493} height={839} layout='raw'
                               className='w-full lg:rounded-r-3xl lg:shadow-[4px_4px_10px_0px_rgba(0,0,0,0.5)]

@@ -9,7 +9,6 @@ import Link from 'next/link';
 export default function Home() {
   const user = useUser();
   const [ watchlist, setWatchlist ] = useState(null);
-  const [ tvlist, setTvlist ] = useState(null);
   
   useEffect(() => {
     async function getData() {
@@ -44,16 +43,16 @@ export default function Home() {
     window.location.href = '/landing';
   }
 
-  let watchlistHTML;
+  let watchlistHTML, tvlistHTML;
   if (watchlist) {
     watchlistHTML = (
       <div className='flex flex-row'>
         {
-          watchlist.result.map((element) => (
+          watchlist.movieres.map((element) => (
             <div className='relative w-[15vw]'>
               <Link href={"/movie/" + element.id}>
                 <a>
-                  <Image src={"https://image.tmdb.org/t/p/original" + element.details.poster_path} width={300} height={450} layout='raw'
+                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} width={300} height={450} layout='raw'
                     className='rounded-3xl' />
                 </a>
               </Link>
@@ -62,13 +61,21 @@ export default function Home() {
         }
       </div>
     )
-  }
 
-  let tvlistHTML;
-  if (tvlist) {
     tvlistHTML = (
-      <div>
-
+      <div className='flex flex-row'>
+        {
+          watchlist.showres.map((element) => (
+            <div className='relative w-[15vw]'>
+              <Link href={"/series/" + element.id}>
+                <a>
+                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} width={300} height={450} layout='raw'
+                    className='rounded-3xl' />
+                </a>
+              </Link>
+            </div>
+          ))
+        }
       </div>
     )
   }
