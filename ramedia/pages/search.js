@@ -14,7 +14,7 @@ export default function Search() {
     var data;
     
     if (keyword) {
-        console.log("Keyword is " + keyword);
+        // console.log("Keyword is " + keyword);
         data = {
             title: keyword,
             movie: document.getElementById("m").checked,
@@ -23,8 +23,6 @@ export default function Search() {
             page_number: pageNum
         }
         updateData();
-    } else {
-        console.log("NO KEYWORD!");
     }
 
     const handleSubmit = async (event) => {
@@ -52,7 +50,7 @@ export default function Search() {
             return;
         }
 
-        console.log(response);
+        // console.log(response);
 
         var movieHTML;
         if (response.movieRes) {
@@ -122,7 +120,7 @@ export default function Search() {
         <Layout>
             <div>
                 <Head>
-                    <title>Ramedia</title>
+                    <title>Mimir</title>
                 </Head>
                 <main className="flex flex-col">
                     <div className="flex w-screen py-8 px-8 items-center">
