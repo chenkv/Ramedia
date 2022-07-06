@@ -65,11 +65,11 @@ export default function Landing() {
                   Mimir is a <b>SOLO</b> project by a <b>COLLEGE STUDENT</b> and has only been born for a couple of weeks. It turns out that
                   developing a website from scratch is no easy feat! However, I am passionate about all things media from movies, to shows,
                   to video games, and music! That means that I will always be working on this website to make it better. Currently, the
-                  website has some very basic features down like tracking a movie or show, marking them as watched, and viewing details about
-                  them. However, there are big plans and big dreams ready to make this website a bajillion times better. There are ideas to
-                  maybe implement tracking music and keeping an eye on future albums to be released by your favorite artists and, just maybe,
-                  Spotify™. There are also ideas to add more community features like creating lists and sharing them with your friends!
-                  Bookmark me if you want to keep an eye out on future updates!
+                  website has some very basic features down like tracking a movie or show, marking a movie as watched, and viewing details
+                  about them. However, there are big plans and big dreams ready to make this website a bajillion times better. There are
+                  ideas to maybe implement tracking music and keeping an eye on future albums to be released by your favorite artists and,
+                  just maybe, Spotify™. There are also ideas to add more community features like creating lists and sharing them with your
+                  friends! Bookmark me if you want to keep an eye out on future updates!
                 </p>
               </div>
             </div>
