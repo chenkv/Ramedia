@@ -3,30 +3,33 @@ import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
 import { useUser } from '@auth0/nextjs-auth0'
 
-export default function Home() {
-  const user = useUser();
-
-  if (user.isLoading) return <div>Loading...</div>
-
-  async function buttonPress() {
-    console.log("YEP!");
-
-    // var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-    // userInfo = await userInfo.json();
-
-    // let response = await fetch('/api/trakt/get-history', { 
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     user: userInfo.res
-    //   })
-    // })
-
-    // response = await response.json();
-    // console.log(response);
-  }
+export default function Landing() {
+  let QA = [
+    {
+      question: 'Why is the website so ugly?',
+      answer: 'Well sorry, I am a computer science student not a graphic designer.'
+    },
+    {
+      question: 'Your website doesn\'t work on smaller screens?',
+      answer: 'Please view this website on a laptop or something with a bigger monitor. Mobile optimization takes some work but I will be sure to get on it ASAP.'
+    },
+    {
+      question: 'Does your website work with Trakt.tv?',
+      answer: 'Yes! Well, kinda. The plan is to eventually have full implementation with Trakt.tv since it is a great place to backup your movie/tv data to. Currently, when you mark a movie as watched, it will add it to your Trakt.tv history with the date and time set to the moment you click the button. Keep an eye out for more features!'
+    },
+    {
+      question: 'What is your logo?',
+      answer: 'Actually there isn\'t a logo yet. In fact I\'m not even fully committed to the name. The website is being built with Next.js so the logo in the navbar and footer is the Vercel™ logo lol.'
+    },
+    {
+      question: 'Why did you deploy an ugly, half-baked, barely functional app?',
+      answer: 'Ouch. Well I\'m going to keep working on this project, but I just wanted to get a basic version out there first for various reasons.'
+    },
+    {
+      question: 'What are your future plans?',
+      answer: 'There are big plans in store! I am currently going to finishing adding more features to this website and work on polishing them. The design on the website also needs to be worked on. I am also thinking about adding music tracking abilities. Community wise, there are going to be more interactions with friends. You should be able to create lists and share them, talk to each other about your favorite things, and much more! Since this project will likely always remain a work-in-progress, I am also thinking about adding a way for anyone to send in suggestions and bugs for the app.'
+    }
+  ];
 
   return (
     <Layout>
@@ -37,25 +40,83 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div onClick={() => buttonPress()} className='z-50 bg-red-500 p-10 rounded-full cursor-pointer'>Testing</div>
-
-        {/* <main className='relative -z-50'>
-          <h1 className={styles.title}>
-            Mimir
+        <main className='-z-50 pb-4'>
+          <h1 className="text-3xl font-bold text-center py-8">
+            Welcome to Mimir!
           </h1>
 
-          
+          <div className='flex flex-col '>
+            <div className='bg-[#FF971D] w-3/4 py-4 rounded-r-3xl mb-20'>
+              <h2 className='text-center text-2xl font-semibold'>What is Mimir?</h2>
+              <p className='font-semibold px-4 mt-4'>
+                Mimir is a solo project by a college student that just really loves movies, TV shows, and video games. Frustrated by the lack
+                of apps for media enthusiasts to track all the things they love, Mimir is a way to keep track of what you want to watch or
+                play as well as record what you've already seen. It's tough to remember what you've seen and what you want to see or play,
+                so let us remember for you!
+              </p>
+            </div>
 
-          <div className='w-screen h-[60vh] bg-[#FF971D] skew-y-12 translate-y-20 -z-10 relative'>
+            <div className='flex'>
+              <div className='grow' />
+
+              <div className='bg-[#FF971D] w-3/4 py-4 rounded-l-3xl'>
+                <h2 className='text-center text-2xl font-semibold'>Why is the website so... incomplete?</h2>
+                <p className='font-semibold px-4 mt-4'>
+                  Mimir is a <b>SOLO</b> project by a <b>COLLEGE STUDENT</b> and has only been born for a couple of weeks. It turns out that
+                  developing a website from scratch is no easy feat! However, I am passionate about all things media from movies, to shows,
+                  to video games, and music! That means that I will always be working on this website to make it better. Currently, the
+                  website has some very basic features down like tracking a movie or show, marking them as watched, and viewing details about
+                  them. However, there are big plans and big dreams ready to make this website a bajillion times better. There are ideas to
+                  maybe implement tracking music and keeping an eye on future albums to be released by your favorite artists and, just maybe,
+                  Spotify™. There are also ideas to add more community features like creating lists and sharing them with your friends!
+                  Bookmark me if you want to keep an eye out on future updates!
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className='w-screen h-[100vh] bg-[#FFFFFF] -skew-y-[8deg] -translate-y-[19vh] -z-20 relative'></div>
+          <div className='flex flex-col items-center mx-8 mt-20 pt-4 border-t-4 border-gray-300'>
+            <h2 className='text-3xl font-semibold'>FAQ</h2>
+            <h3>By mostly my parents</h3>
 
-          <div className='w-[100vw] h-[100vw] rounded-full bg-transparent outline-[4rem] outline-[#FF971D] outline absolute z-10 -right-[10vw] top-[40vh]'></div>
-          <div className='w-[100vw] h-[100vw] rounded-full bg-transparent outline-[4rem] outline-[#FFFFFF] outline absolute z-0 -right-[11vw] top-[40vh]'></div>
+            {
+              QA.map((element) => (
+                <div key={element.question} className='w-full mt-6'>
+                  <h4 className='text-xl font-semibold mb-2'>{element.question}</h4>
+                  <p>{element.answer}</p>
+                </div>
+              ))
+            }
 
-          <div className='w-screen h-screen bg-[#FF971D] -translate-y-[30vh] -z-30 relative'></div>
-        </main> */}
+            <div className='w-full mt-6'>
+              <h4 className='text-xl font-semibold mb-2'>Are you going to give credit where credit is due?</h4>
+              <p>
+                Yep, yep, sorry! Most of the movie and show details
+                are coming from&nbsp;
+                <a href='https://www.themoviedb.org/' target="_blank" className='font-semibold text-blue-800 underline'>TMDB</a>
+                &nbsp;and&nbsp;
+                <a href='https://trakt.tv/' target="_blank" className='font-semibold text-blue-800 underline'>Trakt.tv</a>
+                . A lot of the images and artwork are coming from&nbsp;
+                <a href='https://fanart.tv/' target="_blank" className='font-semibold text-blue-800 underline'>fanart.tv</a>
+                . The game data and images are coming from&nbsp;
+                <a href='https://rawg.io/' target="_blank" className='font-semibold text-blue-800 underline'>Rawg.io</a>
+                . The data, if you choose, is backed up to&nbsp;
+                <a href='https://trakt.tv/' target="_blank" className='font-semibold text-blue-800 underline'>Trakt.tv</a>
+                . These communities, platforms, and databases are amazing for letting me use their data for free, so please support them!
+              </p>
+            </div>
+
+            <div className='w-full mt-6'>
+              <h4 className='text-xl font-semibold mb-2'>I want to contact you.</h4>
+              <p>
+                Well that's not really a question but go right on ahead! I'm very friendly and won't bite. Shoot me an email at&nbsp;
+                <a href='mailto: chen.kevin885@gmail.com' target="_blank" className='font-semibold text-blue-800 underline'>
+                  chen.kevin885@gmail.com
+                </a>.
+              </p>
+            </div>
+          </div>
+        </main>
       </div>
     </Layout>
   )
