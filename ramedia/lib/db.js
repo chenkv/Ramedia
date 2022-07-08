@@ -1,3 +1,16 @@
+// const { Client } = require('pg');
+
+// const conn = new Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
+// conn.connect();
+
+// export default conn;
+
 import { Pool } from "pg";
 
 let conn;

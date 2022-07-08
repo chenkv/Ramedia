@@ -180,7 +180,7 @@ export default function MoviesHome() {
               </div>
             </div>
 
-            <div className='lg:max-h-full lg:h-auto sm:h-[30vh] h-[40vh] flex flex-col z-10 overflow-hidden'>
+            <div className='lg:max-h-full lg:h-auto sm:h-[30vh] h-fit flex flex-col z-10 overflow-hidden'>
               <h1 id='title' className='2xl:text-3xl 2xl:max-h-20 xl:text-2xl xl:max-h-24 xl:px-4
                                         lg:text-xl lg:max-h-14 lg:px-2 lg:whitespace-normal md:text-3xl md:mt-6
                                         sm:text-2xl sm:px-2 sm:truncate sm:mt-4 text-xl mt-4

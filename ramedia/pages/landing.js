@@ -45,13 +45,13 @@ export default function Landing() {
             Welcome to Mimir!
           </h1>
 
-          <div className='flex flex-col '>
+          <div className='flex flex-col'>
             <div className='bg-[#FF971D] w-3/4 py-4 rounded-r-3xl mb-20'>
               <h2 className='text-center text-2xl font-semibold'>What is Mimir?</h2>
               <p className='font-semibold px-4 mt-4'>
                 Mimir is a solo project by a college student that just really loves movies, TV shows, and video games. Frustrated by the lack
                 of apps for media enthusiasts to track all the things they love, Mimir is a way to keep track of what you want to watch or
-                play as well as record what you've already seen. It's tough to remember what you've seen and what you want to see or play,
+                play as well as record what you&rsquo;ve already seen. It&rsquo;s tough to remember what you&rsquo;ve seen and what you want to see or play,
                 so let us remember for you!
               </p>
             </div>
@@ -93,15 +93,15 @@ export default function Landing() {
               <p>
                 Yep, yep, sorry! Most of the movie and show details
                 are coming from&nbsp;
-                <a href='https://www.themoviedb.org/' target="_blank" className='font-semibold text-blue-800 underline'>TMDB</a>
+                <a href='https://www.themoviedb.org/' rel="noopener" className='font-semibold text-blue-800 underline'>TMDB</a>
                 &nbsp;and&nbsp;
-                <a href='https://trakt.tv/' target="_blank" className='font-semibold text-blue-800 underline'>Trakt.tv</a>
+                <a href='https://trakt.tv/' rel="noopener" className='font-semibold text-blue-800 underline'>Trakt.tv</a>
                 . A lot of the images and artwork are coming from&nbsp;
-                <a href='https://fanart.tv/' target="_blank" className='font-semibold text-blue-800 underline'>fanart.tv</a>
+                <a href='https://fanart.tv/' rel="noopener" className='font-semibold text-blue-800 underline'>fanart.tv</a>
                 . The game data and images are coming from&nbsp;
-                <a href='https://rawg.io/' target="_blank" className='font-semibold text-blue-800 underline'>Rawg.io</a>
+                <a href='https://rawg.io/' rel="noopener" className='font-semibold text-blue-800 underline'>Rawg.io</a>
                 . The data, if you choose, is backed up to&nbsp;
-                <a href='https://trakt.tv/' target="_blank" className='font-semibold text-blue-800 underline'>Trakt.tv</a>
+                <a href='https://trakt.tv/' rel="noopener" className='font-semibold text-blue-800 underline'>Trakt.tv</a>
                 . These communities, platforms, and databases are amazing for letting me use their data for free, so please support them!
               </p>
             </div>
@@ -109,8 +109,8 @@ export default function Landing() {
             <div className='w-full mt-6'>
               <h4 className='text-xl font-semibold mb-2'>I want to contact you.</h4>
               <p>
-                Well that's not really a question but go right on ahead! I'm very friendly and won't bite. Shoot me an email at&nbsp;
-                <a href='mailto: chen.kevin885@gmail.com' target="_blank" className='font-semibold text-blue-800 underline'>
+                Well that&rsquo;s not really a question but go right on ahead! I&rsquo;m very friendly and won&rsquo;t bite. Shoot me an email at&nbsp;
+                <a href='mailto: chen.kevin885@gmail.com' rel="noopener" className='font-semibold text-blue-800 underline'>
                   chen.kevin885@gmail.com
                 </a>.
               </p>

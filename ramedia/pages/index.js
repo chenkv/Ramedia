@@ -5,10 +5,13 @@ import useSWR from 'swr';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import SideBar from '../components/SideBar';
+import DashboardOption from '../components/DashboardOption';
 
 export default function Home() {
   const user = useUser();
   const [ watchlist, setWatchlist ] = useState(null);
+  const [ page, setPage ] = useState("Watchlist");
   
   useEffect(() => {
     async function getData() {
@@ -35,7 +38,7 @@ export default function Home() {
     }
 
     getData();
-  }, [user.isLoading])
+  }, [user.isLoading, user.user])
 
   if (user.isLoading) return <div>Loading...</div>
   if (user.error) return <div>Error!</div>
@@ -49,10 +52,10 @@ export default function Home() {
       <div className='flex flex-row'>
         {
           watchlist.movieres.map((element) => (
-            <div className='relative w-[15vw]'>
+            <div key={element.details.title} className='relative w-[15vw]'>
               <Link href={"/movie/" + element.id}>
                 <a>
-                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} width={300} height={450} layout='raw'
+                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.title} width={300} height={450} layout='raw'
                     className='rounded-3xl' />
                 </a>
               </Link>
@@ -66,10 +69,10 @@ export default function Home() {
       <div className='flex flex-row'>
         {
           watchlist.showres.map((element) => (
-            <div className='relative w-[15vw]'>
+            <div key={element.details.name} className='relative w-[15vw]'>
               <Link href={"/series/" + element.id}>
                 <a>
-                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} width={300} height={450} layout='raw'
+                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
                     className='rounded-3xl' />
                 </a>
               </Link>
@@ -80,7 +83,10 @@ export default function Home() {
     )
   }
 
-  // console.log(watchlist);
+  console.log(page);
+  const updateChoice = (option) => {
+    setPage(option);
+  }
 
   return (
     <Layout>
@@ -92,14 +98,23 @@ export default function Home() {
         </Head>
 
         <main>
-          <div className='text-center'>
-            <h1 className='text-3xl py-4'>Movies on your watchlist</h1>
-            { watchlistHTML }
-          </div>
+          <div className='flex'>
+            
+            <SideBar handler={updateChoice} />
 
-          <div className='text-center mt-4'>
-            <h1 className='text-3xl py-4'>TV Shows Tracked</h1>
-            { tvlistHTML }
+            <DashboardOption page={page} />
+
+            {/* <div className='ml-4 w-full'>
+              <div className='text-center'>
+                <h1 className='text-3xl py-4'>Movies on your watchlist</h1>
+                { watchlistHTML }
+              </div>
+
+              <div className='text-center mt-4'>
+                <h1 className='text-3xl py-4'>TV Shows Tracked</h1>
+                { tvlistHTML }
+              </div>
+            </div> */}
           </div>
         </main>
       </div>

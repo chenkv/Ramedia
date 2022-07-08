@@ -33,4 +33,14 @@ a {
   .card {
     @apply items-center rounded-xl text-center scroll-ml-10 snap-start shrink-0;
   }
+
+  .sidebar-icon {
+    @apply relative flex items-center justify-center h-12 w-12 my-2 mx-auto shadow-lg bg-[#ece7e7] text-[#FF971D] hover:bg-[#FF971D]
+    hover:text-white rounded-3xl hover:rounded-xl transition-all duration-[200ms] ease-linear cursor-pointer;
+  }
+
+  .sidebar-tooltip {
+    @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-lg text-white bg-[#FF971D] text-sm font-semibold tracking-wider
+    transition-all duration-100 scale-0 origin-left select-none z-50;
+  }
 }
