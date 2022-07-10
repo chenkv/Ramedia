@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     const user = req.body.user;
 
     let query = `SELECT bookmarks FROM user_movies WHERE id=${user.id};`;
-    const response = await conn.query(query);
+    let response = await conn.query(query);
 
     if (response.rows[0].bookmarks) {
       for (let i = 0; i < response.rows[0].bookmarks.length; i++) {
@@ -13,6 +13,20 @@ export default async function handler(req, res) {
 
         if (element == req.body.imdb_id) {
           res.status(400).json({ error: "Movie already added to watchlist" });
+          return;
+        }
+      }
+    }
+
+    query = `SELECT watched FROM user_movies WHERE id=${user.id};`;
+    response = await conn.query(query);
+
+    if (response.rows[0].watched) {
+      for (let i = 0; i < response.rows[0].watched.length; i++) {
+        let element = response.rows[0].watched[i];
+
+        if (element.id == req.body.imdb_id) {
+          res.status(400).json({ error: "Movie already seen" });
           return;
         }
       }

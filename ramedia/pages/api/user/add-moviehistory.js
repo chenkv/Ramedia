@@ -5,13 +5,39 @@ export default async function handler(req, res) {
   try {
     const user = req.body.user;
 
-    const query = `UPDATE user_movies SET watched = (
+    let query = `SELECT bookmarks FROM user_movies WHERE id=${user.id};`;
+    let result = await conn.query(query);
+
+    if (result.rows[0].bookmarks) {
+      for (let i = 0; i < result.rows[0].bookmarks.length; i++) {
+        let element = result.rows[0].bookmarks[i];
+
+        if (element == req.body.imdb_id) {
+          var body = {
+            user: user,
+            id: req.body.imdb_id,
+          }
+      
+          const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+          };
+      
+          fetch(`${base}/api/user/delete-watchlist`, options);
+        }
+      }
+    }
+
+    query = `UPDATE user_movies SET watched = (
                       CASE
                           WHEN watched IS NULL THEN '[]'::JSONB
                           ELSE watched
                       END
                   ) || '[{"id": "${req.body.imdb_id}", "time": "${req.body.date}"}]'::JSONB WHERE id = ${user.id};`
-    const result = await conn.query(query);
+    result = await conn.query(query);
 
     var body = {
       user: user,
