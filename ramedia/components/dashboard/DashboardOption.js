@@ -41,19 +41,26 @@ export default function DashboardOption({ page, user }) {
   if (page == "Watchlist") {
     let watchlistHTML, tvlistHTML;
     if (watchlist) {
+      let result = [];
+      for (let i = 0; i < 6; i++) {
+        const element = watchlist.movieres[i];
+
+        result.push(
+          <div className='relative w-[15vw]'>
+            <Link href={"/movie/" + element.id}>
+              <a>
+                <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.title} width={500} height={750} layout='raw'
+                  className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
+              </a>
+            </Link>
+          </div>
+        )
+      }
+
       watchlistHTML = (
         <div className='grid gap-4 grid-cols-6'>
           {
-            watchlist.movieres.map((element) => (
-              <div key={element.details.title} className='relative w-[15vw]'>
-                <Link href={"/movie/" + element.id}>
-                  <a>
-                    <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.title} width={500} height={750} layout='raw'
-                      className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
-                  </a>
-                </Link>
-              </div>
-            ))
+            result.map((element) => element)
           }
         </div>
       )

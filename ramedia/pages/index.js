@@ -1,12 +1,9 @@
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { useUser } from '@auth0/nextjs-auth0'
-import useSWR from 'swr';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import SideBar from '../components/SideBar';
-import DashboardOption from '../components/DashboardOption';
+import { useState } from 'react';
+import SideBar from '../components/dashboard/SideBar';
+import DashboardOption from '../components/dashboard/DashboardOption';
 
 export default function Home() {
   const user = useUser();

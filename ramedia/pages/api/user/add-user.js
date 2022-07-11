@@ -25,6 +25,9 @@ export default async function handler(req, res) {
       query = `INSERT INTO user_shows(id, shows, favorites) VALUES ('${userID}', NULL, NULL);`
       result_insert = await conn.query(query);
 
+      query = `INSERT INTO user_lists(id, lists) VALUES ('${userID}', NULL);`
+      result_insert = await conn.query(query);
+
       res.status(200).json({ result: "Successfully added user" });
     }
 
