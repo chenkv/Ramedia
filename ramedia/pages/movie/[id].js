@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Image from 'next/image';
 import MovieOptions from '../../components/MovieOptions';
+import { useEffect, useState } from 'react';
 
 const fetcher = async url => {
   const res = await fetch(url);
