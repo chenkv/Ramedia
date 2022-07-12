@@ -216,7 +216,7 @@ export default function MoviePage() {
               </div>
             </div>
 
-            <div className='flex mt-8'>
+            <div className='flex mt-8 pb-4'>
               <div className='flex-none'>
                 <div className='w-48 px-6 py-2 ml-4 mt-8 border-r-2 border-black'>
                   <h2 className='text-3xl font-semibold tracking-wider'>Cast</h2>
