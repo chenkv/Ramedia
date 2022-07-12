@@ -53,7 +53,7 @@ export default function Search() {
         // console.log(response);
 
         var movieHTML;
-        if (response.movieRes) {
+        if (response.movieRes && response.movieRes.results.length > 0) {
             movieHTML = (
                 <div>
                     <div className="text-center mt-6">
@@ -84,7 +84,7 @@ export default function Search() {
         root.render(movieHTML);
 
         var showHTML;
-        if (response.showRes) {
+        if (response.showRes && response.showRes.results.length > 0) {
             showHTML = (
                 <div>
                     <div className="text-center mt-6">
