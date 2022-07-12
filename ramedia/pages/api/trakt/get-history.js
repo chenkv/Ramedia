@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     response = await response.json();
     let token = response.rows[0].trakt_token;
 
-    let response1 = await fetch(`https://api.trakt.tv/sync/history`, {
+    let response1 = await fetch(`https://api.trakt.tv/sync/history/movies`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       }
     });
 
-    response1 = await response1.json();
+    // response1 = await response1.json();
 
     res.status(200).json(response1);
   } catch (error) {

@@ -31,3 +31,17 @@ Color Scheme:
 #FF971D
 
 Heroicons: https://heroicons.com/
+
+List format:
+[
+  {
+    title: "Favorites",
+    description: "My favorite media things",
+    items: [{type: "movie", id: "123tytr"}, {type: "show", id: "2342170t"}]
+  },
+  {
+    title: "Hate",
+    description: "My least favorite media things",
+    items: [{type: "movie", id: "123tytr"}, {type: "show", id: "2342170t"}]
+  }
+]

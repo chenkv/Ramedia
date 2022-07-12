@@ -106,8 +106,8 @@ export default function MoviesHome() {
         genreContainer.appendChild(temp);
       }      
 
-      document.getElementById('vote').innerHTML = data.popular[slideIndex - 1].movie.details.vote_average.toString().slice(0, 3) + "/10";
-      document.getElementById('vote2').innerHTML = data.popular[slideIndex - 1].movie.details.vote_average.toString().slice(0, 3) + "/10";
+      document.getElementById('vote').innerHTML = data.popular[slideIndex - 1].movie.details.vote_average.toFixed(1) + "/10";
+      document.getElementById('vote2').innerHTML = data.popular[slideIndex - 1].movie.details.vote_average.toFixed(1) + "/10";
     }
   }
 

@@ -179,7 +179,7 @@ export default function SeriesPage() {
                           0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0
                           00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
-                      <p className='text-2xl font-semibold tracking-wider'>{data.data.result.vote_average}/10</p>
+                      <p className='text-2xl font-semibold tracking-wider'>{data.data.result.vote_average.toFixed(1)}/10</p>
                     </div>
                   </div>
 

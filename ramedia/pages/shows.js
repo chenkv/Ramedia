@@ -97,7 +97,7 @@ export default function MoviesHome() {
         genreContainer.appendChild(temp);
       }      
 
-      document.getElementById('vote').innerHTML = data.popular[slideIndex - 1].show.details.vote_average.toString().slice(0, 3) + "/10";
+      document.getElementById('vote').innerHTML = data.popular[slideIndex - 1].show.details.vote_average.toFixed(1) + "/10";
     }
   }
 
