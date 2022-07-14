@@ -1,0 +1,20 @@
+@keyframes fade_in {
+  0% {opacity: 0%;}
+  100% {opacity: 100%;}
+}
+
+.fadeIn {
+  animation-name: fade_in;
+  animation-duration: 1s;
+
+}
+
+@keyframes fade_out {
+  0% {opacity: 100%;}
+  100% {opacity: 0%;}
+}
+
+.fadeOut {
+  animation-name: fade_out;
+  animation-duration: 1s;
+}

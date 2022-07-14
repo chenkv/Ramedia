@@ -54,11 +54,11 @@ export default async function handler(req, res) {
       body: JSON.stringify(body)
     };
 
-    var response = await fetch(`${base}/api/trakt/add-history`, options);
+    await fetch(`${base}/api/trakt/add-history`, options);
 
-    res.status(200);
+    res.status(200).end();
   } catch (error) {
     console.log(error);
-    res.status(400);
+    res.status(400).end();
   }
 }

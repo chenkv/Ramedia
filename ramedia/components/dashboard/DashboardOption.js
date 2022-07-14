@@ -45,16 +45,18 @@ export default function DashboardOption({ page, user }) {
       for (let i = 0; i < 6; i++) {
         const element = watchlist.movieres[i];
 
-        result.push(
-          <div className='relative w-[15vw]'>
-            <Link href={"/movie/" + element.id}>
-              <a>
-                <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.title} width={500} height={750} layout='raw'
-                  className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
-              </a>
-            </Link>
-          </div>
-        )
+        if (element) {
+          result.push(
+            <div className='relative w-[15vw]'>
+              <Link href={"/movie/" + element.id}>
+                <a>
+                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.title} width={500} height={750} layout='raw'
+                    className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
+                </a>
+              </Link>
+            </div>
+          )
+        }
       }
 
       watchlistHTML = (
@@ -70,7 +72,7 @@ export default function DashboardOption({ page, user }) {
           {
             watchlist.showres.map((element) => (
               <div key={element.details.name} className='relative w-[15vw]'>
-                <Link href={"/series/" + element.id}>
+                <Link href={"/series/" + element.id.imdb_id}>
                   <a>
                     <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
                       className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
