@@ -28,24 +28,7 @@ export default async function handler(req, res) {
                   ) || '[${JSON.stringify(data)}]'::JSONB WHERE id = ${user.id};`
     const result = await conn.query(query);
 
-    // var body = {
-    //   user: user,
-    //   imdb_id: req.body.imdb_id,
-    //   date: req.body.date,
-    //   movie: true
-    // }
-
-    // const options = {
-    //   method: 'POST',
-    //   headers: {
-    //       'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body)
-    // };
-
-    // var response = await fetch(`${base}/api/trakt/add-history`, options);
-
-    res.status(200);
+    res.status(200).end();
   } catch (error) {
     console.log(error);
     res.status(400);

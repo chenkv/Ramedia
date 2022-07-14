@@ -1,132 +1,142 @@
-export default function SeriesOptions({ user, showID, showData }) {
+import { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
+import styles from '../styles/MovieOptions.module.css'
+
+export default function SeriesOptions({ user, showID, showData, info }) {
+  const [ trackedRoot, setTrackedRoot ] = useState(null);
+
+  useEffect(() => {
+    if (!trackedRoot) {
+      setTrackedRoot(createRoot(document.getElementById("trackedButton")));
+    }
+  }, [])
+
   if (user.user == null) {
     return (
       <div className="text-center">
-        <p className="text-2xl font-semibold">Login to keep track of your movie habits!</p>
+        <p className="text-2xl font-semibold">Login to keep track of your tv habits!</p>
       </div>
     );
   }
 
   async function trackShow() {
-    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-    userInfo = await userInfo.json();
+    let button = document.getElementById("trackedButton");
+    let icon = document.getElementById("trackicon");
 
-    console.log(showData)
-    var body = {
-      user: userInfo.res,
-      data: {
-        imdb_id: showID,
-        num_of_episodes: showData.number_of_episodes,
-        seasons: []
-      }
-    };
+    icon.classList.add(styles.fadeOut);
 
-    for (let i = 1; i <= showData.number_of_seasons; i++) {
-      for (let curr of showData.seasons) {
-        if (curr.season_number == i) {
-          body.data.seasons.push({
-            season: curr.season_number,
-            num_of_episodes: curr.episode_count,
-            watched: []
-          })
+    trackedRoot.render(<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="h-12 w-12" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"/><path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"><animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"/></path></svg>);
+    button.disabled = true;
+
+    if (!info.tracked) {
+      var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+      userInfo = await userInfo.json();
+
+      var body = {
+        user: userInfo.res,
+        data: {
+          imdb_id: showID,
+          num_of_episodes: showData.number_of_episodes,
+          seasons: []
+        }
+      };
+
+      for (let i = 1; i <= showData.number_of_seasons; i++) {
+        for (let curr of showData.seasons) {
+          if (curr.season_number == i) {
+            body.data.seasons.push({
+              season: curr.season_number,
+              num_of_episodes: curr.episode_count,
+              watched: []
+            })
+          }
         }
       }
+
+      const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      };
+
+      await fetch('/api/user/add-series', options);
+      button.disabled = false;
+
+      trackedRoot.render(
+        <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#00BF60">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+        </svg>
+      )
+    } else {
+      // var body = {
+      //   user: userInfo.res,
+      //   id: movieID
+      // }
+
+      // const options = {
+      //   method: 'POST',
+      //   headers: {
+      //       'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(body)
+      // };
+
+      // await fetch('/api/user/delete-watchlist', options);
+      // button.disabled = false;
+
+      trackedRoot.render(
+        <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className={`h-12 w-12 ${styles.fadeIn}`}
+          preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#ff971d" d="M19.447 5.345A3.27
+          3.27 0 0 0 16.29 3a3.293 3.293 0 0 0-3.277 3h-2.025a3.297 3.297 0 0 0-3.284-3a3.268 3.268 0 0 0-3.151
+          2.345l-2.511 8.368A1.027 1.027 0 0 0 2 14v1a5.006 5.006 0 0 0 5.001 5a5.003 5.003 0 0 0 4.576-3h.846a5.003
+          5.003 0 0 0 4.576 3A5.006 5.006 0 0 0 22 14.999V14c0-.098-.015-.194-.042-.287l-2.511-8.368zM7.001 18A3.005
+          3.005 0 0 1 4 15c0-.076.017-.147.022-.222A2.995 2.995 0 0 1 7 12a3 3 0 0 1 3 3v.009A3.004 3.004 0 0 1 7.001
+          18zm9.998 0A3.004 3.004 0 0 1 14 15.009V15a3 3 0 0 1 6-.001A3.005 3.005 0 0 1 16.999 18z"/></svg>
+      )
     }
-    console.log(body)
-
-    const options = {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    };
-
-    var response = await fetch('/api/user/add-series', options);
   }
 
-  // async function addToFavorites() {
-  //   var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-  //   userInfo = await userInfo.json();
-
-  //   let dateTime = new Date().toISOString();
-
-  //   var body = {
-  //     user: userInfo.res,
-  //     imdb_id: movieID,
-  //     date: dateTime,
-  //     movie: true
-  //   }
-
-  //   const options = {
-  //     method: 'POST',
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(body)
-  //   };
-
-  //   var response = await fetch('/api/user/add-favorite', options);
-  // }
-
-  // async function addToWatchlist() {
-  //   var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-  //   userInfo = await userInfo.json();
-
-  //   let dateTime = new Date().toISOString();
-
-  //   var body = {
-  //     user: userInfo.res,
-  //     imdb_id: movieID,
-  //     date: dateTime,
-  //     movie: true
-  //   }
-
-  //   const options = {
-  //     method: 'POST',
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(body)
-  //   };
-
-  //   var response = await fetch('/api/user/add-watchlist', options);
-  // }
+  console.log(info)
 
   return (
-    <div className='grow flex flex-col justify-center items-center'>
-      <div className='flex flex-col justify-center items-center w-3/12'>
-        <div className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => trackShow()}>
-          <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className='w-20 h-20'
-            preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#ff971d" d="M19.447 5.345A3.27
-            3.27 0 0 0 16.29 3a3.293 3.293 0 0 0-3.277 3h-2.025a3.297 3.297 0 0 0-3.284-3a3.268 3.268 0 0 0-3.151
-            2.345l-2.511 8.368A1.027 1.027 0 0 0 2 14v1a5.006 5.006 0 0 0 5.001 5a5.003 5.003 0 0 0 4.576-3h.846a5.003
-            5.003 0 0 0 4.576 3A5.006 5.006 0 0 0 22 14.999V14c0-.098-.015-.194-.042-.287l-2.511-8.368zM7.001 18A3.005
-            3.005 0 0 1 4 15c0-.076.017-.147.022-.222A2.995 2.995 0 0 1 7 12a3 3 0 0 1 3 3v.009A3.004 3.004 0 0 1 7.001
-            18zm9.998 0A3.004 3.004 0 0 1 14 15.009V15a3 3 0 0 1 6-.001A3.005 3.005 0 0 1 16.999 18z"/></svg>
-        </div>
-        <h3 className='text-3xl font-semibold'>Track</h3>
+    <div className='grow flex justify-center items-center'>
+      <div className='flex flex-col justify-center items-center w-2/4'>
+        <button id="trackedButton" className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => trackShow()}>
+            {
+              function () {
+                if (!info || !info.tracked) {
+                  return (
+                    <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className='w-12 h-12'
+                      preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="#ff971d" d="M19.447 5.345A3.27
+                      3.27 0 0 0 16.29 3a3.293 3.293 0 0 0-3.277 3h-2.025a3.297 3.297 0 0 0-3.284-3a3.268 3.268 0 0 0-3.151
+                      2.345l-2.511 8.368A1.027 1.027 0 0 0 2 14v1a5.006 5.006 0 0 0 5.001 5a5.003 5.003 0 0 0 4.576-3h.846a5.003
+                      5.003 0 0 0 4.576 3A5.006 5.006 0 0 0 22 14.999V14c0-.098-.015-.194-.042-.287l-2.511-8.368zM7.001 18A3.005
+                      3.005 0 0 1 4 15c0-.076.017-.147.022-.222A2.995 2.995 0 0 1 7 12a3 3 0 0 1 3 3v.009A3.004 3.004 0 0 1 7.001
+                      18zm9.998 0A3.004 3.004 0 0 1 14 15.009V15a3 3 0 0 1 6-.001A3.005 3.005 0 0 1 16.999 18z"/></svg>
+                  )
+                } else {
+                  return (
+                    <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#00BF60">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  )
+                }
+              } ()
+            }
+        </button>
+        <h3 className='text-lg font-semibold'>Track</h3>
       </div>
 
-      {/* <div className="w-full flex flex-row justify-center">
-        <div className='w-2/4 flex flex-col justify-center items-center'>
-          <div className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => addToFavorites()} >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#ff971d">
-              <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <h3 className='text-lg font-semibold'>Favorite</h3>
-        </div>
-
-        <div className='w-2/4 flex flex-col justify-center items-center'>
-          <div className='bg-[#FFE8D6] p-2 rounded-full cursor-pointer' onClick={e => addToWatchlist()} >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#ff971d">
-              <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-            </svg>
-          </div>
-          <h3 className='text-lg font-semibold'>Watchlist</h3>
-        </div>
-      </div> */}
+      <div className='flex flex-col justify-center items-center w-2/4'>
+        <button id="listButton" className='bg-[#FFE8D6] p-2 rounded-full' onClick={e => handleList()} >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 20 20" fill="#ff971d">
+            <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+          </svg>
+        </button>
+        <h3 className='text-lg font-semibold'>Lists</h3>
+      </div>
     </div>
   )
 

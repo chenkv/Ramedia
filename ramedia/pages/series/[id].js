@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Image from 'next/image';
 import SeriesOptions from '../../components/SeriesOptions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Seasons from '../../components/Seasons';
 
 const fetcher = async url => {
@@ -25,6 +25,56 @@ export default function SeriesPage() {
   const user = useUser();
   const router = useRouter();
   const data = useSWR(`/api/series-data?imdb_id=${router.query.id}`, fetcher)
+  const [ info, setInfo ] = useState(null);
+  const [ progress, setProgress ] = useState(0);
+
+  useEffect(() => {
+    async function getUserInfo() {
+      if (!user.isLoading && router.query.id) {
+        var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+        userInfo = await userInfo.json();
+
+        var body = {
+          user: userInfo.res,
+          imdb_id: router.query.id,
+        }
+    
+        const options = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        };
+    
+        let res = await fetch(`/api/user/get-seriesinfo`, options);
+        res = await res.json();
+        setInfo(res);
+      }
+    }
+
+    getUserInfo();
+  }, [user.isLoading, user.user, router.query.id])
+
+  // Update the progress bar
+  useEffect(() => {
+    if (info) {
+      let seen = 0;
+      for (let element in info.details.seasons) {
+        if (!element.watched) {
+          continue;
+        }
+        seen += element.watched.length;
+      }
+
+      let curr = document.getElementById("progressbar");
+      curr.setAttribute("style", "width:" + ((seen * 100) / info.details.num_of_episodes) + "%");
+
+      if (seen == info.details.num_of_episodes) {
+        curr.classList.add("rounded-r-full");
+      }
+    }
+  }, [info])
 
   if (data.error) {
     console.log(data.error.info);
@@ -183,12 +233,12 @@ export default function SeriesPage() {
                     </div>
                   </div>
 
-                  <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} />
+                  <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} info={info} />
                 </div>
 
                 <div className='grow flex items-end justify-center mb-10'>
                   <div className='grow bg-[#E0E0E0] h-6 rounded-full ml-6 shadow-[4px_4px_10px_0px_rgba(0,0,0,0.3)]'>
-                    <div className='w-1/3 h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full' />
+                    <div id='progressbar' className='w-0 h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full' />
                   </div>
                 </div>
                 
