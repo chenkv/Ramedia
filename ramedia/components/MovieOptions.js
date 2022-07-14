@@ -124,30 +124,6 @@ export default function MovieOptions({ user, movieID }) {
     console.log(info);
   }
 
-  async function addToFavorites() {
-    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-    userInfo = await userInfo.json();
-
-    let dateTime = new Date().toISOString();
-
-    var body = {
-      user: userInfo.res,
-      imdb_id: movieID,
-      date: dateTime,
-      movie: true
-    }
-
-    const options = {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    };
-
-    var response = await fetch('/api/user/add-favorite', options);
-  }
-
   async function addToWatchlist() {
     let button = document.getElementById("watchlistButton");
     let icon = document.getElementById("watchicon");
@@ -178,7 +154,16 @@ export default function MovieOptions({ user, movieID }) {
         body: JSON.stringify(body)
       };
 
-      await fetch('/api/user/add-watchlist', options);
+      let res = await fetch('/api/user/add-watchlist', options);
+      if (res.status != 200) {
+        button.disabled = false;
+        watchlistRoot.render(
+          <svg id="watchicon" xmlns="http://www.w3.org/2000/svg" className={`h-12 w-12 ${styles.fadeIn}`} viewBox="0 0 20 20" fill="#ff971d">
+            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+          </svg>
+        )
+        return;
+      }
       button.disabled = false;
 
       watchlistRoot.render(
@@ -247,29 +232,6 @@ export default function MovieOptions({ user, movieID }) {
           }
         </button>
         <h3 className='text-lg font-semibold'>Seen</h3>
-      </div>
-
-      <div className='flex flex-col justify-center items-center w-3/12'>
-        <button  className='bg-[#FFE8D6] p-2 rounded-full' onClick={e => addToFavorites()} >
-          {
-            function () {
-              if (!info || !info.favorited) {
-                return (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#ff971d">
-                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                  </svg>
-                )
-              } else {
-                return (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#00BF60">
-                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                  </svg>
-                )
-              }
-            } ()
-          }
-        </button>
-        <h3 className='text-lg font-semibold'>Favorite</h3>
       </div>
 
       <div className='flex flex-col justify-center items-center w-3/12'>
