@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import styles from '../styles/MovieOptions.module.css'
 
-export default function SeriesOptions({ user, showID, showData, info }) {
+export default function SeriesOptions({ user, showID, showData, info, handler }) {
   const [ trackedRoot, setTrackedRoot ] = useState(null);
 
   useEffect(() => {
@@ -28,10 +28,10 @@ export default function SeriesOptions({ user, showID, showData, info }) {
     trackedRoot.render(<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="h-12 w-12" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"/><path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"><animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"/></path></svg>);
     button.disabled = true;
 
-    if (!info.tracked) {
-      var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-      userInfo = await userInfo.json();
+    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+    userInfo = await userInfo.json();
 
+    if (!info.tracked) {
       var body = {
         user: userInfo.res,
         data: {
@@ -70,21 +70,22 @@ export default function SeriesOptions({ user, showID, showData, info }) {
         </svg>
       )
     } else {
-      // var body = {
-      //   user: userInfo.res,
-      //   id: movieID
-      // }
+      var body = {
+        user: userInfo.res,
+        id: showID,
+        show: true
+      }
 
-      // const options = {
-      //   method: 'POST',
-      //   headers: {
-      //       'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(body)
-      // };
+      const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      };
 
-      // await fetch('/api/user/delete-watchlist', options);
-      // button.disabled = false;
+      await fetch('/api/user/delete-watchlist', options);
+      button.disabled = false;
 
       trackedRoot.render(
         <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className={`h-12 w-12 ${styles.fadeIn}`}
@@ -96,6 +97,11 @@ export default function SeriesOptions({ user, showID, showData, info }) {
           18zm9.998 0A3.004 3.004 0 0 1 14 15.009V15a3 3 0 0 1 6-.001A3.005 3.005 0 0 1 16.999 18z"/></svg>
       )
     }
+
+    let temp = info;
+    temp.tracked = !info.tracked;
+    handler(temp);
+    console.log(info);
   }
 
   console.log(info)

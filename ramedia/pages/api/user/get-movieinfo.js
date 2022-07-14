@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    let result = {bookmarked: false, watched: false, favorited: false};
+    let result = {bookmarked: false, watched: false};
 
     let query = `SELECT bookmarks FROM user_movies WHERE id=${user.id};`;
     let response = await conn.query(query);
@@ -34,19 +34,6 @@ export default async function handler(req, res) {
 
         if (element.id == req.body.imdb_id) {
           result.watched = true;
-        }
-      }
-    }
-
-    query = `SELECT favorites FROM user_movies WHERE id=${user.id};`;
-    response = await conn.query(query);
-
-    if (response.rows[0].favorites) {
-      for (let i = 0; i < response.rows[0].favorites.length; i++) {
-        let element = response.rows[0].favorites[i];
-
-        if (element == req.body.imdb_id) {
-          result.favorited = true;
         }
       }
     }

@@ -174,7 +174,8 @@ export default function MovieOptions({ user, movieID }) {
     } else {
       var body = {
         user: userInfo.res,
-        id: movieID
+        id: movieID,
+        movie: true
       }
 
       const options = {

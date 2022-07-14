@@ -25,16 +25,16 @@ export default async function handler(req, res) {
       }
     }
 
-    const query1 = `SELECT shows FROM user_shows WHERE id=${user.id};`;
+    const query1 = `SELECT tracked FROM user_shows WHERE id=${user.id};`;
     const response1 = await conn.query(query1);
 
     let showres = [];
 
-    if (response1.rows[0].shows) {
-      for (let i = 0; i < response1.rows[0].shows.length; i++) {
-        let element = response1.rows[0].shows[i];
+    if (response1.rows[0].tracked) {
+      for (let i = 0; i < response1.rows[0].tracked.length; i++) {
+        let element = response1.rows[0].tracked[i];
   
-        let curr = await fetch(`https://api.themoviedb.org/3/find/${element.imdb_id}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
+        let curr = await fetch(`https://api.themoviedb.org/3/find/${element}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
         curr = await curr.json();
   
         showres.push({

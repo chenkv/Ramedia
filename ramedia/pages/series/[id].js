@@ -57,24 +57,24 @@ export default function SeriesPage() {
   }, [user.isLoading, user.user, router.query.id])
 
   // Update the progress bar
-  useEffect(() => {
-    if (info) {
-      let seen = 0;
-      for (let element in info.details.seasons) {
-        if (!element.watched) {
-          continue;
-        }
-        seen += element.watched.length;
-      }
+  // useEffect(() => {
+  //   if (info && info.tracked) {
+  //     let seen = 0;
+  //     for (let element in info.details.seasons) {
+  //       if (!element.watched) {
+  //         continue;
+  //       }
+  //       seen += element.watched.length;
+  //     }
 
-      let curr = document.getElementById("progressbar");
-      curr.setAttribute("style", "width:" + ((seen * 100) / info.details.num_of_episodes) + "%");
+  //     let curr = document.getElementById("progressbar");
+  //     curr.setAttribute("style", "width:" + ((seen * 100) / info.details.num_of_episodes) + "%");
 
-      if (seen == info.details.num_of_episodes) {
-        curr.classList.add("rounded-r-full");
-      }
-    }
-  }, [info])
+  //     if (seen == info.details.num_of_episodes) {
+  //       curr.classList.add("rounded-r-full");
+  //     }
+  //   }
+  // }, [info])
 
   if (data.error) {
     console.log(data.error.info);
@@ -179,6 +179,10 @@ export default function SeriesPage() {
     }
   }
 
+  const updateInfo = (newInfo) => {
+    setInfo(newInfo);
+  }
+
   return (
     <Layout>
       <div>
@@ -233,7 +237,7 @@ export default function SeriesPage() {
                     </div>
                   </div>
 
-                  <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} info={info} />
+                  <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} info={info} handler={updateInfo}/>
                 </div>
 
                 <div className='grow flex items-end justify-center mb-10'>
