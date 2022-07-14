@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import Watchlist from "./Watchlist";
+import History from "./History";
 
 export default function DashboardOption({ page, user }) {
   const [ watchlist, setWatchlist ] = useState(null);
+  const [ history, setHistory ] = useState(null);
 
   useEffect(() => {
     async function getData() {
       if (!user.isLoading) {
-        if (page == "Watchlist") {
-          var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
-          userInfo = await userInfo.json();
+        var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+        userInfo = await userInfo.json();
 
+        if (page == "Watchlist") {
           var body = {
             user: userInfo.res,
           }
@@ -31,6 +33,24 @@ export default function DashboardOption({ page, user }) {
         if (page == "Favorites") {
 
         }
+
+        if (page == "History") {
+          var body = {
+            user: userInfo.res,
+          }
+      
+          const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+          };
+      
+          var response = await fetch('/api/user/get-history', options);
+          response = await response.json();
+          setHistory(response);
+        }
       }
     }
 
@@ -45,6 +65,10 @@ export default function DashboardOption({ page, user }) {
     return (
       <div>Favorites!</div>
     )
+  }
+
+  if (page == "History") {
+    return <History history={history} />
   }
 
   return (
