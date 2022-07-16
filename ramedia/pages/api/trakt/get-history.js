@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     let response = await fetch(`${base}/api/trakt/get-dbtoken`, options);
     response = await response.json();
-    let token = response.rows[0].trakt_token;
+    let token = response;
 
     let response1 = await fetch(`https://api.trakt.tv/sync/history/movies`, {
       method: 'GET',

@@ -3,39 +3,25 @@ import conn from "../../../lib/db";
 export default async function handler(req, res) {
   try {
     const user = req.body.user;
+    const movieID = req.body.imdb_id;
 
-    if (!req.body.imdb_id || !user.id) {
+    if (!movieID || !user.id) {
       res.status(400);
       return;
     }
 
     let result = {bookmarked: false, watched: false};
 
-    let query = `SELECT bookmarks FROM user_movies WHERE id=${user.id};`;
+    let query = `SELECT * FROM mimir.bookmark WHERE user_id=${user.id} AND element_id='${movieID}';`;
     let response = await conn.query(query);
-
-    
-    if (response.rows[0].bookmarks) {
-      for (let i = 0; i < response.rows[0].bookmarks.length; i++) {
-        let element = response.rows[0].bookmarks[i];
-
-        if (element == req.body.imdb_id) {
-          result.bookmarked = true;
-        }
-      }
+    if (response.rowCount > 0) {
+      result.bookmarked = true;
     }
 
-    query = `SELECT watched FROM user_movies WHERE id=${user.id};`;
+    query = `SELECT * FROM mimir.watched_movie WHERE user_id=${user.id} AND movie_id='${movieID}';`;
     response = await conn.query(query);
-
-    if (response.rows[0].watched) {
-      for (let i = 0; i < response.rows[0].watched.length; i++) {
-        let element = response.rows[0].watched[i];
-
-        if (element.id == req.body.imdb_id) {
-          result.watched = true;
-        }
-      }
+    if (response.rowCount > 0) {
+      result.watched = true;
     }
 
     res.status(200).json(result);

@@ -12,35 +12,13 @@ export default async function handler(req, res) {
     }
 
     if (req.body.movie) {
-      let query = `SELECT bookmarks FROM user_movies WHERE id=${user.id};`;
-      let result = await conn.query(query);
-
-      if (result.rows[0].bookmarks) {
-        for (let i = 0; i < result.rows[0].bookmarks.length; i++) {
-          let element = result.rows[0].bookmarks[i];
-
-          if (element == targetID) {
-            let deleteQuery = `UPDATE user_movies SET bookmarks = array_remove(bookmarks, '${targetID}') WHERE id=${user.id};`;
-            await conn.query(deleteQuery);
-          }
-        }
-      }
+      let query = `DELETE FROM mimir.bookmark WHERE user_id=${user.id} AND type='movie' AND element_id='${targetID}';`;
+      await conn.query(query);
     }
 
     if (req.body.show) {
-      let query = `SELECT tracked FROM user_shows WHERE id=${user.id};`;
-      let result = await conn.query(query);
-
-      if (result.rows[0].tracked) {
-        for (let i = 0; i < result.rows[0].tracked.length; i++) {
-          let element = result.rows[0].tracked[i];
-
-          if (element == targetID) {
-            let deleteQuery = `UPDATE user_shows SET tracked = array_remove(tracked, '${targetID}') WHERE id=${user.id};`;
-            await conn.query(deleteQuery);
-          }
-        }
-      }
+      let query = `DELETE FROM mimir.bookmark WHERE user_id=${user.id} AND type='show' AND element_id='${targetID}';`;
+      await conn.query(query);
     }
 
     res.status(200).end();

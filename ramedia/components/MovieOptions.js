@@ -37,6 +37,7 @@ export default function MovieOptions({ user, movieID }) {
     
         let res = await fetch(`/api/user/get-movieinfo`, options);
         res = await res.json();
+        console.log(res)
         setInfo(res);
       }
     }
@@ -137,13 +138,10 @@ export default function MovieOptions({ user, movieID }) {
     userInfo = await userInfo.json();
 
     if (!info.bookmarked) {
-      let dateTime = new Date().toISOString();
 
       var body = {
         user: userInfo.res,
-        imdb_id: movieID,
-        date: dateTime,
-        movie: true
+        imdb_id: movieID
       }
 
       const options = {
