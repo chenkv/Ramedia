@@ -5,14 +5,14 @@ const traktSecret = process.env.TRAKT_SECRET;
 
 export default async function handler(req, res) {
   try {
-    let data = req.body;
-    const query1 = `SELECT trakt_token FROM users WHERE email = '${data.email}';`;
+    const user = req.body.user
+    const query1 = `SELECT token FROM mimir.trakt_token WHERE user_id=${user.id};`;
     let tokenResponse = await conn.query(query1);
 
     const url = `https://api.trakt.tv/oauth/revoke`;
 
     let send_data = {
-      "token": tokenResponse.rows[0].trakt_token,
+      "token": tokenResponse.rows[0].token,
       "client_id": traktID,
       "client_secret": traktSecret,
     }
@@ -26,10 +26,10 @@ export default async function handler(req, res) {
     });
     response = await response.json();
 
-    const query2 = `UPDATE users SET trakt_token = NULL, trakt_refresh = NULL WHERE email = '${data.email}';`;
-    let deleteResponse = await conn.query(query2);
+    const query2 = `UPDATE mimir.trakt_token SET token = NULL, refresh_token = NULL WHERE user_id=${user.id};`;
+    await conn.query(query2);
 
-    res.status(200).json({ message: "SUCCESS!" });
+    res.status(200).end();
   } catch (error) {
     console.log(error);
     res.status(400);

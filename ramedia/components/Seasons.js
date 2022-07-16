@@ -3,7 +3,7 @@ import EpisodePopup from "./EpisodePopup";
 import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
 
-export default function Seasons({ showData }) {
+export default function Seasons({ user, showData, showID }) {
   const [ episodeEnabled, setEpisodeEnabled ] = useState(false);
   const [ currEpisode, setCurrEpisode ] = useState(null);
 
@@ -200,7 +200,7 @@ export default function Seasons({ showData }) {
               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </div>
-          <EpisodePopup episode={currEpisode} />
+          <EpisodePopup user={user} episode={currEpisode} showID={showID} />
         </div>
       </div>
     );

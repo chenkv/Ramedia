@@ -1,11 +1,32 @@
 import Image from "next/image";
 
-export default function EpisodePopup({ episode }) {
+export default function EpisodePopup({ user, episode, showID }) {
   if (!episode) {
     return;
   }
 
   console.log(episode);
+  async function addToHistory() {
+    var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+    userInfo = await userInfo.json();
+
+    var body = {
+      user: userInfo.res,
+      id: showID,
+      season: episode.season_number,
+      episode: episode.episode_number
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    };
+
+    await fetch('/api/user/add-episodehistory', options);
+  }
 
   return (
     <div className='flex flex-col w-full h-full items-center'>

@@ -6,7 +6,7 @@ export default async function handler(req, res) {
       query: { email },
     } = req
   
-    const query = `SELECT * FROM users WHERE email = ${email};`;
+    const query = `SELECT * FROM mimir.user WHERE email = ${email};`;
     const result = await conn.query(query);
   
     res.status(200).json({ 'res': result.rows[0] })

@@ -10,33 +10,41 @@ export default function Disconnect() {
   useEffect(() => {
     async function getToken() {
       if (code && user.user) {
-        let codeData = { user_code: code }
-        fetch('/api/trakt/get-token', {
+        let codeData = { user_code: code };
+        let token = await fetch('/api/trakt/get-token', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(codeData)
-        })
-        .then(res => res.json())
-        .then(res => {
-          console.log(res);
-          if (res.response.access_token) {
-            var storeData = { user: user.user, token: res }
-            fetch('/api/trakt/store-token', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(storeData)
-            })
-            .then(response => {
-              if (response.status == 200) {
-                window.location.href = '/profile';
-              }
-            })
+        });
+        token = await token.json();
+
+        console.log(token);
+
+        if (token.response.access_token) {
+          var userInfo = await fetch(`/api/user/email/'${user.user.email}'`);
+          userInfo = await userInfo.json();
+
+          var body = {
+            user: userInfo.res,
+            token: token
           }
-        })
+      
+          const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+          };
+
+          var response = await fetch('/api/trakt/store-token', options);
+
+          if (response.status == 200) {
+            window.location.href = '/profile';
+          }
+        }
       }
     }
 

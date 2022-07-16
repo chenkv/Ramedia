@@ -6,27 +6,20 @@ export default async function handler(req, res) {
 
     let userID;
 
-    let query_find = `SELECT * FROM users WHERE email = '${data.email}';`;
+    let query_find = `SELECT * FROM mimir.user WHERE email = '${data.email}';`;
     let result_find = await conn.query(query_find);
 
     if (result_find.rowCount > 0) {
       res.status(200).json({ result: "User already registered." });
     } else {
-      let query = `INSERT INTO users(email, nickname, picture) VALUES('${data.email}', '${data.nickname}', '${data.picture}');`
-      let result_insert = await conn.query(query);
+      let query = `INSERT INTO mimir.user(email, name, picture) VALUES('${data.email}', '${data.nickname}', '${data.picture}');`;
+      await conn.query(query);
 
-      query_find = `SELECT id FROM users WHERE email = '${data.email}';`;
       result_find = await conn.query(query_find);
-
       userID = result_find.rows[0].id;
-      query = `INSERT INTO user_movies(id, watched, favorites, bookmarks) VALUES('${userID}', NULL, NULL, NULL);`
-      result_insert = await conn.query(query);
 
-      query = `INSERT INTO user_shows(id, shows, favorites) VALUES ('${userID}', NULL, NULL);`
-      result_insert = await conn.query(query);
-
-      query = `INSERT INTO user_lists(id, lists) VALUES ('${userID}', NULL);`
-      result_insert = await conn.query(query);
+      query = `INSERT INTO mimir.trakt_token(user_id, token, refresh_token, expiration_date) VALUES(${userID}, NULL, NULL, NULL);`
+      await conn.query(query);
 
       res.status(200).json({ result: "Successfully added user" });
     }
