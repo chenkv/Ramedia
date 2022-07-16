@@ -12,7 +12,7 @@ export default function Watchlist({ watchlist }) {
     console.log(watchlist);
     let movieResult = [], showResult = [];
     let movieOverflow = (watchlist.movieres.length > 6 ? true : false);
-    let showOverflow = (watchlist.showres.length > 6 ? true : false);
+    // let showOverflow = (watchlist.showres.length > 6 ? true : false);
 
     if (!movieExpanded) {
       for (let i = 0; i < 6; i++) {
@@ -92,83 +92,83 @@ export default function Watchlist({ watchlist }) {
       )
     }
 
-    if (!showExpanded) {
-      for (let i = 0; i < 6; i++) {
-        const element = watchlist.showres[i];
+    // if (!showExpanded) {
+    //   for (let i = 0; i < 6; i++) {
+    //     const element = watchlist.showres[i];
 
-        if (element) {
-          showResult.push(
-            <div key={element.details.name} className='relative w-[15vw]'>
-              <Link href={"/series/" + element.id}>
-                <a>
-                  <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
-                    className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
-                </a>
-              </Link>
-            </div>
-          )
-        }
-      }
+    //     if (element) {
+    //       showResult.push(
+    //         <div key={element.details.name} className='relative w-[15vw]'>
+    //           <Link href={"/series/" + element.id}>
+    //             <a>
+    //               <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
+    //                 className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
+    //             </a>
+    //           </Link>
+    //         </div>
+    //       )
+    //     }
+    //   }
 
-      tvlistHTML = (
-        <div>
-          {
-            function () {
-              if (showOverflow) {
-                return (
-                  <div className="flex justify-end mb-2 mr-4">
-                    <a className="text-gray-400 tracking-wider cursor-pointer" onClick={() => {setShowExpanded(!showExpanded)}}>Expand <b>&#8594;</b></a>
-                  </div>
-                )
-              } else {
-                return (
-                  <div className="my-4" />
-                )
-              }
-            } ()
-          }
-          <div className='grid gap-4 grid-cols-6'>
-            {
-              showResult.map((element) => element)
-            }
-          </div>
-        </div>
-      )
-    } else {
-      tvlistHTML = (
-        <div>
-          {
-            function () {
-              if (showOverflow) {
-                return (
-                  <div className="flex justify-end mb-2 mr-4">
-                    <a className="text-gray-400 tracking-wider cursor-pointer" onClick={() => {setShowExpanded(!showExpanded)}}>Contract <b>&#8592;</b></a>
-                  </div>
-                )
-              } else {
-                return (
-                  <div className="my-4" />
-                )
-              }
-            } ()
-          }
-          <div className='grid gap-4 grid-cols-6'>
-            {
-              watchlist.showres.map((element) => (
-                <div key={element.details.name} className='relative w-[15vw]'>
-                  <Link href={"/series/" + element.id}>
-                    <a>
-                      <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
-                        className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
-                    </a>
-                  </Link>
-                </div>
-              ))
-            }
-          </div>
-        </div>
-      )
-    }
+    //   tvlistHTML = (
+    //     <div>
+    //       {
+    //         function () {
+    //           if (showOverflow) {
+    //             return (
+    //               <div className="flex justify-end mb-2 mr-4">
+    //                 <a className="text-gray-400 tracking-wider cursor-pointer" onClick={() => {setShowExpanded(!showExpanded)}}>Expand <b>&#8594;</b></a>
+    //               </div>
+    //             )
+    //           } else {
+    //             return (
+    //               <div className="my-4" />
+    //             )
+    //           }
+    //         } ()
+    //       }
+    //       <div className='grid gap-4 grid-cols-6'>
+    //         {
+    //           showResult.map((element) => element)
+    //         }
+    //       </div>
+    //     </div>
+    //   )
+    // } else {
+    //   tvlistHTML = (
+    //     <div>
+    //       {
+    //         function () {
+    //           if (showOverflow) {
+    //             return (
+    //               <div className="flex justify-end mb-2 mr-4">
+    //                 <a className="text-gray-400 tracking-wider cursor-pointer" onClick={() => {setShowExpanded(!showExpanded)}}>Contract <b>&#8592;</b></a>
+    //               </div>
+    //             )
+    //           } else {
+    //             return (
+    //               <div className="my-4" />
+    //             )
+    //           }
+    //         } ()
+    //       }
+    //       <div className='grid gap-4 grid-cols-6'>
+    //         {
+    //           watchlist.showres.map((element) => (
+    //             <div key={element.details.name} className='relative w-[15vw]'>
+    //               <Link href={"/series/" + element.id}>
+    //                 <a>
+    //                   <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
+    //                     className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
+    //                 </a>
+    //               </Link>
+    //             </div>
+    //           ))
+    //         }
+    //       </div>
+    //     </div>
+    //   )
+    // }
   }
 
   return (

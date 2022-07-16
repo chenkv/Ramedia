@@ -7,24 +7,23 @@ export default async function handler(req, res) {
     const user = req.body.user;
 
     let query = `SELECT * FROM mimir.bookmark WHERE user_id=${user.id};`;
-    let bookmarks = await conn.query(``)
-    console.log(bookmarks);
+    let bookmarks = await conn.query(query)
 
-    // let movieres = [];
+    let movieres = [];
 
-    // if (response.rows[0].bookmarks) {
-    //   for (let i = 0; i < response.rows[0].bookmarks.length; i++) {
-    //     let element = response.rows[0].bookmarks[i];
+    if (bookmarks.rowCount > 0) {
+      for (let i = 0; i < bookmarks.rows.length; i++) {
+        let element = bookmarks.rows[i];
   
-    //     let curr = await fetch(`https://api.themoviedb.org/3/find/${element}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
-    //     curr = await curr.json();
+        let curr = await fetch(`https://api.themoviedb.org/3/find/${element.element_id}?api_key=${tmdbKey}&language=en-US&external_source=imdb_id`, { method: 'GET' });
+        curr = await curr.json();
   
-    //     movieres.push({
-    //       id: element,
-    //       details: curr.movie_results[0]
-    //     });
-    //   }
-    // }
+        movieres.push({
+          id: element,
+          details: curr.movie_results[0]
+        });
+      }
+    }
 
     // const query1 = `SELECT tracked FROM user_shows WHERE id=${user.id};`;
     // const response1 = await conn.query(query1);
@@ -45,7 +44,7 @@ export default async function handler(req, res) {
     //   }
     // }
 
-    res.status(200).json({ movieres, showres });
+    res.status(200).json({ movieres/*, showres */ });
   } catch (error) {
     console.log(error);
     res.status(400);
