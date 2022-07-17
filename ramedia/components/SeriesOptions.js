@@ -32,25 +32,31 @@ export default function SeriesOptions({ user, showID, showData, info, handler })
     userInfo = await userInfo.json();
 
     if (!info.tracked) {
+      // var body = {
+      //   user: userInfo.res,
+      //   data: {
+      //     imdb_id: showID,
+      //     num_of_episodes: showData.number_of_episodes,
+      //     seasons: []
+      //   }
+      // };
+
+      // for (let i = 1; i <= showData.number_of_seasons; i++) {
+      //   for (let curr of showData.seasons) {
+      //     if (curr.season_number == i) {
+      //       body.data.seasons.push({
+      //         season: curr.season_number,
+      //         num_of_episodes: curr.episode_count,
+      //         watched: []
+      //       })
+      //     }
+      //   }
+      // }
+
       var body = {
         user: userInfo.res,
-        data: {
-          imdb_id: showID,
-          num_of_episodes: showData.number_of_episodes,
-          seasons: []
-        }
-      };
-
-      for (let i = 1; i <= showData.number_of_seasons; i++) {
-        for (let curr of showData.seasons) {
-          if (curr.season_number == i) {
-            body.data.seasons.push({
-              season: curr.season_number,
-              num_of_episodes: curr.episode_count,
-              watched: []
-            })
-          }
-        }
+        imdb_id: showID,
+        show: true
       }
 
       const options = {
@@ -61,14 +67,24 @@ export default function SeriesOptions({ user, showID, showData, info, handler })
         body: JSON.stringify(body)
       };
 
-      await fetch('/api/user/add-series', options);
+      let res = await fetch('/api/user/bookmark/add-watchlist', options);
+      if (res.status != 200) {
+        button.disabled = false;
+        trackedRoot.render(
+          <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" className={`h-12 w-12 ${styles.fadeIn}`} viewBox="0 0 20 20" fill="#ff971d">
+            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+          </svg>
+        )
+        return;
+      }
       button.disabled = false;
 
       trackedRoot.render(
-        <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="#00BF60">
+        <svg id="trackicon" xmlns="http://www.w3.org/2000/svg" className={`h-12 w-12 ${styles.fadeIn}`} viewBox="0 0 20 20" fill="#00BF60">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
         </svg>
       )
+
     } else {
       var body = {
         user: userInfo.res,
@@ -84,7 +100,7 @@ export default function SeriesOptions({ user, showID, showData, info, handler })
         body: JSON.stringify(body)
       };
 
-      await fetch('/api/user/delete-watchlist', options);
+      await fetch('/api/user/bookmark/delete-watchlist', options);
       button.disabled = false;
 
       trackedRoot.render(

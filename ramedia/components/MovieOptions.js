@@ -138,10 +138,10 @@ export default function MovieOptions({ user, movieID }) {
     userInfo = await userInfo.json();
 
     if (!info.bookmarked) {
-
       var body = {
         user: userInfo.res,
-        imdb_id: movieID
+        imdb_id: movieID,
+        movie: true
       }
 
       const options = {
@@ -152,7 +152,7 @@ export default function MovieOptions({ user, movieID }) {
         body: JSON.stringify(body)
       };
 
-      let res = await fetch('/api/user/add-watchlist', options);
+      let res = await fetch('/api/user/bookmark/add-watchlist', options);
       if (res.status != 200) {
         button.disabled = false;
         watchlistRoot.render(
@@ -184,7 +184,7 @@ export default function MovieOptions({ user, movieID }) {
         body: JSON.stringify(body)
       };
 
-      await fetch('/api/user/delete-watchlist', options);
+      await fetch('/api/user/bookmark/delete-watchlist', options);
       button.disabled = false;
 
       watchlistRoot.render(

@@ -25,7 +25,7 @@ export default function DashboardOption({ page, user }) {
             body: JSON.stringify(body)
           };
       
-          var response = await fetch('/api/user/get-watchlist', options);
+          var response = await fetch('/api/user/bookmark/get-watchlist', options);
           response = await response.json();
           setWatchlist(response);
         }

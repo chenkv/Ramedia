@@ -1,4 +1,4 @@
-import conn from "../../../lib/db";
+import conn from "../../../../lib/db";
 const base = process.env.BASE_URL;
 
 export default async function handler(req, res) {
