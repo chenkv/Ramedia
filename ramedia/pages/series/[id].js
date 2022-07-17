@@ -25,7 +25,7 @@ export default function SeriesPage() {
   const user = useUser();
   const router = useRouter();
   const data = useSWR(`/api/series-data?imdb_id=${router.query.id}`, fetcher)
-  const [ info, setInfo ] = useState(null);
+  const [ info, setInfo ] = useState(data);
   const [ progress, setProgress ] = useState(0);
 
   useEffect(() => {
@@ -56,25 +56,7 @@ export default function SeriesPage() {
     getUserInfo();
   }, [user.isLoading, user.user, router.query.id])
 
-  // Update the progress bar
-  // useEffect(() => {
-  //   if (info && info.tracked) {
-  //     let seen = 0;
-  //     for (let element in info.details.seasons) {
-  //       if (!element.watched) {
-  //         continue;
-  //       }
-  //       seen += element.watched.length;
-  //     }
-
-  //     let curr = document.getElementById("progressbar");
-  //     curr.setAttribute("style", "width:" + ((seen * 100) / info.details.num_of_episodes) + "%");
-
-  //     if (seen == info.details.num_of_episodes) {
-  //       curr.classList.add("rounded-r-full");
-  //     }
-  //   }
-  // }, [info])
+  useEffect(() => {updateProgressBar()}, [info]);
 
   if (data.error) {
     console.log(data.error.info);
@@ -87,8 +69,6 @@ export default function SeriesPage() {
   }
 
   if (!data.data || user.isLoading) return <div>Loading...</div>
-
-  console.log(data.data);
 
   var background;
   if (data.data.artRes.status != "error") {
@@ -179,7 +159,27 @@ export default function SeriesPage() {
     }
   }
 
+  // Update the progress bar
+  function updateProgressBar() {
+    if (info.watched && data.data) {
+      const set = new Set();
+      let total = data.data.yearRes.number_of_episodes;
+  
+      for (let i of info.watched) {
+        set.add(`${i.season},${i.episode}`);
+      }
+  
+      let curr = document.getElementById("progressbar");
+      curr.setAttribute("style", "width:" + ((set.size * 100) / total) + "%");
+  
+      if (set.size == total) {
+        curr.classList.add("rounded-r-full");
+      }
+    }
+  }
+
   const updateInfo = (newInfo) => {
+    updateProgressBar();
     setInfo(newInfo);
   }
 
@@ -242,7 +242,7 @@ export default function SeriesPage() {
 
                 <div className='grow flex items-end justify-center mb-10'>
                   <div className='grow bg-[#E0E0E0] h-6 rounded-full ml-6 shadow-[4px_4px_10px_0px_rgba(0,0,0,0.3)]'>
-                    <div id='progressbar' className='w-0 h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full' />
+                    <div id='progressbar' className='w-0 h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full transition-all ease-out duration-300' />
                   </div>
                 </div>
                 

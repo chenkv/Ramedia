@@ -16,8 +16,6 @@ export default function EpisodePopup({ enabled, user, episode, episodeRoot, show
     return;
   }
 
-  // console.log(episode);
-
   document.addEventListener('scroll', function(e) {
     if (enabled) {
       let popupdiv = document.getElementById("popup");
@@ -74,7 +72,6 @@ export default function EpisodePopup({ enabled, user, episode, episodeRoot, show
     let temp = info;
     temp.watched.push({ "season": episode.season_number, "episode": episode.episode_number })
     infoHandler(temp);
-    console.log(info);
   }
 
   return (

@@ -20,8 +20,6 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
 
   if (!showData) return;
 
-  // console.log(showData);
-
   // This creates the tabs for each season
   let result = [];
   for (let i = 1; i <= showData.number_of_seasons; i++) {
@@ -83,8 +81,6 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
 
     var response = await fetch(endpoint, options);
     response = await response.json();
-
-    console.log(response);
 
     // Loop through each episode and create the corresponding JSX for it
     for (let i of response.seasonRes.episodes) {
@@ -173,7 +169,34 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
 
         <div className='grow flex items-end justify-center mt-10'>
           <div className='grow bg-[#E0E0E0] h-6 rounded-full mx-6 shadow-[4px_4px_10px_0px_rgba(0,0,0,0.3)]'>
-            <div className='w-1/3 h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full' />
+            {
+              function () {
+                if (info.watched) {
+                  const set = new Set();
+
+                  let total = 0;
+                  for (let i of showData.seasons) {
+                    if (i.season_number == season_number) {
+                      total = i.episode_count;
+                    }
+                  }
+              
+                  for (let i of info.watched) {
+                    if (i.season == season_number) {
+                      set.add(i.episode);
+                    }
+                  }
+              
+                  if (set.size == total) {
+                    return <div id="seasonprogressbar" className={`w-full h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-full transition-all ease-out duration-300`} />;
+                  }
+
+                  return <div id="seasonprogressbar" className='h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full transition-all ease-out duration-300' style={{width: (set.size * 100) / total + "%"}} />;
+                } else {
+                  return <div id="seasonprogressbar" className='h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full transition-all ease-out duration-300' />;
+                }
+              } ()
+            }
           </div>
         </div>
       </div>
@@ -229,7 +252,28 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
     let temp = info;
     temp.watched.push({ "season": i.season_number, "episode": i.episode_number })
     infoHandler(temp);
-    console.log(info);
+
+    let bar = document.getElementById("seasonprogressbar");
+    const set = new Set();
+
+    let total = 0;
+    for (let j of showData.seasons) {
+      if (j.season_number == i.season_number) {
+        total = j.episode_count;
+      }
+    }
+
+    for (let j of info.watched) {
+      if (j.season == i.season_number) {
+        set.add(j.episode);
+      }
+    }
+
+    bar.setAttribute('style', 'width:' + (set.size * 100) / total + '%');
+
+    if (set.size == total) {
+      bar.classList.add('rounded-r-full');
+    }
   }
 
   // Scroll left in the episodes list

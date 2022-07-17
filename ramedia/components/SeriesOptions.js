@@ -117,10 +117,7 @@ export default function SeriesOptions({ user, showID, showData, info, handler })
     let temp = info;
     temp.tracked = !info.tracked;
     handler(temp);
-    console.log(info);
   }
-
-  console.log(info)
 
   return (
     <div className='grow flex justify-center items-center'>

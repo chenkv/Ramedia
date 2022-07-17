@@ -1,4 +1,4 @@
-import { useUser } from '@auth0/nextjs-auth0'
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import Image from 'next/image';
@@ -6,18 +6,9 @@ import { useRouter } from 'next/router';
 import Trakt_Button from '../components/profile/Trakt_Button';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { WithPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function Profile() {
-  const user = useUser();
-
-  if (user.isLoading) {
-    return (
-      <h1>Loading!</h1>
-    )
-  }
-  if (!user.user) {
-    window.location.href = '/landing';
-  }
+export default withPageAuthRequired(function Profile({ user }) {
 
   return (
     <Layout>
@@ -32,8 +23,8 @@ export default function Profile() {
           <div className='flex flex-row justify-center space-x-4'>
             <div className='w-32 h-32 relative'>
               <Image
-                src={user.user.picture}
-                alt={user.user.name}
+                src={user.picture}
+                alt={user.name}
                 layout='fill'
                 quality={100}
                 priority
@@ -41,7 +32,7 @@ export default function Profile() {
               />
             </div>
             <div className='flex items-center'>
-              <h1 className='text-3xl'>{user.user.nickname}</h1>
+              <h1 className='text-3xl'>{user.nickname}</h1>
             </div>
           </div>
 
@@ -51,4 +42,4 @@ export default function Profile() {
       </div>
     </Layout>
   )
-}
+});
