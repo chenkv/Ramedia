@@ -146,7 +146,7 @@ export default function MoviesHome() {
           </div>
 
           <div className='lg:flex-row flex-col flex'>
-            <div className='xl:w-3/4 lg:w-[70%] flex-none relative z-10'>
+            <div className='xl:w-3/4 lg:w-[70%] flex-none relative z-10 rounded-r-3xl bg-[#F9F6F7]'>
               {
                 data.popular.map((element) => (
                   <div key={element.movie.title} id={data.popular.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
