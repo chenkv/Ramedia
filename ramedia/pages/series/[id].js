@@ -251,7 +251,7 @@ export default function SeriesPage() {
             </div>
           </div>
 
-          <Seasons user={user} showData={data.data.yearRes} showID={router.query.id} />
+          <Seasons user={user} showData={data.data.yearRes} showID={router.query.id} info={info} infoHandler={updateInfo} />
 
           <div className='mt-8 pb-4'>
             <div className='flex'>

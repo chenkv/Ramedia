@@ -3,7 +3,7 @@ import EpisodePopup from "./EpisodePopup";
 import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
 
-export default function Seasons({ user, showData, showID }) {
+export default function Seasons({ user, showData, showID, info, infoHandler }) {
   const [ episodeEnabled, setEpisodeEnabled ] = useState(false);
   const [ currEpisode, setCurrEpisode ] = useState(null);
 
@@ -18,7 +18,7 @@ export default function Seasons({ user, showData, showID }) {
 
   if (!showData) return;
 
-  console.log(showData);
+  // console.log(showData);
 
   // This creates the tabs for each season
   let result = [];
@@ -26,7 +26,7 @@ export default function Seasons({ user, showData, showID }) {
     let curr = (
       <button id={i} key={i}
         className="px-4 py-1.5 hover:bg-[#FF971D] hover:bg-opacity-60 focus:bg-[#FF971D] cursor-pointer rounded-t-xl"
-        onClick={() => handleClick(i)}
+        onClick={() => handleSeasonClick(i)}
       >
         <h3 className="font-semibold tracking-wider">Season {i}</h3>
       </button>
@@ -36,7 +36,7 @@ export default function Seasons({ user, showData, showID }) {
   }
 
   // This handles when the user clicks on each seasons
-  async function handleClick(season_number) {
+  async function handleSeasonClick(season_number) {
     // If the season is already selected, then don't do anything
     if (document.getElementById(season_number).classList.contains("selected")) {
       return;
@@ -182,40 +182,9 @@ export default function Seasons({ user, showData, showID }) {
     setCurrEpisode(episode);
   }
 
-  let popupHTML;
-  if (episodeEnabled) {
-    popupHTML = (
-      <div id="popup"
-        className='absolute w-full h-full left-0 bg-gray-500 bg-opacity-50 z-50 flex justify-center items-center'
-        onClick={e => {
-          // Check to see if clicked element is the parent element (aka the background). If so, close the popup
-          if (e.target.id) {
-            setEpisodeEnabled(false)
-          }
-        }}>
-
-        <div className="relative w-5/6 h-5/6 bg-[#F9F6F7] rounded-3xl overflow-auto">
-          <div className="absolute right-2 top-2 z-50 cursor-pointer" onClick={() => setEpisodeEnabled(false)}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <EpisodePopup user={user} episode={currEpisode} showID={showID} />
-        </div>
-      </div>
-    );
-  } else {
-    popupHTML = null;
+  function controlPopup(option) {
+    setEpisodeEnabled(option);
   }
-
-  document.addEventListener('scroll', function(e) {
-    if (episodeEnabled) {
-      let popupdiv = document.getElementById("popup");
-      if (popupdiv) {
-        popupdiv.style.top = window.scrollY + 'px';
-      }
-    }
-  });
 
   return (
     <div>
@@ -229,7 +198,8 @@ export default function Seasons({ user, showData, showID }) {
 
       <div id="info" className="bg-[rgba(255,151,29,0.2)] shadow-[4px_4px_20px_-5px_rgba(0,0,0,0.5)_inset]" />
 
-      { popupHTML }
+      <EpisodePopup enabled={episodeEnabled} user={user} episode={currEpisode} showID={showID} controlPopup={controlPopup} info={info} infoHandler={infoHandler} />
+
     </div>
   )
 }

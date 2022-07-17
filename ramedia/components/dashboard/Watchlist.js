@@ -98,7 +98,7 @@ export default function Watchlist({ watchlist }) {
         if (element) {
           showResult.push(
             <div key={element.details.name} className='relative w-[15vw]'>
-              <Link href={"/series/" + element.id}>
+              <Link href={"/series/" + element.id.element_id}>
                 <a>
                   <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw' className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' priority />
                 </a>
@@ -154,7 +154,7 @@ export default function Watchlist({ watchlist }) {
             {
               watchlist.showres.map((element) => (
                 <div key={element.details.name} className='relative w-[15vw]'>
-                  <Link href={"/series/" + element.id}>
+                  <Link href={"/series/" + element.id.element_id}>
                     <a>
                       <Image src={"https://image.tmdb.org/t/p/w500" + element.details.poster_path} alt={element.details.name} width={300} height={450} layout='raw'
                         className='rounded-3xl hover:ring-[5px] ring-[#FF971D] transition-all duration-200 ease-linear' />
