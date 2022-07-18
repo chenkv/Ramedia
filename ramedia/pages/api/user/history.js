@@ -1,6 +1,6 @@
 import conn from "../../../lib/db";
 const trakt_client_id = process.env.TRAKT_ID;
-const base = process.env.BASE_URL;
+const tmdb_key = process.env.TMDB_KEY;
 
 export default async function handler(req, res) {
   try {
@@ -152,7 +152,39 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'GET') {
+      const user = req.query.user;
       
+      let movies = [];
+      let movie_query = `SELECT * FROM mimir.watched_movie WHERE user_id=${user};`;
+      let movie_response = await conn.query(movie_query);
+
+      if (movie_response.rowCount > 0) {
+        for (let i = 0; i < movie_response.rows.length; i++) {
+          let element = movie_response.rows[i];
+    
+          let curr = await fetch(`https://api.themoviedb.org/3/find/${element.movie_id}?api_key=${tmdb_key}&language=en-US&external_source=imdb_id`, { method: 'GET' });
+          curr = await curr.json();
+    
+          movies.push({
+            id: element.movie_id,
+            details: curr.movie_results[0]
+          });
+        }
+      }
+
+      // let episodes = [];
+      // let show_query = `SELECT * FROM mimir.watched_episode WHERE user_id=${user};`;
+      // let show_response = await conn.query(show_query);
+
+      // if (show_response.rowCount > 0) {
+      //   for (let i = 0; i < show_response.rows.length; i++) {
+      //     let element = show_response.rows[i];
+
+
+      //   }
+      // }
+
+      res.status(200).json({ movies });
     }
 
     res.status(400).json({ error: 400, message: "Invalid REST method", detail: "" });

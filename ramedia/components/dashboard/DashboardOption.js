@@ -30,24 +30,19 @@ export default function DashboardOption({ page, user }) {
           setWatchlist(response);
         }
 
-        if (page == "Favorites") {
+        if (page == "Lists") {
 
         }
 
-        if (page == "History") {
-          var body = {
-            user: userInfo.res,
-          }
-      
+        if (page == "History") {      
           const options = {
-            method: 'POST',
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
+                'Content-Type': 'application/json'
+            }
           };
       
-          var response = await fetch('/api/user/get-history', options);
+          var response = await fetch('/api/user/history?user=' + userInfo.res.id, options);
           response = await response.json();
           setHistory(response);
         }
