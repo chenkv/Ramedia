@@ -113,6 +113,7 @@ export default async function handler(req, res) {
               'trakt-api-key': trakt_client_id
             }
           })
+
           episode_object = await episode_object.json();
 
           let send_data = {
@@ -122,7 +123,7 @@ export default async function handler(req, res) {
           }
           send_data.episodes[0].watched_at = date;
 
-          await fetch(`https://api.trakt.tv/sync/history`, {
+          let trakt_response = await fetch(`https://api.trakt.tv/sync/history`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -132,6 +133,12 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify(send_data)
           });
+
+          // Add more error response handlers for trakt.tv stuff
+          if (trakt_response.status != 201) {
+            res.status(500).json({ error: "trakt_1", message: "Unable to add to trakt.tv history", detail: "The episode was added to history but unable to sync with Trakt.tv history." });
+            return;
+          }
         }
 
         res.status(200).end();
@@ -145,7 +152,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'GET') {
-
+      
     }
 
     res.status(400).json({ error: 400, message: "Invalid REST method", detail: "" });
