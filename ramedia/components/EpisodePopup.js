@@ -41,7 +41,8 @@ export default function EpisodePopup({ enabled, user, episode, episodeRoot, show
 
     var body = {
       user: userInfo.res,
-      id: showID,
+      show_id: showID,
+      episode_id: episode.id,
       season: episode.season_number,
       episode: episode.episode_number,
       date: dateTime
@@ -55,7 +56,7 @@ export default function EpisodePopup({ enabled, user, episode, episodeRoot, show
       body: JSON.stringify(body)
     };
 
-    await fetch('/api/user/history/add-episodehistory', options);
+    await fetch('/api/user/history?type=episode', options);
     button.disabled = false;
 
     episodeSeenRoot.render(

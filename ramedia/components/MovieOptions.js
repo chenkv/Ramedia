@@ -71,8 +71,7 @@ export default function MovieOptions({ user, movieID }) {
       var body = {
         user: userInfo.res,
         imdb_id: movieID,
-        date: dateTime,
-        movie: true
+        date: dateTime
       }
 
       const options = {
@@ -83,7 +82,7 @@ export default function MovieOptions({ user, movieID }) {
         body: JSON.stringify(body)
       };
 
-      await fetch('/api/user/add-moviehistory', options);
+      await fetch('/api/user/history?type=movie', options);
       button.disabled = false;
 
       seenRoot.render(

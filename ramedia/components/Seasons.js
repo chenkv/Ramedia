@@ -226,7 +226,8 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
 
     var body = {
       user: userInfo.res,
-      id: showID,
+      show_id: showID,
+      episode_id: i.id,
       season: i.season_number,
       episode: i.episode_number,
       date: dateTime
@@ -240,7 +241,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
       body: JSON.stringify(body)
     };
 
-    await fetch('/api/user/history/add-episodehistory', options);
+    await fetch('/api/user/history?type=episode', options);
     button.disabled = false;
 
     currRoot.render(
