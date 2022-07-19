@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import styles from '../styles/MovieOptions.module.css'
+import ListPopup from "./ListPopup";
 
 export default function MovieOptions({ user, movieID }) {
   const [ info, setInfo ] = useState(null);
   const [ watchlistRoot, setWatchlistRoot ] = useState(null);
   const [ seenRoot, setSeenRoot ] = useState(null);
+  const [ listPopup, setListPopup ] = useState(false);
 
   useEffect(() => {
     if (!watchlistRoot) {
@@ -200,7 +202,7 @@ export default function MovieOptions({ user, movieID }) {
   }
 
   async function handleList() {
-
+    setListPopup(!listPopup);
   }
 
   return (
@@ -255,13 +257,15 @@ export default function MovieOptions({ user, movieID }) {
         <h3 className='text-lg font-semibold'>Watchlist</h3>
       </div>
 
-      <div className='flex flex-col justify-center items-center w-3/12'>
+      <div className='flex flex-col justify-center items-center w-3/12 relative'>
         <button id="listButton" className='bg-[#FFE8D6] p-2 rounded-full' onClick={e => handleList()} >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 20 20" fill="#ff971d">
             <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
           </svg>
         </button>
         <h3 className='text-lg font-semibold'>Lists</h3>
+
+        <ListPopup enabled={listPopup} id={movieID} />
       </div>
     </div>
   )
