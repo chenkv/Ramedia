@@ -28,14 +28,12 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main>
-          <div className='flex'>
+        <main className='flex'>
             
-            <SideBar handler={updateChoice} />
+          <SideBar handler={updateChoice} />
 
-            <DashboardOption page={page} user={user} />
+          <DashboardOption page={page} user={user} />
 
-          </div>
         </main>
       </div>
     </Layout>

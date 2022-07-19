@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Watchlist from "./Watchlist";
 import History from "./History";
+import Lists from "./Lists";
 
 export default function DashboardOption({ page, user }) {
   const [ watchlist, setWatchlist ] = useState(null);
   const [ history, setHistory ] = useState(null);
+  const [ lists, setLists ] = useState(null);
 
   useEffect(() => {
     async function getData() {
@@ -31,7 +33,16 @@ export default function DashboardOption({ page, user }) {
         }
 
         if (page == "Lists") {
-
+          const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+          };
+      
+          var response = await fetch('/api/user/lists?user=' + userInfo.res.id, options);
+          response = await response.json();
+          setLists(response);
         }
 
         if (page == "History") {      
@@ -56,9 +67,9 @@ export default function DashboardOption({ page, user }) {
     return <Watchlist watchlist={watchlist} />
   }
 
-  if (page == "Favorites") {
+  if (page == "Lists") {
     return (
-      <div>Favorites!</div>
+      <Lists lists={lists} user={user}/>
     )
   }
 
