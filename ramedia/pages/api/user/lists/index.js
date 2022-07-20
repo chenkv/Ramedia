@@ -9,8 +9,14 @@ export default async function handler(req, res) {
       const user = req.body.user;
       const name = req.body.name;
       const description = req.body.description;
+      const initial_value = req.body.initial_value;
 
-      let query = `INSERT INTO mimir.list(user_id, name, description, elements) VALUES(${user.id}, '${name}', '${description}', NULL);`;
+      let query;
+      if (initial_value) {
+        query = `INSERT INTO mimir.list(user_id, name, description, elements) VALUES(${user.id}, '${name}', '${description}', ARRAY ['${initial_value}']);`;
+      } else {
+        query = `INSERT INTO mimir.list(user_id, name, description, elements) VALUES(${user.id}, '${name}', '${description}', NULL);`;
+      }
       await conn.query(query);
 
       res.status(200).end();
@@ -22,8 +28,6 @@ export default async function handler(req, res) {
 
       let query = `SELECT * FROM mimir.list WHERE user_id=${user};`;
       let response = await conn.query(query);
-
-      console.log(response)
 
       res.status(200).json({ lists: response.rows });
       return;

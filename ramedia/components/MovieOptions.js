@@ -265,7 +265,7 @@ export default function MovieOptions({ user, movieID }) {
         </button>
         <h3 className='text-lg font-semibold'>Lists</h3>
 
-        <ListPopup enabled={listPopup} id={movieID} />
+        <ListPopup enabled={listPopup} handleList={handleList} id={movieID} user={user} />
       </div>
     </div>
   )

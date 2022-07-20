@@ -52,7 +52,7 @@ export default function Lists({ lists, user }) {
               <div className="mt-4 grid grid-cols-3 gap-4">
                 {
                   lists.lists.map((element) => (
-                    <div key={element.id} className="h-52 rounded-2xl bg-red-300">
+                    <div key={element.id} className="h-52 rounded-2xl bg-red-300 hover:scale-105 transition-all ease-out duration-100">
                       <h2 className="w-full text-center text-xl">{element.name}</h2>
                       <p>{element.description}</p>
                     </div>
