@@ -1,4 +1,5 @@
 import CreateListModal from "./CreateListModal";
+import ListPopup from "./ListPopup";
 import { useState, useEffect } from "react";
 
 export default function Lists({ lists, user }) {
@@ -52,7 +53,7 @@ export default function Lists({ lists, user }) {
               <div className="mt-4 grid grid-cols-3 gap-4">
                 {
                   lists.lists.map((element) => (
-                    <div key={element.id} className="h-52 rounded-2xl bg-red-300 hover:scale-105 transition-all ease-out duration-100">
+                    <div key={element.id} className="h-52 px-4 rounded-2xl bg-red-300 hover:scale-105 transition-all ease-out duration-100 hover:cursor-pointer">
                       <h2 className="w-full text-center text-xl">{element.name}</h2>
                       <p>{element.description}</p>
                     </div>

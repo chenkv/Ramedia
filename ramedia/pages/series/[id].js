@@ -56,7 +56,7 @@ export default function SeriesPage() {
     getUserInfo();
   }, [user.isLoading, user.user, router.query.id])
 
-  useEffect(() => {updateProgressBar()}, [info]);
+  useEffect(() => updateProgressBar(), [data.data]);
 
   if (data.error) {
     console.log(data.error.info);
