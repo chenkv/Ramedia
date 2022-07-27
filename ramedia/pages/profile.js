@@ -1,12 +1,8 @@
-import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import Trakt_Button from '../components/profile/Trakt_Button';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { WithPageAuthRequired } from '@auth0/nextjs-auth0';
+import Menu from '../components/profile/Menu';
 
 export default withPageAuthRequired(function Profile({ user }) {
 
@@ -20,7 +16,7 @@ export default withPageAuthRequired(function Profile({ user }) {
         </Head>
 
         <main className='flex flex-col items-center'>
-          <div className='flex flex-row justify-center space-x-4'>
+          <div className='mt-4 flex flex-row justify-center space-x-4'>
             <div className='w-32 h-32 relative'>
               <Image
                 src={user.picture}
@@ -36,7 +32,10 @@ export default withPageAuthRequired(function Profile({ user }) {
             </div>
           </div>
 
-          <Trakt_Button />
+          <div className='mt-4 flex justify-center'>
+          </div>
+
+          <Menu user={user} />
 
         </main>
       </div>

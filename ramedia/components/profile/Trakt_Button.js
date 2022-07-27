@@ -44,7 +44,7 @@ export default function TraktButton() {
   }, [user.isLoading, user.user])
 
   return (
-    <div className='w-screen h-20 flex text-center justify-start space-x-4'>
+    <div className='h-20 flex text-center justify-start space-x-4'>
       <div className="w-20 h-20 relative">
         <Image src='/trakt-icon-red.svg' alt="trakt.tv icon" layout="fill" />
       </div>
