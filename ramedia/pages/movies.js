@@ -16,7 +16,7 @@ export default function MoviesHome() {
 
   useEffect(() => {
     showSlides(slideIndex);
-  })
+  }, [slideIndex]);
 
   useInterval(() => {
     handleRightClick();
