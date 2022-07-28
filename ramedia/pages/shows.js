@@ -142,7 +142,7 @@ export default function MoviesHome() {
                   <div key={element.show.title} id={data.popular.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
                     <Link href={`/series/${element.show.ids.imdb}`}>
                       <a>
-                        <Image src={element.show.imageurl} alt={element.show.title} width={1493} height={839} priority layout='raw'
+                        <Image src={element.show.imageurl} alt={element.show.title} width={1493} height={839} priority layout='raw' loading='eager'
                           className='w-full rounded-r-3xl shadow-[4px_4px_10px_0px_rgba(0,0,0,0.5)]' />
                       </a>
                     </Link>

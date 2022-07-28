@@ -8,9 +8,9 @@ export default function History({ history }) {
 
   return (
     <div className="mx-4 w-full">
-      <div className="flex justify-center">
-        <h1 className='text-3xl pt-4 text-transparent bg-clip-text bg-gradient-to-r from-[#DE15FF] to-[#FF971D] font-bold'>History</h1>
-        <div className='grid gap-4 grid-cols-6'>
+      <div className="flex flex-col justify-center items-center">
+        <h1 className='text-3xl w-min pt-4 text-transparent bg-clip-text bg-gradient-to-r from-[#DE15FF] to-[#FF971D] font-bold'>History</h1>
+        <div className='mt-4 grid gap-4 grid-cols-6'>
             {
               history.movies.map((element) => (
                 <div key={element.id} className='relative w-[15vw]'>

@@ -16,7 +16,7 @@ export default function MoviesHome() {
 
   useEffect(() => {
     showSlides(slideIndex);
-  }, [slideIndex]);
+  });
 
   useInterval(() => {
     handleRightClick();
@@ -152,7 +152,7 @@ export default function MoviesHome() {
                   <div key={element.movie.title} id={data.popular.indexOf(element)} className={`${styles.mySlides} ${styles.fade}`}>
                     <Link href={`/movie/${element.movie.ids.imdb}`}>
                       <a>
-                        <Image src={element.movie.imageurl} alt={element.movie.title} width={1493} height={839} priority layout='raw'
+                        <Image src={element.movie.imageurl} alt={element.movie.title} width={1493} height={839} priority layout='raw' loading='eager'
                           className='w-full lg:rounded-r-3xl lg:shadow-[4px_4px_10px_0px_rgba(0,0,0,0.5)]
                                     shadow-[0px_4px_10px_0px_rgba(0,0,0,0.5)]' />
                       </a>
