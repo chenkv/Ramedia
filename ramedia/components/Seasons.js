@@ -21,7 +21,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
   if (!showData) return;
 
   // This creates the tabs for each season
-  let result = [];
+  let season_tabs = [];
   for (let i = 1; i <= showData.number_of_seasons; i++) {
     let curr = (
       <button id={i} key={i}
@@ -32,7 +32,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
       </button>
     )
 
-    result.push(curr);
+    season_tabs.push(curr);
   }
 
   // This handles when the user clicks on each seasons
@@ -145,7 +145,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
       episodes.push(curr);
     }
 
-    // Maps each episode JSX into a resulting div
+    // Maps each episode JSX into a season_tabsing div
     let res = (
       <div className="py-8">
         <div className="relative justify-center items-center">
@@ -203,8 +203,8 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
     )
 
     // Renders the final div to the page
-    var resultDiv = document.getElementById("info");
-    var root = createRoot(resultDiv);
+    var season_tabsDiv = document.getElementById("info");
+    var root = createRoot(season_tabsDiv);
     root.render(res);
   }
 
@@ -312,7 +312,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
     <div>
       <div className="flex flex-row border-b-2 border-[#FF971D] px-8 space-x-0.5">
         {
-          result.map((element) => (
+          season_tabs.map((element) => (
             element
           ))
         }

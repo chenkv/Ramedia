@@ -1,9 +1,9 @@
-import conn from "../../../lib/db";
+import conn from "../../../../lib/db";
 
 export default async function handler(req, res) {
   try {
     const user = req.body.user;
-    const showID = req.body.imdb_id;
+    const showID = req.query.id;
 
     if (!showID || !user.id) {
       res.status(400);
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       result.tracked = true;
     }
 
-    query = `SELECT * FROM mimir.watched_episode WHERE user_id=${user.id} AND show_id='${showID}'`
+    query = `SELECT * FROM mimir.watched_episode WHERE user_id=${user.id} AND show_id='${showID}';`;
     response = await conn.query(query);
     result.watched = response.rows;
 

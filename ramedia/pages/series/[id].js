@@ -24,7 +24,7 @@ const fetcher = async url => {
 export default function SeriesPage() {
   const user = useUser();
   const router = useRouter();
-  const data = useSWR(`/api/series-data?imdb_id=${router.query.id}`, fetcher)
+  const data = useSWR(`/api/series/${router.query.id}`, fetcher)
   const [ info, setInfo ] = useState(data);
   const [ progress, setProgress ] = useState(0);
 
@@ -56,7 +56,7 @@ export default function SeriesPage() {
     getUserInfo();
   }, [user.isLoading, user.user, router.query.id])
 
-  useEffect(() => updateProgressBar(), [data.data]);
+  useEffect(() => updateProgressBar(), [data.data, info.watched]);
 
   if (data.error) {
     console.log(data.error.info);

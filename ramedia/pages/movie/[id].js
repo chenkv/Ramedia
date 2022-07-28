@@ -23,7 +23,7 @@ const fetcher = async url => {
 export default function MoviePage() {
   const user = useUser();
   const router = useRouter();
-  const data = useSWR(`/api/movie-data?imdb_id=${router.query.id}`, fetcher)
+  const data = useSWR(`/api/movie/${router.query.id}`, fetcher)
 
   if (data.error) {
     console.log(data.error.info);
