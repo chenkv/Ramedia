@@ -3,11 +3,16 @@ import { createRoot } from "react-dom/client";
 import styles from '../../styles/MovieOptions.module.css'
 
 export default function SeriesOptions({ user, showID, showData, info, handler }) {
+  const [ seenRoot, setSeenRoot ] = useState(null);
   const [ trackedRoot, setTrackedRoot ] = useState(null);
 
   useEffect(() => {
     if (!trackedRoot) {
-      setTrackedRoot(createRoot(document.getElementById("seenButton")));
+      setTrackedRoot(createRoot(document.getElementById("trackedButton")));
+    }
+
+    if (!seenRoot) {
+      setSeenRoot(createRoot(document.getElementById("seenButton")));
     }
   }, [])
 
@@ -125,7 +130,7 @@ export default function SeriesOptions({ user, showID, showData, info, handler })
 
     icon.classList.add(styles.fadeOut);
 
-    trackedRoot.render(<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="h-12 w-12" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"/><path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"><animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"/></path></svg>);
+    seenRoot.render(<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="h-12 w-12" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"/><path fill="currentColor" d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"><animateTransform attributeName="transform" dur="1s" from="0 12 12" repeatCount="indefinite" to="360 12 12" type="rotate"/></path></svg>);
     button.disabled = true;
     
     if (!info.finished) {
@@ -151,7 +156,7 @@ export default function SeriesOptions({ user, showID, showData, info, handler })
       await fetch('/api/user/history?type=show', options);
       button.disabled = false;
 
-      trackedRoot.render(
+      seenRoot.render(
         <svg id="seenicon" xmlns="http://www.w3.org/2000/svg" className={`h-12 w-12 ${styles.fadeIn}`} viewBox="0 0 20 20" fill="#00BF60">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
         </svg>
