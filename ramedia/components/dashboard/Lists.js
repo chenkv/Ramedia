@@ -4,20 +4,27 @@ import { useState, useEffect } from "react";
 
 export default function Lists({ lists, user }) {
   const [ createModal, setCreateModal ] = useState(false);
+  const [ listModal, setListModal ] = useState(false);
+  const [ selectedList, setSelectedList ] = useState(null);
 
   console.log(lists)
 
   useEffect(() => {
-    if (createModal) {
+    if (createModal || listModal) {
       let modaldiv = document.getElementById("modal");
       if (modaldiv) {
         modaldiv.style.top = window.scrollY + 'px';
       }
     }
-  }, [createModal])
+  }, [createModal, listModal])
 
-  function modalHandler(option) {
+  function createModalHandler(option) {
     setCreateModal(option);
+  }
+
+  function listModalHandler(option, list) {
+    setListModal(option);
+    setSelectedList(list);
   }
 
   return (
@@ -53,7 +60,7 @@ export default function Lists({ lists, user }) {
               <div className="mt-4 grid grid-cols-3 gap-4">
                 {
                   lists.lists.map((element) => (
-                    <div key={element.id} className="h-52 px-4 rounded-2xl bg-red-300 hover:scale-105 transition-all ease-out duration-100 hover:cursor-pointer">
+                    <div key={element.id} className="h-52 px-4 rounded-2xl bg-red-300 hover:scale-105 transition-all ease-out duration-100 hover:cursor-pointer" onClick={() => listModalHandler(true, element)}>
                       <h2 className="w-full text-center text-xl">{element.name}</h2>
                       <p>{element.description}</p>
                     </div>
@@ -65,7 +72,8 @@ export default function Lists({ lists, user }) {
         } ()
       }
 
-      <CreateListModal enabled={createModal} modalHandler={modalHandler} user={user} />
+      <CreateListModal enabled={createModal} modalHandler={createModalHandler} user={user} />
+      <ListPopup enabled={listModal} modalHandler={listModalHandler} list={selectedList} />
     </div>
   )
 }
