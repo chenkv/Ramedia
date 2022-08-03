@@ -193,7 +193,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
 
                   return <div id="seasonprogressbar" className='h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full transition-all ease-out duration-300' style={{width: (set.size * 100) / total + "%"}} />;
                 } else {
-                  return <div id="seasonprogressbar" className='h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full transition-all ease-out duration-300' />;
+                  return;
                 }
               } ()
             }
