@@ -1,4 +1,6 @@
-import conn from "../../../lib/db";
+import conn from "../../../../lib/db";
+import cache from "memory-cache";
+
 const trakt_client_id = process.env.TRAKT_ID;
 const tmdb_key = process.env.TMDB_KEY;
 
@@ -74,7 +76,75 @@ export default async function handler(req, res) {
       }
 
       if (type == 'show') {
-        res.status(400).json({ error: 400, message: "", detail: "" });
+        const showID = req.body.imdb_id;
+        const currDate = new Date().toISOString();
+
+        let show_details = cache.get(`/series/${showID}`);
+
+        if (!show_details) {
+          const tmdburl = `https://api.themoviedb.org/3/find/${showID}?api_key=${tmdb_key}&language=en-US&external_source=imdb_id`;
+          var showRes = await fetch(tmdburl, { method: 'GET' });
+          showRes = await showRes.json();
+
+          var result = showRes.tv_results[0];
+          let tmdbID = result.id;
+
+          const yearurl = `https://api.themoviedb.org/3/tv/${tmdbID}?api_key=${tmdb_key}&language=en-US`;
+          show_details = await fetch(yearurl, { method: 'GET' });
+          show_details = await yearRes.json();
+        }
+
+        let watched_episodes = await conn.query(`SELECT * FROM mimir.watched_episode WHERE user_id=${user.id} AND show_id='${showID}';`);
+
+        for (let i of show_details.yearRes.seasons) {
+          if (i.season_number > 0) {
+            for (let j = 1; j <= i.episode_count; j++) {
+              if (!!!watched_episodes.rows.find(currEp => { return (currEp.season == i.season_number) && (currEp.episode == j) })) {
+                let query = `INSERT INTO mimir.watched_episode(user_id, show_id, season, episode, date) VALUES(${user.id}, '${showID}', ${i.season_number}, ${j}, '${currDate}');`;
+                await conn.query(query);
+              }
+            }
+          }
+        }
+
+        if (trakt_token) {
+          let show_object = await fetch(`https://api.trakt.tv/search/imdb/${showID}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'trakt-api-version': 2,
+              'trakt-api-key': trakt_client_id
+            }
+          })
+
+          show_object = await show_object.json();
+
+          let send_data = {
+            'shows': [
+              show_object[0].show
+            ]
+          }
+          send_data.shows[0].watched_at = currDate;
+
+          let trakt_response = await fetch(`https://api.trakt.tv/sync/history`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + trakt_token,
+              'trakt-api-version': '2',
+              'trakt-api-key': trakt_client_id
+            },
+            body: JSON.stringify(send_data)
+          });
+
+          // Add more error response handlers for trakt.tv stuff
+          if (trakt_response.status != 201) {
+            res.status(500).json({ error: "trakt_1", message: "Unable to add to trakt.tv history", detail: "The episode was added to history but unable to sync with Trakt.tv history." });
+            return;
+          }
+        }
+
+        res.status(200).end();
         return;
       }
 

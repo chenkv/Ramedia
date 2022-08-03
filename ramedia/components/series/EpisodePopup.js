@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import styles from '../styles/MovieOptions.module.css';
+import styles from '../../styles/MovieOptions.module.css';
 
 export default function EpisodePopup({ enabled, user, episode, episodeRoot, showID, controlPopup, info, infoHandler }) {
   const [ episodeSeenRoot, setEpisodeSeenRoot ] = useState(null);

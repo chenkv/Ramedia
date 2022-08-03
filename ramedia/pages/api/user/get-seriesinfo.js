@@ -1,4 +1,5 @@
 import conn from "../../../lib/db";
+import cache from "memory-cache";
 
 export default async function handler(req, res) {
   try {
@@ -22,7 +23,26 @@ export default async function handler(req, res) {
     response = await conn.query(query);
     result.watched = response.rows;
 
-    
+
+    let show_details = cache.get(`/series/${showID}`);
+
+    if (!show_details) {
+      const tmdburl = `https://api.themoviedb.org/3/find/${showID}?api_key=${tmdb_key}&language=en-US&external_source=imdb_id`;
+      var showRes = await fetch(tmdburl, { method: 'GET' });
+      showRes = await showRes.json();
+
+      let idResponse = showRes.tv_results[0];
+      let tmdbID = idResponse.id;
+
+      const yearurl = `https://api.themoviedb.org/3/tv/${tmdbID}?api_key=${tmdb_key}&language=en-US`;
+      show_details = await fetch(yearurl, { method: 'GET' });
+      show_details = await yearRes.json();
+    }
+
+    result.finished = false;
+    if (result.watched.length >= show_details.yearRes.number_of_episodes) {
+      result.finished = true;
+    }
 
     // for (let i in response.rows) {
 

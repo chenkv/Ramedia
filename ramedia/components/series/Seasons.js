@@ -2,7 +2,7 @@ import Image from "next/image";
 import EpisodePopup from "./EpisodePopup";
 import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
-import styles from '../styles/MovieOptions.module.css';
+import styles from '../../styles/MovieOptions.module.css';
 
 export default function Seasons({ user, showData, showID, info, infoHandler }) {
   const [ episodeEnabled, setEpisodeEnabled ] = useState(false);
@@ -106,7 +106,7 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
                     function () {
                       let isWatched = false;
     
-                      for (let index = 0; index < info.watched.length; index++) {
+                      for (let index = 0; info.watched && index < info.watched.length; index++) {
                         const element = info.watched[index];
                         
                         if ((element.season == i.season_number) && (element.episode == i.episode_number)) {
@@ -251,6 +251,9 @@ export default function Seasons({ user, showData, showID, info, infoHandler }) {
     )
 
     let temp = info;
+    if (!temp.watched) {
+      temp.watched = [];
+    }
     temp.watched.push({ "season": i.season_number, "episode": i.episode_number })
     infoHandler(temp);
 

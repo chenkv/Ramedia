@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Image from 'next/image';
-import SeriesOptions from '../../components/SeriesOptions';
+import SeriesOptions from '../../components/series/SeriesOptions';
 import { useEffect, useState } from 'react';
-import Seasons from '../../components/Seasons';
+import Seasons from '../../components/series/Seasons';
 
 const fetcher = async url => {
   const res = await fetch(url);
@@ -69,6 +69,8 @@ export default function SeriesPage() {
   }
 
   if (!data.data || user.isLoading) return <div>Loading...</div>
+
+  console.log(data.data)
 
   var background;
   if (data.data.artRes.status != "error") {
@@ -226,7 +228,7 @@ export default function SeriesPage() {
 
                     { genreHTML }
 
-                    <div className='ml-4 mt-8 flex space-x-2 items-center justify-start'>
+                    <div className='ml-4 my-4 flex space-x-2 items-center justify-start'>
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 20 20" fill="#FF971D">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588
                           1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175
@@ -236,11 +238,11 @@ export default function SeriesPage() {
                       <p className='text-2xl font-semibold tracking-wider'>{data.data.result.vote_average.toFixed(1)}/10</p>
                     </div>
                   </div>
-
-                  <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} info={info} handler={updateInfo}/>
                 </div>
 
-                <div className='grow flex items-end justify-center mb-10'>
+                <SeriesOptions user={user} showID={router.query.id} showData={data.data.yearRes} info={info} handler={updateInfo}/>
+
+                <div className='grow flex items-end justify-center mb-2'>
                   <div className='grow bg-[#E0E0E0] h-6 rounded-full ml-6 shadow-[4px_4px_10px_0px_rgba(0,0,0,0.3)]'>
                     <div id='progressbar' className='w-0 h-full bg-gradient-to-r from-[#DE15FF] to-[#FF971D] rounded-l-full transition-all ease-out duration-300' />
                   </div>
