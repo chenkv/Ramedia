@@ -129,7 +129,7 @@ export default function EpisodePopup({ enabled, user, episode, episodeRoot, show
                 function () {
                   let isWatched = false;
 
-                  for (let i = 0; i < info.watched.length; i++) {
+                  for (let i = 0; info.watched && i < info.watched.length; i++) {
                     const element = info.watched[i];
                     
                     if ((element.season == episode.season_number) && (element.episode == episode.episode_number)) {
