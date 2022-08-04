@@ -1,5 +1,6 @@
 import conn from "../../../lib/db";
 import cache from "memory-cache";
+const tmdb_key = process.env.TMDB_KEY;
 
 export default async function handler(req, res) {
   try {
