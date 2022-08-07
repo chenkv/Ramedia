@@ -10,11 +10,13 @@ export default function MovieOptions({ user, movieID }) {
   const [ listPopup, setListPopup ] = useState(false);
 
   useEffect(() => {
-    if (!watchlistRoot) {
-      setWatchlistRoot(createRoot(document.getElementById("watchlistButton")));
-    }
-    if (!seenRoot) {
-      setSeenRoot(createRoot(document.getElementById("seenButton")));
+    if (user.user) {
+      if (!watchlistRoot) {
+        setWatchlistRoot(createRoot(document.getElementById("watchlistButton")));
+      }
+      if (!seenRoot) {
+        setSeenRoot(createRoot(document.getElementById("seenButton")));
+      }
     }
   }, [])
 
