@@ -37,11 +37,11 @@ export default async function handler(req, res) {
 
       const yearurl = `https://api.themoviedb.org/3/tv/${tmdbID}?api_key=${tmdb_key}&language=en-US`;
       show_details = await fetch(yearurl, { method: 'GET' });
-      show_details = await yearRes.json();
+      show_details = await show_details.json();
     }
 
     result.finished = false;
-    if (result.watched.length >= show_details.yearRes.number_of_episodes) {
+    if (result.watched.length >= show_details.number_of_episodes) {
       result.finished = true;
     }
 
