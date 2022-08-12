@@ -22,6 +22,7 @@ if (!conn) {
     host: process.env.PGSQL_HOST,
     port: process.env.PGSQL_PORT,
     database: process.env.PGSQL_DATABASE,
+    ssl: true
   });
 }
 
